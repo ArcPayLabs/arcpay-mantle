@@ -1,0 +1,74 @@
+---
+title: "Verification"
+description: "Live endpoints, public proofs, and local commands for validating ArcPay Mantle."
+---
+
+Use this page to verify that the app, docs, x402 backend, developer API, and Mantle contracts are live.
+
+## Public Endpoints
+
+| Surface | URL |
+| --- | --- |
+| App | `https://arcpay-mantle.vercel.app` |
+| Docs | `https://arcpay-mantle.vercel.app/docs/overview` |
+| App docs path | `https://arcpay-mantle.vercel.app/docs` |
+| OpenAPI | `https://arcpay-mantle.vercel.app/openapi.json` |
+| Agent context | `https://arcpay-mantle.vercel.app/llms.txt` |
+| HTTP developer tools | `https://arcpay-mantle.vercel.app/api/developer/tools` |
+| Hosted MCP bridge | `https://arcpay-mantle.vercel.app/api/mcp` |
+| Admin analytics | `https://arcpay-mantle.vercel.app/analytics` |
+| Admin analytics API | `https://arcpay-mantle.vercel.app/api/admin/analytics` |
+| x402 health | `https://mantle-x402.20.208.46.195.nip.io/health` |
+| x402 demo | `https://mantle-x402.20.208.46.195.nip.io/x402/demo` |
+
+## Curl Checks
+
+```bash
+curl https://arcpay-mantle.vercel.app/openapi.json
+curl https://arcpay-mantle.vercel.app/llms.txt
+curl https://arcpay-mantle.vercel.app/api/developer/tools
+curl https://arcpay-mantle.vercel.app/api/developer/tools/derive_agent_id?slug=research-agent
+curl -X POST https://arcpay-mantle.vercel.app/api/mcp \
+  -H "content-type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"1","method":"tools/list","params":{}}'
+curl https://mantle-x402.20.208.46.195.nip.io/health
+curl https://mantle-x402.20.208.46.195.nip.io/x402/payment-requirements/research-agent
+```
+
+`/api/admin/analytics` requires an admin wallet session and reads
+`arcpay_mantle_usage_events`, `arcpay_mantle_beta_signups`,
+`arcpay_mantle_developer_keys`, and `arcpay_mantle_records`.
+
+## Local Checks
+
+```bash
+npm run docs:check
+npm run build:frontend
+npm test
+npm run check:worker
+npm run check:x402
+npm run smoke:auth
+npm run smoke:live
+npm run smoke:x402
+```
+
+`smoke:live` requires a funded Mantle Testnet wallet. It writes small live transactions to validate registry, policy, orders, reputation, cards, privacy intents, invoices, and risk oracle flow.
+
+Run `smoke:live` and `smoke:x402` sequentially. They share the funded signer and should not be run in parallel because public RPC nonce handling can reject concurrent transactions.
+
+## Latest Verified Scope
+
+- Contract suite: registry, order book, treasury policy, spend cards, operator controls, privacy vault, invoices, reputation, and risk oracle
+- Live smoke: registry write, policy write, order escrow/settle, reputation review, claim code, webhook breaker, USDY card, MNT privacy release, USDY privacy release, invoice settlement, risk oracle
+- x402 smoke: health, agent registration, HTTP 402 quote, on-chain payment order, verification, provider fulfillment, protected resource unlock, requester settlement
+- Frontend build: all public, auth, dashboard, and operator pages compile
+- Developer surfaces: CLI syntax, local MCP syntax, hosted MCP bridge, x402 server syntax, worker syntax, OpenAPI JSON, and docs config
+- Usage analytics: app records, beta signups, developer tools, hosted MCP, and x402 gateway events are recorded into Supabase when the usage migration is applied
+
+## Contract Proofs
+
+All deployed contract addresses are listed in `mantle-contracts`. Each address links to the Mantle Testnet explorer from the app's public docs page and from the product `/proofs` page.
+
+## Audit Screen
+
+![ArcPay audit dashboard](./images/audit.png)

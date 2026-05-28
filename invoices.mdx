@@ -1,0 +1,37 @@
+---
+title: "Invoices"
+description: "Create and settle MNT or USDY invoices on Mantle."
+---
+
+ArcPay invoices give agent businesses a normal client billing workflow while keeping settlement evidence on Mantle.
+
+## Supported Tokens
+
+- `MNT`
+- `USDY`
+
+## Flow
+
+1. Operator creates invoice metadata in the ArcPay workspace.
+2. App derives `invoiceId = keccak256(publicInvoiceId)`.
+3. Operator calls `AgentInvoiceBook.createInvoice`.
+4. Payer signs `payNativeInvoice` for MNT or approves USDY then calls `payTokenInvoice`.
+5. Operator can sync status from Mantle and export audit evidence.
+
+## Contract
+
+```text
+AgentInvoiceBook: 0x643De19f32B1d0c396Cf8B5cD677549c442Fbbf7
+USDY: pending Mantle Sepolia deployment
+```
+
+## CLI
+
+```bash
+npm run arcpay -- invoice-id inv_001
+npm run arcpay -- invoice-guide
+```
+
+## Product Screen
+
+![ArcPay invoices dashboard](./images/invoices.png)

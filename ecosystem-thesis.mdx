@@ -1,0 +1,67 @@
+---
+title: "Ecosystem Thesis"
+description: "Why ArcPay exists for Mantle and what ecosystem gap it fills."
+---
+
+Mantle is early enough that builders can still shape core AI-agent application
+infrastructure, while already having a strong distribution story around
+institutional liquidity, RWA assets, and Bybit/Byreal ecosystem reach.
+
+The public Mantle docs show strong base infrastructure: testnet/mainnet network
+parameters, faucet access, RPCs, explorers, Solidity tooling, local forking
+guidance, and ecosystem primitives. The Turing Test Hackathon adds a clear AI
+direction: agents, on-chain benchmarking, RWA strategy, developer tools, and
+agentic wallets.
+
+ArcPay focuses on a different gap: agent-native financial operations. AI-agent teams need more than fast transactions. They need identity, paid endpoints, escrow, budget controls, privacy intents, invoices, policy enforcement, and evidence exports.
+
+## What Mantle Already Provides
+
+| Area | Public source |
+| --- | --- |
+| Mainnet and testnet network info | `https://docs.mantle.network/developer/network-info` |
+| Testnet hub and faucet | `https://testnet.mantle.network` |
+| Hardhat, Foundry, Remix, RPC tooling | `https://docs.mantle.xyz/network/for-developers/quick-access` |
+| Turing Test agent tracks | Mantle Turing Test Hackathon 2026 materials |
+| Byreal agent tooling direction | `https://github.com/byreal-git/byreal-agent-skills`, `https://www.byreal.io/en/realclaw` |
+| Local testing and fork guidance | `https://docs.mantle.network/developer/development-workflow/development-environment/local-testing-and-forking` |
+
+## What ArcPay Adds
+
+- agent service registry UX and developer tooling
+- x402-style paid HTTP resources backed by Mantle order escrow
+- Byreal/RealClaw-ready command surfaces for external agents
+- policy engine for spend windows, risk floors, allowlists, allowed tokens, and emergency pause
+- USDY card budgets for agents
+- mETH and USDY RWA strategy intents
+- MNT and USDY invoice lifecycle
+- privacy-intent vault for encrypted memo pointers and delayed recipient disclosure
+- audit mirror from Mantle events into workspace records
+- local CLI, MCP server, OpenAPI, and HTTP developer tools
+
+## Native Mantle Fit
+
+ArcPay uses Solidity and standard EVM wallets today, then layers Mantle-specific product behavior on top:
+
+- low-cost agent payment UX through MNT escrow on Mantle Sepolia
+- event-heavy treasury workflows that can be benchmarked on-chain
+- typed agent telemetry and reputation for Turing Test style agent performance
+- RWA-oriented treasury actions around USDY and mETH strategy planning
+
+## Why This Is Fundable
+
+ArcPay is not another generic dashboard. It is ecosystem infrastructure for builders launching agent businesses on Mantle.
+
+It gives Mantle:
+
+- a demoable agent-commerce primitive
+- a reusable x402 starter kit
+- an agentic wallet/economy surface for Byreal-style agents
+- an AI x RWA treasury operations layer
+- a practical privacy-intent primitive where no official privacy layer is currently documented
+- a developer-facing MCP and HTTP tool surface
+- a product that can onboard both users and builders
+
+## Verified Boundary
+
+ArcPay does not claim Mantle lacks all DeFi. Mantle has public DEX/tutorial resources and testnet swap activity. ArcPay claims a narrower, verifiable gap: there is no clearly documented official Mantle-native equivalent to a mature privacy, yield, risk, and agent-treasury stack. ArcPay fills the agent-treasury layer first.

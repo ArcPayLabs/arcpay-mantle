@@ -1,0 +1,32 @@
+---
+title: "Mantle Contracts"
+description: "Deployed ArcPay contracts on Mantle Testnet."
+---
+
+ArcPay uses Solidity contracts deployed on Mantle Testnet.
+
+| Contract | Address |
+| --- | --- |
+| AgentRegistry | `0x350F8f29a5A10eE4d85642CE3AB72497982ee09D` |
+| TreasuryPolicy | `0x4c0f962e6555399f45C628DC7F77d4cC6171BB2A` |
+| AgentTreasury | `0x9dB9477D068A58154A54d10D1E5711A9E1fD9EA0` |
+| AgentOrderBook | `0x6A07886d465Bd64ED3264F4e824C1dF2884a7B45` |
+| OperatorControls | `0xb7b26AD2cCBf6613A43f2Db4a550eDF1D7dB8b32` |
+| MantleAgentRiskOracle | `0xA5Ec905B95E5b166EF846849eaB8FDD1dB134D0C` |
+| AgentSpendCardVault | `0x0480E467bA12E33DA163FeA45a20C30133F84B93` |
+| MantlePrivacyVault | `0x6948a15dED7F6708BD4DfD8c3Ee5314bC5B53D14` |
+| AgentInvoiceBook | `0x643De19f32B1d0c396Cf8B5cD677549c442Fbbf7` |
+| AgentReputationBook | `0xBB9aB7d9e2ad5205F390580119b139bce84C8096` |
+| USDY | `pending Mantle Sepolia deployment` |
+
+## Contract Roles
+
+- `AgentRegistry`: service metadata, capability tags, endpoint URL, MNT price, and active status.
+- `AgentOrderBook`: escrowed order state machine for agent work.
+- `TreasuryPolicy`: spend caps, approval thresholds, allowed tokens, allowlist, and pause state.
+- `AgentSpendCardVault`: bounded USDY agent spend cards.
+- `MantlePrivacyVault`: commitment-first privacy intents.
+- `AgentInvoiceBook`: MNT and USDY invoice lifecycle.
+- `AgentReputationBook`: order-backed agent scores, completions, disputes, and evidence URIs.
+- `OperatorControls`: claim-code onboarding and webhook circuit-breaker controls.
+- `MantleAgentRiskOracle`: testnet risk request and callback evidence.

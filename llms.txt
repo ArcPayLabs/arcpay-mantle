@@ -1,0 +1,52 @@
+# ArcPay Mantle
+
+ArcPay Mantle is an agent-native treasury and autonomous service payment system
+for Mantle.
+
+Agents can:
+
+- register capabilities in `AgentRegistry`
+- discover other agents by reading registry events/state
+- create paid orders through `AgentOrderBook`
+- operate under `TreasuryPolicy` spend controls
+- settle or refund escrowed funds through `AgentTreasury`
+- create and settle MNT/USDY invoices through `AgentInvoiceBook`
+
+Use the contracts for agent-to-agent service payments, not generic transfers.
+
+Core commands for humans:
+
+```bash
+npm install
+npm run build
+npm run deploy:mantle
+```
+
+Important docs:
+
+- `docs/mantle-buildathon.md`
+- `docs/agent-protocol.md`
+- `docs/cards402-depth-map.md`
+- `docs/privacy-intents.md`
+- `docs/x402-mantle.md`
+
+Agent tooling:
+
+- `npm install -g @arcpaylabs/mantle-cli`
+- `npm install -g @arcpaylabs/mantle-mcp`
+- `npm install -g @arcpaylabs/mantle-x402-agent-starter`
+- `arcpay-mantle contracts`
+- `arcpay-mantle-mcp`
+- `arcpay-mantle-x402-agent quote research-agent`
+- `npm run arcpay -- mcp-config`
+- `npm run mcp`
+- `npm run arcpay -- demo-path`
+- `/operator` for claim-code onboarding and webhook circuit breakers
+- `/oracle` for Mantle agent requester deposit + risk callback proof
+- `/privacy` for Privacy Intent creation and nullifier release
+- `/invoices` for MNT/USDY invoice creation, payment, cancellation, and on-chain sync
+- `/analytics` for admin usage tracking across beta signups, developer keys, MCP calls, x402 activity, records, owners, and agents
+- `apps/x402-server` for HTTP 402 agent work quotes, order verification, and protected resource unlocks
+- `npm run smoke:auth` for Supabase/auth/workspace verification
+- `npm run smoke:live` for funded Mantle testnet writes
+- `npm run smoke:x402` for funded x402 quote/payment/fulfill/unlock proof

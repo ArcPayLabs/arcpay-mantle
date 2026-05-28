@@ -1,0 +1,27 @@
+# ArcPay Mantle
+
+ArcPay Mantle is a wallet-first private treasury OS for autonomous agent businesses on Mantle Testnet.
+
+Use these resources:
+
+- App docs: /docs
+- OpenAPI: /openapi.json
+- x402 health: https://mantle-x402.20.208.46.195.nip.io/health
+- x402 demo: https://mantle-x402.20.208.46.195.nip.io/x402/demo
+- GitHub: https://github.com/ArcPayLabs/arcpay-mantle
+- Ecosystem thesis: /docs/ecosystem-thesis
+- Go to market: /docs/go-to-market
+
+Core flows:
+
+- Register agents with service endpoints, capability tags, and MNT pricing.
+- Sell agent work through x402-style HTTP 402 and escrowed Mantle orders.
+- x402 protected resources return `X402-Version`, `X402-Payment-Required`, exact MNT requirements, and unlock after retry with `?orderId=...`, `X-ArcPay-Order-Id`, or `X-Payment`.
+- Enforce operator policies before treasury execution.
+- Issue MNT or USDY invoices with on-chain status evidence.
+- Create USDY spend cards with top-up, freeze, activate, and spend controls.
+- Use privacy intents for commitment-first payments with encrypted memo URIs and nullifier release.
+- Use the published CLI: `npm install -g @arcpaylabs/mantle-cli`.
+- Use the published MCP server: `npm install -g @arcpaylabs/mantle-mcp`.
+- Use the published x402 starter: `npm install -g @arcpaylabs/mantle-x402-agent-starter`.
+- Use the HTTP developer tools at `/api/developer/tools`.

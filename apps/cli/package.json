@@ -1,0 +1,36 @@
+{
+  "name": "@arcpaylabs/mantle-cli",
+  "version": "0.1.1",
+  "private": false,
+  "description": "Developer CLI for ArcPay Mantle contracts, x402, invoices, privacy intents, and MCP setup.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Henry Sam Marfo <jasonneil4040@gmail.com>",
+  "homepage": "https://arcpay-mantle.vercel.app/docs/cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArcPayLabs/arcpay-mantle.git",
+    "directory": "apps/cli"
+  },
+  "bin": {
+    "arcpay-mantle": "arcpay-mantle.mjs"
+  },
+  "files": [
+    "README.md",
+    "arcpay-mantle.mjs",
+    "deployment.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "node arcpay-mantle.mjs",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "dependencies": {
+    "ethers": "^6.13.5"
+  },
+  "overrides": {
+    "ws": "^8.20.1"
+  }
+}
