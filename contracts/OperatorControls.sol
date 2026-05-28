@@ -22,7 +22,7 @@ contract OperatorControls {
     mapping(bytes32 => ClaimCode) public claimCodes;
     mapping(bytes32 => Circuit) public webhookCircuits;
 
-    uint256 public constant FAILURE_WINDOW = 60 seconds;
+    uint256 public constant FAILURE_WINDOW = 20 minutes;
     uint256 public constant FAILURE_THRESHOLD = 5;
     uint256 public constant OPEN_DURATION = 5 minutes;
 

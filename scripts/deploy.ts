@@ -6,55 +6,71 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying ArcPay Mantle contracts from ${deployer.address}`);
 
-  const registry = await ethers.deployContract("AgentRegistry");
+  let nonce = await ethers.provider.getTransactionCount(deployer.address, "pending");
+  const nextTx = () => ({ nonce: nonce++ });
+
+  const AgentRegistry = await ethers.getContractFactory("AgentRegistry");
+  const registry = await AgentRegistry.deploy(nextTx());
   await registry.waitForDeployment();
 
-  const policy = await ethers.deployContract("TreasuryPolicy");
+  const TreasuryPolicy = await ethers.getContractFactory("TreasuryPolicy");
+  const policy = await TreasuryPolicy.deploy(nextTx());
   await policy.waitForDeployment();
 
-  const treasury = await ethers.deployContract("AgentTreasury");
+  const AgentTreasury = await ethers.getContractFactory("AgentTreasury");
+  const treasury = await AgentTreasury.deploy(nextTx());
   await treasury.waitForDeployment();
 
-  const orderBook = await ethers.deployContract("AgentOrderBook", [
+  const AgentOrderBook = await ethers.getContractFactory("AgentOrderBook");
+  const orderBook = await AgentOrderBook.deploy(
     await registry.getAddress(),
     await policy.getAddress(),
     await treasury.getAddress(),
-  ]);
+    nextTx(),
+  );
   await orderBook.waitForDeployment();
 
-  const operatorControls = await ethers.deployContract("OperatorControls");
+  const OperatorControls = await ethers.getContractFactory("OperatorControls");
+  const operatorControls = await OperatorControls.deploy(nextTx());
   await operatorControls.waitForDeployment();
 
-  const spendCardVault = await ethers.deployContract("AgentSpendCardVault");
+  const AgentSpendCardVault = await ethers.getContractFactory("AgentSpendCardVault");
+  const spendCardVault = await AgentSpendCardVault.deploy(nextTx());
   await spendCardVault.waitForDeployment();
 
-  const privacyVault = await ethers.deployContract("MantlePrivacyVault");
+  const MantlePrivacyVault = await ethers.getContractFactory("MantlePrivacyVault");
+  const privacyVault = await MantlePrivacyVault.deploy(nextTx());
   await privacyVault.waitForDeployment();
 
-  const invoiceBook = await ethers.deployContract("AgentInvoiceBook");
+  const AgentInvoiceBook = await ethers.getContractFactory("AgentInvoiceBook");
+  const invoiceBook = await AgentInvoiceBook.deploy(nextTx());
   await invoiceBook.waitForDeployment();
 
-  const reputationBook = await ethers.deployContract("AgentReputationBook", [await orderBook.getAddress()]);
+  const AgentReputationBook = await ethers.getContractFactory("AgentReputationBook");
+  const reputationBook = await AgentReputationBook.deploy(await orderBook.getAddress(), nextTx());
   await reputationBook.waitForDeployment();
 
-  const mockUsdy = await ethers.deployContract("MockERC20");
+  const MockERC20 = await ethers.getContractFactory("MockERC20");
+  const mockUsdy = await MockERC20.deploy(nextTx());
   await mockUsdy.waitForDeployment();
-  await (await mockUsdy.mint(deployer.address, 1_000_000_000_000n)).wait();
+  await (await mockUsdy.mint(deployer.address, 1_000_000_000_000n, nextTx())).wait();
 
   let platformAddress = process.env.MANTLE_AGENT_PLATFORM || "mock";
   let mockPlatformAddress: string | undefined;
   if (platformAddress === "mock") {
-    const mockPlatform = await ethers.deployContract("MockMantleAgentPlatform");
+    const MockMantleAgentPlatform = await ethers.getContractFactory("MockMantleAgentPlatform");
+    const mockPlatform = await MockMantleAgentPlatform.deploy(nextTx());
     await mockPlatform.waitForDeployment();
     mockPlatformAddress = await mockPlatform.getAddress();
     platformAddress = mockPlatformAddress;
   }
   const riskAgentId = BigInt(process.env.MANTLE_RISK_AGENT_ID ?? "13174292974160097713");
-  const riskOracle = await ethers.deployContract("MantleAgentRiskOracle", [platformAddress, riskAgentId]);
+  const MantleAgentRiskOracle = await ethers.getContractFactory("MantleAgentRiskOracle");
+  const riskOracle = await MantleAgentRiskOracle.deploy(platformAddress, riskAgentId, nextTx());
   await riskOracle.waitForDeployment();
 
-  await (await policy.setOrderBook(await orderBook.getAddress())).wait();
-  await (await treasury.setOrderBook(await orderBook.getAddress())).wait();
+  await (await policy.setOrderBook(await orderBook.getAddress(), nextTx())).wait();
+  await (await treasury.setOrderBook(await orderBook.getAddress(), nextTx())).wait();
 
   const deployment = {
     network: "mantle-testnet",
