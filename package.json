@@ -32,6 +32,7 @@
     "smoke:auth": "node scripts/smoke-auth.mjs",
     "smoke:live": "node scripts/smoke-live.mjs",
     "smoke:x402": "node scripts/smoke-x402.mjs",
+    "proof:mantle": "node scripts/capture-mantle-proof.mjs",
     "arcpay": "node bin/arcpay-mantle.mjs",
     "test": "hardhat test",
     "check:deployer": "hardhat run scripts/check-deployer.ts --network mantleTestnet",

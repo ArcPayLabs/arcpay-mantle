@@ -1,0 +1,150 @@
+{
+  "capturedAt": "2026-05-29T18:17:41.301Z",
+  "chain": "mantle-testnet",
+  "chainId": 5003,
+  "explorer": "https://sepolia.mantlescan.xyz",
+  "app": "https://arcpay-mantle.vercel.app",
+  "x402Gateway": "https://mantle-x402.20.208.46.195.nip.io",
+  "deployer": "0xB883e76A4f6841E72cAF1C28ba00f78df974f448",
+  "requester": "0x572689485CCaBCc60BB3A1864e09cC145C2a1E74",
+  "realclawAgentAddress": "0xd953da085934f77cea8a2fb7a32fd48e4b1c1458",
+  "budgetMnt": "0.05",
+  "contracts": {
+    "AgentRegistry": "0xE2E4377A1739cEeC00F30D64271D2229cD7BAFe1",
+    "TreasuryPolicy": "0xa782eC1B6e748e8101869842767f475c8CD35d69",
+    "AgentTreasury": "0x6C3deF7FE7F7e737333D4B24670B4aF27ff9EcB1",
+    "AgentOrderBook": "0x458D69ada1661640ff7E6C77E42bF891D065bBbf",
+    "OperatorControls": "0x5D57f3c20A64342e251D14b7A72cD06D4950934b",
+    "MantleAgentRiskOracle": "0x6A8E5E368E617bC5f1E48eF0724f7371A3D2e81B",
+    "AgentSpendCardVault": "0x0fB5C031E6Ff2887f9402c0c39378eF1f6707F90",
+    "MantlePrivacyVault": "0x717CB18B08bE0c2ce1c897d879025c4a90861c20",
+    "AgentInvoiceBook": "0xb379a8926980A23c60D5c29A343f73D054CEdc61",
+    "AgentReputationBook": "0xADA1E468a640A4ff4171c53523095Af58e30aC51",
+    "MockUSDY": "0xda41b9EB708d32b29F4d90468298c69824A15E5C",
+    "MockMantleAgentPlatform": "0x3970Bf330fd72Fc6C0eBc555806f82C759401794"
+  },
+  "steps": [
+    {
+      "name": "network_and_funds",
+      "ok": true,
+      "result": {
+        "deployer": "0xB883e76A4f6841E72cAF1C28ba00f78df974f448",
+        "balanceMnt": "993.830413794553625887"
+      }
+    },
+    {
+      "name": "register_or_update_treasury_router",
+      "ok": true,
+      "result": {
+        "action": "updated",
+        "agentSlug": "treasury-router",
+        "agentId": "0x290b1f8e8b8b010a940ea896b0af6ae817a21ab3eece052a22bbdf553faf4825",
+        "txHash": "0x0a1c2d8fe0756d94a99596d5229e0066375594c582bf95d7326741a6ab020482",
+        "explorerUrl": "https://sepolia.mantlescan.xyz/tx/0x0a1c2d8fe0756d94a99596d5229e0066375594c582bf95d7326741a6ab020482"
+      }
+    },
+    {
+      "name": "fund_requester_and_policy",
+      "ok": true,
+      "result": {
+        "requester": "0x572689485CCaBCc60BB3A1864e09cC145C2a1E74",
+        "fundTx": "0x592599410baa3c79ace7202d6e61830e71fd3193bc4ad6ab1b69a6ad05a0e69c",
+        "policyTx": "0x1b12f0cfec69358f9948da364cae5f7fa4483d2d8547b2fbe1cdb2456a3e5fff",
+        "allowlistTx": "0x4e469201aa8dc6e10b95e129efde7f799aa4b9eea4c491e5da5fe0fb505ed3cf",
+        "explorerUrls": [
+          "https://sepolia.mantlescan.xyz/tx/0x592599410baa3c79ace7202d6e61830e71fd3193bc4ad6ab1b69a6ad05a0e69c",
+          "https://sepolia.mantlescan.xyz/tx/0x1b12f0cfec69358f9948da364cae5f7fa4483d2d8547b2fbe1cdb2456a3e5fff",
+          "https://sepolia.mantlescan.xyz/tx/0x4e469201aa8dc6e10b95e129efde7f799aa4b9eea4c491e5da5fe0fb505ed3cf"
+        ]
+      }
+    },
+    {
+      "name": "x402_payment_required",
+      "ok": true,
+      "result": {
+        "url": "https://mantle-x402.20.208.46.195.nip.io/agent/treasury-router/work",
+        "status": 402,
+        "latencyMs": 6496,
+        "x402Version": "1",
+        "paymentRequiredHeader": true,
+        "amountMnt": "0.0001",
+        "action": "createOrder(bytes32,string)"
+      }
+    },
+    {
+      "name": "create_x402_order",
+      "ok": true,
+      "result": {
+        "orderId": "0x73dae3aafeda67f59bd15954684b12a3f925ea54901f1748ac5074f31fc3db5e",
+        "txHash": "0xf98b6a881d5a7d44cf318ae3c5024dd9195ba0bd9ec92e986f0a391e50033bf8",
+        "explorerUrl": "https://sepolia.mantlescan.xyz/tx/0xf98b6a881d5a7d44cf318ae3c5024dd9195ba0bd9ec92e986f0a391e50033bf8"
+      }
+    },
+    {
+      "name": "fulfill_and_unlock_x402_order",
+      "ok": true,
+      "result": {
+        "orderId": "0x73dae3aafeda67f59bd15954684b12a3f925ea54901f1748ac5074f31fc3db5e",
+        "acceptTx": "0x191a2dc024541a613cfccad2bc41da8a13ab602049b9fbed468474e14fdcb871",
+        "processingTx": "0xf344bb74d186998ea7c94c4b691aea61af59a0445f84d6d85854605116efd761",
+        "fulfillTx": "0x22ad0460e5e21b00ce5e2c013fd45f7c2de6eba0dbaaf54c9acfaf1ab6700f54",
+        "unlockStatus": 200,
+        "unlocked": true,
+        "evidenceUri": "ipfs://arcpay-realclaw-proof/treasury-router",
+        "explorerUrls": [
+          "https://sepolia.mantlescan.xyz/tx/0x191a2dc024541a613cfccad2bc41da8a13ab602049b9fbed468474e14fdcb871",
+          "https://sepolia.mantlescan.xyz/tx/0xf344bb74d186998ea7c94c4b691aea61af59a0445f84d6d85854605116efd761",
+          "https://sepolia.mantlescan.xyz/tx/0x22ad0460e5e21b00ce5e2c013fd45f7c2de6eba0dbaaf54c9acfaf1ab6700f54"
+        ]
+      }
+    },
+    {
+      "name": "settle_x402_order",
+      "ok": true,
+      "result": {
+        "orderId": "0x73dae3aafeda67f59bd15954684b12a3f925ea54901f1748ac5074f31fc3db5e",
+        "txHash": "0x6843ffbed374f8e2e55cdccf688e5ebeea751dfd355d68b035e6fe0b054d99eb",
+        "explorerUrl": "https://sepolia.mantlescan.xyz/tx/0x6843ffbed374f8e2e55cdccf688e5ebeea751dfd355d68b035e6fe0b054d99eb",
+        "statusName": "Settled",
+        "amountMnt": "0.0001"
+      }
+    },
+    {
+      "name": "privacy_intent_release",
+      "ok": true,
+      "result": {
+        "commitment": "0x8b0f221dca696f3e351506342780e06e5aab1f0cef05bfbe6ef063647dcf232e",
+        "nullifier": "0x18f112793fa5ed396097cad2ca4c9b42338927ffa493d664aa08c15baa25f2ac",
+        "createTx": "0x86b0716b2321f1c2ac8d7f9fccdec0136bff0adcb3e8064465446c59ce2a03b1",
+        "releaseTx": "0x7bcd79d9d24c1ac3d6196cd61affdfc26818698f6ee0574cb5945892a4138dc2",
+        "recipient": "0x572689485CCaBCc60BB3A1864e09cC145C2a1E74",
+        "explorerUrls": [
+          "https://sepolia.mantlescan.xyz/tx/0x86b0716b2321f1c2ac8d7f9fccdec0136bff0adcb3e8064465446c59ce2a03b1",
+          "https://sepolia.mantlescan.xyz/tx/0x7bcd79d9d24c1ac3d6196cd61affdfc26818698f6ee0574cb5945892a4138dc2"
+        ]
+      }
+    },
+    {
+      "name": "native_invoice_paid",
+      "ok": true,
+      "result": {
+        "invoiceId": "0x5e53e37406c9a094f1e7a9a0805319a9acf84dc0883091f45d4d48aa7e80d17a",
+        "createTx": "0xb445e5f433a5662dd3085d9ee1e806027388fb748fcf4541a96fc3dc6c1c208f",
+        "payTx": "0xa7048f6351e82319e507f0f1b13cd4a57dca0b2c145cac460fe9e3b86ef8f72b",
+        "amountMnt": "0.0001",
+        "statusName": "Paid",
+        "explorerUrls": [
+          "https://sepolia.mantlescan.xyz/tx/0xb445e5f433a5662dd3085d9ee1e806027388fb748fcf4541a96fc3dc6c1c208f",
+          "https://sepolia.mantlescan.xyz/tx/0xa7048f6351e82319e507f0f1b13cd4a57dca0b2c145cac460fe9e3b86ef8f72b"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "ok": true,
+    "txCount": 23,
+    "realclawAgentAddress": "0xd953da085934f77cea8a2fb7a32fd48e4b1c1458",
+    "agentSlug": "treasury-router",
+    "protectedResource": "https://mantle-x402.20.208.46.195.nip.io/agent/treasury-router/work"
+  }
+}

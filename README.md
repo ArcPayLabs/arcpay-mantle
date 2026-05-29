@@ -77,6 +77,7 @@ npm run check:x402
 npm run smoke:auth
 npm run smoke:live
 npm run smoke:x402
+npm run proof:mantle
 ```
 
 Run the app:
@@ -308,6 +309,7 @@ ArcPay includes a Mintlify-ready docs site:
 - `@arcpaylabs/mantle-x402-agent-starter` - published reusable Mantle x402 client starter
 - `starter-kits/mantle-x402-agent` - source for the reusable Mantle x402 client starter
 - `examples/privacy-intents` and `examples/agent-reputation` - integration patterns for builders
+- `proofs/mantle-live-proof.json` - captured Mantle Testnet x402, privacy, invoice, and RealClaw-agent evidence
 
 For Mintlify deployment, connect this repository and use the repo root as the
 docs root so `docs.json` can reference the existing app assets and OpenAPI

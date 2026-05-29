@@ -60,6 +60,7 @@ Run `smoke:live` and `smoke:x402` sequentially. They share the funded signer and
 
 - Contract suite: registry, order book, treasury policy, spend cards, operator controls, privacy vault, invoices, reputation, and risk oracle
 - Live smoke: registry write, policy write, order escrow/settle, reputation review, claim code, webhook breaker, USDY card, MNT privacy release, USDY privacy release, invoice settlement, risk oracle
+- Mantle proof capture: `npm run proof:mantle` writes `proofs/mantle-live-proof.json` with RealClaw agent address, x402 order, unlock, settlement, privacy release, and invoice payment evidence.
 - x402 smoke: health, agent registration, HTTP 402 quote, on-chain payment order, verification, provider fulfillment, protected resource unlock, requester settlement
 - Frontend build: all public, auth, dashboard, and operator pages compile
 - Developer surfaces: CLI syntax, local MCP syntax, hosted MCP bridge, x402 server syntax, worker syntax, OpenAPI JSON, and docs config

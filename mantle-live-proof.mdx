@@ -1,0 +1,70 @@
+---
+title: "Mantle Live Proof"
+description: "Captured Mantle Testnet proof for RealClaw agent identity, x402 payment flow, privacy intent, and invoice settlement."
+---
+
+ArcPay Mantle live proof was captured against Mantle Testnet with the RealClaw agent address:
+
+```text
+0xd953da085934f77cea8a2fb7a32fd48e4b1c1458
+```
+
+Full machine-readable evidence is committed at:
+
+```text
+proofs/mantle-live-proof.json
+```
+
+## Summary
+
+| Field | Value |
+| --- | --- |
+| Chain | Mantle Testnet |
+| Chain ID | `5003` |
+| Protected resource | `https://mantle-x402.20.208.46.195.nip.io/agent/treasury-router/work` |
+| Agent slug | `treasury-router` |
+| Budget envelope | `0.05 MNT` |
+| Captured tx evidence | 23 tx/evidence references |
+
+## Captured Flow
+
+1. Updated the `treasury-router` agent with RealClaw/Mantle Skills metadata.
+2. Funded a temporary requester and configured `TreasuryPolicy`.
+3. Called the public x402 protected resource and received HTTP `402`.
+4. Created an on-chain x402 order through `AgentOrderBook`.
+5. Accepted, processed, and fulfilled the order.
+6. Unlocked the protected resource with the fulfilled order id.
+7. Settled the order.
+8. Created and released a native MNT privacy intent.
+9. Created and paid a native MNT invoice.
+
+## Key Evidence
+
+| Step | Tx / Evidence |
+| --- | --- |
+| Agent update | `0x0a1c2d8fe0756d94a99596d5229e0066375594c582bf95d7326741a6ab020482` |
+| Policy set | `0x1b12f0cfec69358f9948da364cae5f7fa4483d2d8547b2fbe1cdb2456a3e5fff` |
+| Agent allowlist | `0x4e469201aa8dc6e10b95e129efde7f799aa4b9eea4c491e5da5fe0fb505ed3cf` |
+| x402 order create | `0xf98b6a881d5a7d44cf318ae3c5024dd9195ba0bd9ec92e986f0a391e50033bf8` |
+| x402 order fulfill | `0x22ad0460e5e21b00ce5e2c013fd45f7c2de6eba0dbaaf54c9acfaf1ab6700f54` |
+| x402 order settle | `0x6843ffbed374f8e2e55cdccf688e5ebeea751dfd355d68b035e6fe0b054d99eb` |
+| Privacy intent create | `0x86b0716b2321f1c2ac8d7f9fccdec0136bff0adcb3e8064465446c59ce2a03b1` |
+| Privacy intent release | `0x7bcd79d9d24c1ac3d6196cd61affdfc26818698f6ee0574cb5945892a4138dc2` |
+| Invoice create | `0xb445e5f433a5662dd3085d9ee1e806027388fb748fcf4541a96fc3dc6c1c208f` |
+| Invoice pay | `0xa7048f6351e82319e507f0f1b13cd4a57dca0b2c145cac460fe9e3b86ef8f72b` |
+
+Use Mantlescan to inspect any transaction:
+
+```text
+https://sepolia.mantlescan.xyz/tx/<tx-hash>
+```
+
+## Reproduce
+
+Run:
+
+```bash
+npm run proof:mantle
+```
+
+The command uses the funded Mantle testnet signer in `.env`, the configured RealClaw agent address, and the public x402 gateway. It writes a fresh evidence file to `proofs/mantle-live-proof.json`.
