@@ -20,6 +20,7 @@ arcpay-mantle privacy-commit "invoice-secret"
 arcpay-mantle privacy-guide
 arcpay-mantle invoice-guide
 arcpay-mantle x402-guide
+arcpay-mantle realclaw-handoff
 arcpay-mantle demo-path
 arcpay-mantle smoke
 arcpay-mantle mcp-config

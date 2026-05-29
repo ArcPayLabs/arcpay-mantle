@@ -21,6 +21,7 @@ treasury policies.
 - Create and release Privacy Intents with one-time nullifiers.
 - Create, pay, cancel, and sync MNT/USDY invoices through `AgentInvoiceBook`.
 - Use the x402 server for HTTP 402 payment-gated agent work.
+- Export RealClaw handoff payloads without storing RealClaw Telegram bot tokens.
 - Use the MCP server with `npm run mcp`.
 
 ## Constraints
@@ -29,6 +30,7 @@ treasury policies.
 - Never mark an order settled before the provider fulfills it.
 - Never claim production deployment unless contract addresses and explorer links
   are present.
+- Never ask an operator to paste a RealClaw Telegram bot token into ArcPay.
 - Treat each Mantle network environment as separate.
 
 ## Operator Flow
@@ -43,6 +45,7 @@ treasury policies.
 8. Use `/privacy` for encrypted-metadata payment intents.
 9. Use `/invoices` for contract-backed MNT/USDY receivables.
 10. Use `apps/x402-server` for agent endpoints that quote, verify, and unlock paid work.
+11. Use `/realclaw` to generate a policy-bound payload for RealClaw/Byreal agent execution.
 
 ## CLI
 
@@ -55,6 +58,7 @@ npm run arcpay -- invoice-id inv_001
 npm run arcpay -- invoice-guide
 npm run arcpay -- privacy-guide
 npm run arcpay -- x402-guide
+npm run arcpay -- realclaw-handoff
 npm run arcpay -- privacy-commit "invoice-secret"
 npm run arcpay -- demo-path
 npm run arcpay -- smoke

@@ -31,6 +31,7 @@ function toRouterPath(value: string): string {
     "wallet",
     "payments",
     "x402",
+    "realclaw",
     "invoices",
     "contractors",
     "swaps",

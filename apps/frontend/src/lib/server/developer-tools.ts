@@ -62,6 +62,18 @@ export const developerTools: ToolDefinition[] = [
     inputSchema: { type: "object", properties: {} },
   },
   {
+    name: "realclaw_handoff",
+    description: "Return a RealClaw-ready ArcPay Mantle handoff payload template.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        strategyName: { type: "string" },
+        agentSlug: { type: "string" },
+        budgetMnt: { type: "string" },
+      },
+    },
+  },
+  {
     name: "starter_kit",
     description: "Return the recommended starter-kit files for a Mantle x402 agent.",
     inputSchema: { type: "object", properties: {} },
@@ -120,6 +132,44 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
         "4. Provider fulfills the order.",
         "5. GET /agent/:slug/work?orderId=... unlocks after Fulfilled or Settled.",
       ].join("\n"));
+    case "realclaw_handoff": {
+      const strategyName = String(args.strategyName ?? "arcpay-treasury-cfo");
+      const agentSlug = String(args.agentSlug ?? "treasury-router");
+      const budgetMnt = String(args.budgetMnt ?? "0.05");
+      return json({
+        protocol: "arcpay-realclaw-handoff",
+        chain: "mantle-testnet",
+        chainId: 5003,
+        strategyName,
+        agentSlug,
+        objective: "Execute only policy-approved Mantle treasury work through ArcPay x402, escrow, privacy, invoice, and USDY card modules.",
+        constraints: {
+          maxBudgetMnt: budgetMnt,
+          allowedAssets: ["MNT", "USDY", "mETH"],
+          requireArcPayPolicy: true,
+          requireOperatorApprovalForLeverage: true,
+          noCompletionWithoutTxHashOrOrderEvidence: true,
+        },
+        endpoints: {
+          x402Gateway: "https://mantle-x402.20.208.46.195.nip.io",
+          protectedResource: `https://mantle-x402.20.208.46.195.nip.io/agent/${encodeURIComponent(agentSlug)}/work`,
+          status: "https://arcpay-mantle.vercel.app/api/status",
+        },
+        contracts: {
+          registry: deployment.contracts.AgentRegistry,
+          orderBook: deployment.contracts.AgentOrderBook,
+          policy: deployment.contracts.TreasuryPolicy,
+          privacyVault: deployment.contracts.MantlePrivacyVault,
+          reputation: deployment.contracts.AgentReputationBook,
+        },
+        setup: [
+          "Create the Telegram bot inside RealClaw.",
+          "Keep the Telegram bot token in RealClaw, not ArcPay.",
+          "Paste this payload into the RealClaw strategy prompt/config.",
+          "Route all paid work back through ArcPay x402 or AgentOrderBook.",
+        ],
+      });
+    }
     case "starter_kit":
       return json({
         files: [

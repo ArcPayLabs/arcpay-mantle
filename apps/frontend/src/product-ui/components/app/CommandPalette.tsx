@@ -25,12 +25,14 @@ import {
   Activity,
   KeyRound,
   BarChart3,
+  Cable,
 } from "lucide-react";
 
 const NAV = [
   { label: "Overview", to: "/app/dashboard", icon: LayoutDashboard },
   { label: "Wallet", to: "/app/wallet", icon: Wallet },
   { label: "x402", to: "/app/x402", icon: RadioTower },
+  { label: "RealClaw", to: "/app/realclaw", icon: Cable },
   { label: "Payments", to: "/app/payments", icon: Send },
   { label: "Invoices", to: "/app/invoices", icon: FileText },
   { label: "Contractors", to: "/app/contractors", icon: Users },

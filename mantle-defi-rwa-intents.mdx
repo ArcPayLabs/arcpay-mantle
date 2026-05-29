@@ -1,0 +1,58 @@
+---
+title: "Mantle DeFi and RWA Intents"
+description: "How ArcPay prepares swap and yield requests for Mantle operators and agents without claiming execution before proof exists."
+---
+
+ArcPay Mantle treats swaps and yield as governed intents first.
+
+That means an operator or agent can prepare a route, budget, risk limit, adapter target, and evidence requirement before any wallet signature or external execution happens.
+
+## Why Intents
+
+Agent execution can create real treasury risk. ArcPay separates:
+
+- planning
+- policy review
+- agent handoff
+- wallet signature
+- execution evidence
+- audit record
+
+This avoids the common failure mode where an agent dashboard says a strategy executed before there is a transaction hash, order state, or signed result.
+
+## Swap Adapters
+
+The `/swaps` page supports Mantle route intents for:
+
+- RealClaw / Byreal agent handoff
+- Merchant Moe adapter candidate
+- Agni Finance adapter candidate
+- manual signer execution
+
+ArcPay records the swap intent and exports a structured payload with source asset, target asset, amount, slippage, expiry, executor, policy requirement, and contract context.
+
+## Yield and RWA Strategy
+
+The `/yield` page supports Mantle strategy intents for:
+
+- USDY conservative reserve
+- mETH treasury sleeve
+- RealClaw rebalancer
+- manual RWA review
+
+The strategy payload includes allocation cap, drawdown cap, rebalance cadence, leverage restriction, operator approval requirement, and ArcPay module addresses.
+
+## Evidence Rule
+
+ArcPay should not mark a swap, rebalance, or yield action as complete unless the executor returns one of:
+
+- Mantle transaction hash
+- fulfilled ArcPay order id
+- x402 order verification result
+- signed operator record
+
+Until then the status remains an intent.
+
+## Production Boundary
+
+The current implementation is ready for policy-bound agent handoff and audit capture on Mantle Testnet. Direct DEX/vault execution should only be enabled after the chosen Mantle adapter is tested with reliable liquidity and failure handling.

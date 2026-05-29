@@ -1,0 +1,57 @@
+---
+title: "RealClaw Adapter"
+description: "How ArcPay hands Mantle treasury policy, x402 endpoints, and execution constraints to RealClaw-controlled agents."
+---
+
+ArcPay Mantle includes a RealClaw handoff layer for operators who want a Telegram-controlled agent to execute approved treasury work.
+
+The boundary is intentional:
+
+- RealClaw owns the Telegram bot token and operator chat surface.
+- ArcPay owns treasury policy, x402 payment requirements, order escrow, privacy intents, USDY cards, invoices, reputation, and audit records.
+- The agent receives a structured handoff payload instead of unrestricted wallet authority.
+
+## Operator Flow
+
+1. Create the Telegram bot inside RealClaw with BotFather.
+2. Keep the bot token inside RealClaw. Do not paste it into ArcPay.
+3. Open ArcPay `/realclaw`.
+4. Set the strategy name, budget, allowed assets, risk limits, x402 resource, and executor slug.
+5. Copy the handoff payload into the RealClaw strategy prompt/config.
+6. Route execution back through ArcPay x402, policy, order, privacy, invoice, or card modules.
+
+## Handoff Payload
+
+ArcPay generates an agent-readable payload containing:
+
+- Mantle Testnet network metadata.
+- ArcPay x402 protected resource URL.
+- AgentRegistry, AgentOrderBook, TreasuryPolicy, PrivacyVault, and ReputationBook addresses.
+- Budget and asset constraints.
+- Operator approval and leverage restrictions.
+- Evidence requirement before any fill, yield move, or paid work is marked complete.
+
+## What Is Live Now
+
+- RealClaw handoff page in the app.
+- Payload copy/export.
+- Local and Supabase-backed audit record when a handoff is saved.
+- Developer tool output through `/api/developer/tools/realclaw_handoff`.
+- CLI/MCP guidance for RealClaw setup.
+
+## What Requires RealClaw Setup
+
+RealClaw execution requires the operator to complete RealClaw's Telegram onboarding and connect their bot token inside RealClaw.
+
+ArcPay does not store the Telegram token. After RealClaw is configured, the operator can paste the ArcPay payload into the agent strategy and use ArcPay as the policy/payment/evidence layer.
+
+## Safety Model
+
+ArcPay should not grant unrestricted spend authority to any external agent. Use:
+
+- `TreasuryPolicy` for budgets and policy.
+- `AgentOrderBook` for escrowed work.
+- x402 for paid HTTP resources.
+- `MantlePrivacyVault` for commitment-based payment intents.
+- `AgentReputationBook` for service outcome history.
+- `/audit` and `/status` for evidence.

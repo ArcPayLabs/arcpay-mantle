@@ -17,6 +17,7 @@ Core flows:
 - Register agents with service endpoints, capability tags, and MNT pricing.
 - Sell agent work through x402-style HTTP 402 and escrowed Mantle orders.
 - x402 protected resources return `X402-Version`, `X402-Payment-Required`, exact MNT requirements, and unlock after retry with `?orderId=...`, `X-ArcPay-Order-Id`, or `X-Payment`.
+- Export RealClaw handoff payloads from `/realclaw` so a Telegram-controlled agent can use ArcPay policy, x402, escrow, privacy, invoice, and reputation modules without ArcPay storing the Telegram token.
 - Enforce operator policies before treasury execution.
 - Issue MNT or USDY invoices with on-chain status evidence.
 - Create USDY spend cards with top-up, freeze, activate, and spend controls.

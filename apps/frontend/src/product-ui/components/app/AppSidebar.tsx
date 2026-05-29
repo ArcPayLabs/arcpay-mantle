@@ -21,6 +21,7 @@ import {
   Activity,
   KeyRound,
   BarChart3,
+  Cable,
 } from "lucide-react";
 import {
   Sidebar,
@@ -43,6 +44,7 @@ const ITEMS = [
   { title: "Agents", url: "/app/agents", icon: Bot, networks: ["mantle"] },
   { title: "Orders", url: "/app/orders", icon: Workflow, networks: ["mantle"] },
   { title: "x402", url: "/x402", icon: RadioTower, networks: ["mantle"] },
+  { title: "RealClaw", url: "/realclaw", icon: Cable, networks: ["mantle"] },
   { title: "Cards", url: "/app/cards", icon: CreditCard, networks: ["mantle"] },
   { title: "Payments", url: "/payments", icon: Send, networks: ["mantle"] },
   { title: "Invoices", url: "/invoices", icon: FileText, networks: ["mantle"] },

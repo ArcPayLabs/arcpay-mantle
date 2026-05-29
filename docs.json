@@ -46,6 +46,8 @@
             "pages": [
               "mantle-contracts",
               "x402-agent-payments",
+              "realclaw-adapter",
+              "mantle-defi-rwa-intents",
               "privacy-intents",
               "invoices",
               "usdy-cards",

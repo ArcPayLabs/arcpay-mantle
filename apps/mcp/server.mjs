@@ -112,6 +112,52 @@ server.tool("x402_guide", "Return builder instructions for the ArcPay Mantle x40
   };
 });
 
+server.tool("realclaw_handoff", "Return a RealClaw-ready ArcPay Mantle handoff payload template.", {
+  strategyName: z.string().optional(),
+  agentSlug: z.string().optional(),
+  budgetMnt: z.string().optional(),
+}, async ({ strategyName = "arcpay-treasury-cfo", agentSlug = "treasury-router", budgetMnt = "0.05" }) => {
+  const deployment = readDeployment();
+  return {
+    content: [{
+      type: "text",
+      text: JSON.stringify({
+        protocol: "arcpay-realclaw-handoff",
+        chain: "mantle-testnet",
+        chainId: 5003,
+        strategyName,
+        agentSlug,
+        objective: "Execute only policy-approved Mantle treasury work through ArcPay x402, escrow, privacy, invoice, and USDY card modules.",
+        constraints: {
+          maxBudgetMnt: budgetMnt,
+          allowedAssets: ["MNT", "USDY", "mETH"],
+          requireArcPayPolicy: true,
+          requireOperatorApprovalForLeverage: true,
+          noCompletionWithoutTxHashOrOrderEvidence: true,
+        },
+        endpoints: {
+          x402Gateway: "https://mantle-x402.20.208.46.195.nip.io",
+          protectedResource: `https://mantle-x402.20.208.46.195.nip.io/agent/${encodeURIComponent(agentSlug)}/work`,
+          status: "https://arcpay-mantle.vercel.app/api/status",
+        },
+        contracts: {
+          registry: deployment.contracts.AgentRegistry,
+          orderBook: deployment.contracts.AgentOrderBook,
+          policy: deployment.contracts.TreasuryPolicy,
+          privacyVault: deployment.contracts.MantlePrivacyVault,
+          reputation: deployment.contracts.AgentReputationBook,
+        },
+        setup: [
+          "Create the Telegram bot inside RealClaw.",
+          "Keep the Telegram bot token in RealClaw, not ArcPay.",
+          "Paste this payload into the RealClaw strategy prompt/config.",
+          "Route all paid work back through ArcPay x402 or AgentOrderBook.",
+        ],
+      }, null, 2),
+    }],
+  };
+});
+
 server.tool("demo_path", "Return the operator demo path for ArcPay Mantle.", {}, async () => ({
   content: [{
     type: "text",

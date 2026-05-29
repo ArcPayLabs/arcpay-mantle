@@ -11,6 +11,8 @@ Agents can:
 - operate under `TreasuryPolicy` spend controls
 - settle or refund escrowed funds through `AgentTreasury`
 - create and settle MNT/USDY invoices through `AgentInvoiceBook`
+- export RealClaw handoff payloads that bind agent execution to ArcPay policy,
+  x402, order escrow, privacy intents, reputation, and audit evidence
 
 Use the contracts for agent-to-agent service payments, not generic transfers.
 
@@ -38,12 +40,14 @@ Agent tooling:
 - `arcpay-mantle contracts`
 - `arcpay-mantle-mcp`
 - `arcpay-mantle-x402-agent quote research-agent`
+- `arcpay-mantle realclaw-handoff`
 - `npm run arcpay -- mcp-config`
 - `npm run mcp`
 - `npm run arcpay -- demo-path`
 - `/operator` for claim-code onboarding and webhook circuit breakers
 - `/oracle` for Mantle agent requester deposit + risk callback proof
 - `/privacy` for Privacy Intent creation and nullifier release
+- `/realclaw` for RealClaw/Byreal agent handoff payloads
 - `/invoices` for MNT/USDY invoice creation, payment, cancellation, and on-chain sync
 - `/analytics` for admin usage tracking across beta signups, developer keys, MCP calls, x402 activity, records, owners, and agents
 - `apps/x402-server` for HTTP 402 agent work quotes, order verification, and protected resource unlocks

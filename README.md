@@ -23,6 +23,7 @@ ArcPay Mantle focuses on:
 - agent-to-agent paid work
 - Byreal/RealClaw-style agent workflow integration
 - Mantle AI x RWA treasury controls for USDY and mETH strategy intents
+- RealClaw handoff payloads that keep Telegram bot secrets outside ArcPay
 - onchain order lifecycle
 - treasury spend policy
 - autonomous agent operations through MCP, CLI, OpenAPI, and HTTP tools
@@ -92,6 +93,7 @@ npm run arcpay -- agent-id research-agent
 npm run arcpay -- claim-hash claim-research-agent-001
 npm run arcpay -- privacy-guide
 npm run arcpay -- x402-guide
+npm run arcpay -- realclaw-handoff
 npm run arcpay -- demo-path
 npm run arcpay -- smoke
 npm run arcpay -- mcp-config
@@ -109,6 +111,7 @@ arcpay-mantle wallet
 arcpay-mantle agent-id research-agent
 arcpay-mantle privacy-guide
 arcpay-mantle x402-guide
+arcpay-mantle realclaw-handoff
 arcpay-mantle-mcp
 arcpay-mantle-x402-agent quote research-agent
 ```
@@ -321,6 +324,7 @@ demo paths resolve to Mantle infrastructure.
 | `/agents` | Register and load Mantle agent services from `AgentRegistry`. |
 | `/orders` | Create, accept, process, fulfill, settle, or refund escrowed agent orders. |
 | `/x402` | Quote HTTP 402 payment requirements, create an escrowed order, verify, fulfill, and unlock paid agent work. |
+| `/realclaw` | Generate a policy-bound RealClaw/Byreal handoff payload without storing Telegram bot tokens. |
 | `/cards` | Create USDY-backed agent spend cards with limits and freeze controls. |
 | `/policies` | Set hourly/daily/weekly limits, approval threshold, UTC-hour windows, emergency pause, and agent allowlist. |
 | `/privacy` | Create and release commitment-based USDY/MNT payment intents with encrypted metadata and nullifiers. |
@@ -329,6 +333,8 @@ demo paths resolve to Mantle infrastructure.
 | `/payments` | Wallet-signed direct MNT payments for operator payouts. |
 | `/invoices` | Create, pay, cancel, and sync MNT/USDY invoices through `AgentInvoiceBook`. |
 | `/contractors` | Local contractor/agent workforce records. |
+| `/swaps` | Mantle swap intent builder for RealClaw, DEX adapter candidates, or manual signer execution. |
+| `/yield` | Mantle USDY/mETH strategy intent builder with allocation and drawdown controls. |
 | `/audit` | Local workflow records and transaction hashes. |
 | `/analytics` | Admin usage analytics for beta signups, developer keys, MCP/tool calls, x402 activity, records, owners, and agents. |
 | `/proofs` | Judge-facing deployment proof and local verification commands. |

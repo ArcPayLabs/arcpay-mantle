@@ -27,6 +27,7 @@ Commands:
   arcpay-mantle privacy-guide          Print builder integration guide
   arcpay-mantle invoice-guide          Print invoice settlement guide
   arcpay-mantle x402-guide             Print x402 HTTP payment gate guide
+  arcpay-mantle realclaw-handoff       Print RealClaw handoff payload template
   arcpay-mantle demo-path              Print operator demo steps
   arcpay-mantle smoke                  Print smoke-test commands
   arcpay-mantle mcp-config             Print MCP host config
@@ -110,6 +111,44 @@ try {
       "",
       "Proof command: npm run smoke:x402",
     ].join("\n"));
+  } else if (command === "realclaw-handoff") {
+    const info = deployment();
+    const strategyName = args[0] || "arcpay-treasury-cfo";
+    const agentSlug = args[1] || "treasury-router";
+    const budgetMnt = args[2] || "0.05";
+    console.log(JSON.stringify({
+      protocol: "arcpay-realclaw-handoff",
+      chain: "mantle-testnet",
+      chainId: 5003,
+      strategyName,
+      agentSlug,
+      objective: "Execute only policy-approved Mantle treasury work through ArcPay x402, escrow, privacy, invoice, and USDY card modules.",
+      constraints: {
+        maxBudgetMnt: budgetMnt,
+        allowedAssets: ["MNT", "USDY", "mETH"],
+        requireArcPayPolicy: true,
+        requireOperatorApprovalForLeverage: true,
+        noCompletionWithoutTxHashOrOrderEvidence: true,
+      },
+      endpoints: {
+        x402Gateway: "https://mantle-x402.20.208.46.195.nip.io",
+        protectedResource: `https://mantle-x402.20.208.46.195.nip.io/agent/${encodeURIComponent(agentSlug)}/work`,
+        status: "https://arcpay-mantle.vercel.app/api/status",
+      },
+      contracts: {
+        registry: info.contracts.AgentRegistry,
+        orderBook: info.contracts.AgentOrderBook,
+        policy: info.contracts.TreasuryPolicy,
+        privacyVault: info.contracts.MantlePrivacyVault,
+        reputation: info.contracts.AgentReputationBook,
+      },
+      setup: [
+        "Create the Telegram bot inside RealClaw.",
+        "Keep the Telegram bot token in RealClaw, not ArcPay.",
+        "Paste this payload into the RealClaw strategy prompt/config.",
+        "Route all paid work back through ArcPay x402 or AgentOrderBook.",
+      ],
+    }, null, 2));
   } else if (command === "demo-path") {
     console.log([
       "1. Connect wallet and switch to Mantle Testnet.",
