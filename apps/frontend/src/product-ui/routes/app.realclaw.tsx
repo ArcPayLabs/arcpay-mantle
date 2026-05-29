@@ -12,6 +12,8 @@ type Handoff = {
   strategyName: string;
   realclawNetwork: string;
   telegramAgent: string;
+  realclawAgentAddress: string;
+  primaryVenue: string;
   operator: string;
   agentSlug: string;
   objective: string;
@@ -24,8 +26,10 @@ type Handoff = {
 
 const DEFAULT_FORM: Handoff = {
   strategyName: "arcpay-treasury-cfo",
-  realclawNetwork: "RealClaw mainnet bot, ArcPay Mantle Testnet proof",
+  realclawNetwork: "RealClaw Mantle agent, ArcPay Mantle Testnet proof",
   telegramAgent: "ArcPay Mantle CFO",
+  realclawAgentAddress: "",
+  primaryVenue: "Fluxion / Merchant Moe / Agni",
   operator: "ArcPay operator",
   agentSlug: "treasury-router",
   objective: "Route approved Mantle treasury work across x402 payments, USDY invoices, and RWA yield intents only when policy allows it.",
@@ -46,6 +50,8 @@ function RealClawRoute() {
     chainId: 5003,
     realclawNetwork: form.realclawNetwork,
     telegramAgent: form.telegramAgent,
+    realclawAgentAddress: form.realclawAgentAddress || "set-after-realclaw-wallet-connection",
+    primaryVenue: form.primaryVenue,
     strategyName: form.strategyName,
     operator: form.operator,
     agentSlug: form.agentSlug,
@@ -54,13 +60,17 @@ function RealClawRoute() {
       maxBudgetMnt: form.budgetMnt,
       riskLimit: form.riskLimit,
       allowedAssets: form.assets.split(",").map((asset) => asset.trim()).filter(Boolean),
+      allowedVenues: ["Fluxion", "Merchant Moe", "Agni Finance"],
       requireArcPayPolicy: true,
       requireOperatorOverrideForLeverage: true,
+      requireRegisteredRealClawAgentAddress: true,
+      requireVenueEvidence: true,
     },
     endpoints: {
       x402ProtectedResource: form.x402Resource,
       arcPayDeveloperTool: form.webhookUrl,
       x402Gateway: "https://mantle-x402.20.208.46.195.nip.io",
+      realclawCampaign: "https://openclaw.mantle.xyz/",
     },
     contracts: {
       registry: CONTRACTS.AgentRegistry,
@@ -82,23 +92,35 @@ function RealClawRoute() {
     setMessage("RealClaw handoff saved. Paste this payload into the Telegram agent instructions; ArcPay remains the Mantle Testnet policy/proof layer.");
   }
 
+  function saveEvidence() {
+    writeRecord({
+      id: crypto.randomUUID(),
+      type: "audit",
+      title: `RealClaw evidence ${form.primaryVenue}`,
+      status: form.realclawAgentAddress ? "realclaw_agent_evidence_ready" : "realclaw_agent_address_missing",
+      amount: `${form.budgetMnt} MNT budget`,
+    });
+    setMessage(form.realclawAgentAddress ? "RealClaw agent evidence record saved. Attach tx hashes, venue, volume, and ROI after activity." : "Evidence record saved, but add the registered RealClaw agent address before claiming Mantle activity.");
+  }
+
   async function copyPayload() {
     await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
     setMessage("Copied RealClaw handoff payload.");
   }
 
   const setupSteps = [
-    "Create and configure the agent inside the RealClaw Telegram bot.",
+    "Create and configure the agent inside the RealClaw Telegram bot with Mantle Skills.",
+    "Connect the wallet RealClaw registers as your Mantle agent address.",
     "Keep the bot token and RealClaw secrets inside RealClaw. Do not paste them into ArcPay.",
     "Paste this ArcPay handoff payload into the Telegram agent instructions/config.",
-    "Use RealClaw as the agent control surface while ArcPay provides Mantle Testnet policy, x402, contract, and audit proof.",
+    "Use RealClaw for Mantle venue activity across Fluxion, Merchant Moe, and Agni, then attach tx/volume/ROI evidence back into ArcPay.",
   ];
 
   const integrations = [
-    { label: "RealClaw", value: "Telegram control", hint: "External agent UI" },
+    { label: "RealClaw", value: "Mantle Skills", hint: "Telegram agent + wallet" },
     { label: "ArcPay x402", value: "Paid work", hint: "HTTP 402 + order escrow" },
+    { label: "Venues", value: "3", hint: "Fluxion, Merchant Moe, Agni" },
     { label: "Policy", value: "Required", hint: "Budget/risk gate" },
-    { label: "Contracts", value: Object.keys(CONTRACTS).length, hint: "Mantle modules" },
   ];
 
   return (
@@ -107,7 +129,7 @@ function RealClawRoute() {
         icon={Bot}
         eyebrow="Byreal / RealClaw"
         title="RealClaw agent handoff"
-        description="Prepare a safe execution brief for a RealClaw Telegram agent: budget, policy, x402 endpoint, contract addresses, privacy boundary, and allowed assets. RealClaw can stay mainnet-side while ArcPay proves the Mantle Testnet treasury layer."
+        description="Prepare a safe execution brief for a RealClaw Mantle agent: budget, policy, x402 endpoint, venue targets, contract addresses, privacy boundary, and allowed assets."
         actions={<button type="button" onClick={copyPayload} className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"><ClipboardCopy className="h-4 w-4" /> Copy payload</button>}
       />
 
@@ -123,7 +145,7 @@ function RealClawRoute() {
           <div>
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Handoff builder</div>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">RealClaw strategy envelope</h2>
-            <p className="mt-1 text-sm text-muted-foreground">This creates an execution-ready payload. RealClaw keeps its Telegram bot and secrets; ArcPay keeps treasury policy and on-chain testnet records.</p>
+            <p className="mt-1 text-sm text-muted-foreground">This creates an execution-ready payload. RealClaw keeps its Telegram bot and agent wallet; ArcPay keeps treasury policy, x402, and on-chain records.</p>
           </div>
           {Object.entries(form).map(([key, value]) => (
             <label key={key} className="block">
@@ -135,7 +157,10 @@ function RealClawRoute() {
               )}
             </label>
           ))}
-          <button className="h-12 rounded-xl bg-primary px-5 font-semibold text-primary-foreground" type="submit">Save RealClaw handoff</button>
+          <div className="flex flex-wrap gap-2">
+            <button className="h-12 rounded-xl bg-primary px-5 font-semibold text-primary-foreground" type="submit">Save RealClaw handoff</button>
+            <button className="h-12 rounded-xl border border-border px-5 font-semibold" type="button" onClick={saveEvidence}>Save evidence record</button>
+          </div>
           <div className="rounded-xl border border-border bg-muted p-3 text-sm text-muted-foreground">{message}</div>
         </form>
 

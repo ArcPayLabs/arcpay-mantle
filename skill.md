@@ -21,7 +21,8 @@ treasury policies.
 - Create and release Privacy Intents with one-time nullifiers.
 - Create, pay, cancel, and sync MNT/USDY invoices through `AgentInvoiceBook`.
 - Use the x402 server for HTTP 402 payment-gated agent work.
-- Export RealClaw handoff payloads without storing RealClaw Telegram bot tokens.
+- Export RealClaw Mantle Skills handoff payloads without storing RealClaw Telegram bot tokens.
+- Track Fluxion, Merchant Moe, and Agni evidence for RealClaw agent activity when an agent address is provided.
 - Use the MCP server with `npm run mcp`.
 
 ## Constraints

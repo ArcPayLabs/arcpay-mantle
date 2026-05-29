@@ -13,6 +13,8 @@ Agents can:
 - create and settle MNT/USDY invoices through `AgentInvoiceBook`
 - export RealClaw handoff payloads that bind agent execution to ArcPay policy,
   x402, order escrow, privacy intents, reputation, and audit evidence
+- track RealClaw Mantle Skills venue evidence across Fluxion, Merchant Moe,
+  and Agni Finance when a registered RealClaw agent address is provided
 
 Use the contracts for agent-to-agent service payments, not generic transfers.
 

@@ -10,7 +10,8 @@ import { CONTRACTS, shortAddress, writeRecord } from "@mantle/lib/mantle";
 export const Route = { options: { component: SwapsRoute } };
 
 const ADAPTERS = [
-  { name: "RealClaw / Byreal", status: "Agent handoff", description: "Route approved intents into a RealClaw strategy after Telegram onboarding is complete." },
+  { name: "RealClaw / Mantle Skills", status: "Agent executor", description: "Route approved intents to a registered RealClaw Mantle agent and attach venue tx/volume evidence." },
+  { name: "Fluxion", status: "RealClaw venue", description: "Mantle campaign venue for RealClaw trading activity and execution evidence." },
   { name: "Merchant Moe", status: "Router candidate", description: "Mantle DEX route candidate for swap execution once production testnet adapter is locked." },
   { name: "Agni Finance", status: "Router candidate", description: "Mantle liquidity route candidate for operator-approved treasury swaps." },
   { name: "Manual signer", status: "Available now", description: "Export a policy-approved payload for a human or agent signer to execute." },
@@ -23,7 +24,7 @@ function SwapsRoute() {
     amount: "1",
     maxSlippage: "0.5",
     expiryMinutes: "20",
-    adapter: "RealClaw / Byreal",
+    adapter: "RealClaw / Mantle Skills",
     agent: "treasury-router",
     objective: "Acquire USDY for invoices and agent spend cards without exceeding policy.",
   });
@@ -45,6 +46,8 @@ function SwapsRoute() {
       requireOperatorApproval: true,
       emergencyPauseAware: true,
       noFillClaimWithoutTxHash: true,
+      requireRealClawAgentAddressForRealClaw: form.adapter.includes("RealClaw") || form.adapter === "Fluxion",
+      supportedRealClawVenues: ["Fluxion", "Merchant Moe", "Agni Finance"],
     },
     contracts: {
       registry: CONTRACTS.AgentRegistry,

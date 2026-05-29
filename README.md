@@ -22,6 +22,7 @@ ArcPay Mantle focuses on:
 - agent discovery
 - agent-to-agent paid work
 - Byreal/RealClaw-style agent workflow integration
+- RealClaw Mantle Skills handoff with Fluxion, Merchant Moe, and Agni evidence capture
 - Mantle AI x RWA treasury controls for USDY and mETH strategy intents
 - RealClaw handoff payloads that keep Telegram bot secrets outside ArcPay
 - onchain order lifecycle

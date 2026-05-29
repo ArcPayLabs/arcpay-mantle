@@ -3,30 +3,33 @@ title: "RealClaw Adapter"
 description: "How ArcPay hands Mantle treasury policy, x402 endpoints, and execution constraints to RealClaw-controlled agents."
 ---
 
-ArcPay Mantle includes a RealClaw handoff layer for operators who want a Telegram-controlled agent to coordinate approved treasury work.
+ArcPay Mantle includes a RealClaw handoff layer for operators who want a Telegram-controlled agent to coordinate approved Mantle treasury work.
 
-If RealClaw is operating as a mainnet-only surface, ArcPay does not pretend RealClaw is executing Mantle Testnet contract calls directly. ArcPay treats RealClaw as the external agent control surface and keeps the live Mantle Testnet proof inside ArcPay contracts, x402, policy, privacy, invoices, and audit records.
+RealClaw's Mantle campaign surface uses Mantle Skills and venue activity across Fluxion, Merchant Moe, and Agni Finance. ArcPay treats RealClaw as an agent execution/control surface and keeps treasury policy, x402 payments, escrow, privacy intents, invoices, reputation, and audit records inside ArcPay.
 
 The boundary is intentional:
 
-- RealClaw owns the Telegram bot token, Telegram agent setup, and operator chat surface.
+- RealClaw owns the Telegram bot token, Telegram agent setup, Mantle Skills workflow, and operator chat surface.
 - ArcPay owns treasury policy, x402 payment requirements, order escrow, privacy intents, USDY cards, invoices, reputation, and audit records.
 - The agent receives a structured handoff payload instead of unrestricted wallet authority.
 
 ## Operator Flow
 
 1. Create and configure the Telegram agent inside RealClaw with BotFather.
-2. Keep the bot token inside RealClaw. Do not paste it into ArcPay.
-3. Open ArcPay `/realclaw`.
-4. Set the strategy name, budget, allowed assets, risk limits, x402 resource, and executor slug.
-5. Copy the handoff payload into the RealClaw Telegram agent instructions/config.
-6. Route execution back through ArcPay x402, policy, order, privacy, invoice, or card modules.
+2. Connect the wallet RealClaw registers as your Mantle agent address.
+3. Keep the bot token inside RealClaw. Do not paste it into ArcPay.
+4. Open ArcPay `/realclaw`.
+5. Set the strategy name, RealClaw agent address, budget, allowed assets, venue targets, risk limits, x402 resource, and executor slug.
+6. Copy the handoff payload into the RealClaw Telegram agent instructions/config.
+7. Route planning through ArcPay policy and x402, execute via RealClaw-supported Mantle venues, then attach tx/volume/ROI evidence back into ArcPay.
 
 ## Handoff Payload
 
 ArcPay generates an agent-readable payload containing:
 
 - Mantle Testnet network metadata.
+- RealClaw agent address placeholder.
+- Fluxion, Merchant Moe, and Agni venue allowlist.
 - ArcPay x402 protected resource URL.
 - AgentRegistry, AgentOrderBook, TreasuryPolicy, PrivacyVault, and ReputationBook addresses.
 - Budget and asset constraints.
@@ -35,7 +38,7 @@ ArcPay generates an agent-readable payload containing:
 
 ## What Is Live Now
 
-- RealClaw handoff page in the app.
+- RealClaw handoff and evidence page in the app.
 - Payload copy/export.
 - Local and Supabase-backed audit record when a handoff is saved.
 - Developer tool output through `/api/developer/tools/realclaw_handoff`.
@@ -43,9 +46,9 @@ ArcPay generates an agent-readable payload containing:
 
 ## What Requires RealClaw Setup
 
-RealClaw execution requires the operator to complete RealClaw's Telegram onboarding and connect their bot token inside RealClaw.
+RealClaw execution requires the operator to complete RealClaw's Telegram onboarding and connect the agent wallet RealClaw registers for Mantle activity.
 
-ArcPay does not store the Telegram token. After RealClaw is configured, the operator can paste the ArcPay payload into the Telegram agent and use ArcPay as the Mantle Testnet policy/payment/evidence layer.
+ArcPay does not store the Telegram token. After RealClaw is configured, the operator can paste the ArcPay payload into the Telegram agent and use ArcPay as the Mantle policy/payment/evidence layer.
 
 ## Safety Model
 

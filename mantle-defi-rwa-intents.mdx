@@ -24,12 +24,15 @@ This avoids the common failure mode where an agent dashboard says a strategy exe
 
 The `/swaps` page supports Mantle route intents for:
 
-- RealClaw / Byreal agent handoff
+- RealClaw / Mantle Skills agent handoff
+- Fluxion venue activity
 - Merchant Moe adapter candidate
 - Agni Finance adapter candidate
 - manual signer execution
 
 ArcPay records the swap intent and exports a structured payload with source asset, target asset, amount, slippage, expiry, executor, policy requirement, and contract context.
+
+When RealClaw is selected, ArcPay expects a registered RealClaw agent address and evidence from Mantle venue activity. The action is not complete until a transaction hash, order state, x402 verification, or signed result is attached.
 
 ## Yield and RWA Strategy
 
@@ -37,7 +40,7 @@ The `/yield` page supports Mantle strategy intents for:
 
 - USDY conservative reserve
 - mETH treasury sleeve
-- RealClaw rebalancer
+- RealClaw Mantle rebalancer
 - manual RWA review
 
 The strategy payload includes allocation cap, drawdown cap, rebalance cadence, leverage restriction, operator approval requirement, and ArcPay module addresses.

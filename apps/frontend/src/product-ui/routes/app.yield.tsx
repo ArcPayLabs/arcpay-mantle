@@ -12,7 +12,7 @@ export const Route = { options: { component: YieldRoute } };
 const STRATEGIES = [
   { name: "USDY conservative reserve", asset: "USDY", description: "Keep operating capital in a tokenized dollar-yield bucket with strict drawdown and withdrawal controls." },
   { name: "mETH treasury sleeve", asset: "mETH", description: "Prepare an ETH-denominated Mantle treasury sleeve for operator-approved yield exposure." },
-  { name: "RealClaw rebalancer", asset: "MNT/USDY", description: "Hand policy-approved strategy instructions to a RealClaw agent after onboarding." },
+  { name: "RealClaw Mantle rebalancer", asset: "MNT/USDY", description: "Hand policy-approved strategy instructions to a registered RealClaw Mantle agent and attach Fluxion/Merchant Moe/Agni evidence." },
   { name: "Manual RWA review", asset: "USDY/mETH", description: "Export a risk memo for a human operator before any signed transaction." },
 ] as const;
 
