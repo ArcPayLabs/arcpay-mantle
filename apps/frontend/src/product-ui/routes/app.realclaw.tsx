@@ -10,6 +10,8 @@ export const Route = { options: { component: RealClawRoute } };
 
 type Handoff = {
   strategyName: string;
+  realclawNetwork: string;
+  telegramAgent: string;
   operator: string;
   agentSlug: string;
   objective: string;
@@ -22,6 +24,8 @@ type Handoff = {
 
 const DEFAULT_FORM: Handoff = {
   strategyName: "arcpay-treasury-cfo",
+  realclawNetwork: "RealClaw mainnet bot, ArcPay Mantle Testnet proof",
+  telegramAgent: "ArcPay Mantle CFO",
   operator: "ArcPay operator",
   agentSlug: "treasury-router",
   objective: "Route approved Mantle treasury work across x402 payments, USDY invoices, and RWA yield intents only when policy allows it.",
@@ -40,6 +44,8 @@ function RealClawRoute() {
     protocol: "arcpay-realclaw-handoff",
     chain: "mantle-testnet",
     chainId: 5003,
+    realclawNetwork: form.realclawNetwork,
+    telegramAgent: form.telegramAgent,
     strategyName: form.strategyName,
     operator: form.operator,
     agentSlug: form.agentSlug,
@@ -73,7 +79,7 @@ function RealClawRoute() {
       status: "realclaw_handoff_ready",
       amount: `${form.budgetMnt} MNT budget`,
     });
-    setMessage("RealClaw handoff saved. Complete RealClaw Telegram setup there, then paste this payload into the agent instructions.");
+    setMessage("RealClaw handoff saved. Paste this payload into the Telegram agent instructions; ArcPay remains the Mantle Testnet policy/proof layer.");
   }
 
   async function copyPayload() {
@@ -82,10 +88,10 @@ function RealClawRoute() {
   }
 
   const setupSteps = [
-    "Create the Telegram bot inside RealClaw using BotFather.",
-    "Keep the bot token inside RealClaw. Do not paste the token into ArcPay.",
-    "Export this ArcPay handoff payload to the RealClaw agent prompt or strategy config.",
-    "Let RealClaw call ArcPay x402/order/policy endpoints only inside the budget and risk limits.",
+    "Create and configure the agent inside the RealClaw Telegram bot.",
+    "Keep the bot token and RealClaw secrets inside RealClaw. Do not paste them into ArcPay.",
+    "Paste this ArcPay handoff payload into the Telegram agent instructions/config.",
+    "Use RealClaw as the agent control surface while ArcPay provides Mantle Testnet policy, x402, contract, and audit proof.",
   ];
 
   const integrations = [
@@ -101,7 +107,7 @@ function RealClawRoute() {
         icon={Bot}
         eyebrow="Byreal / RealClaw"
         title="RealClaw agent handoff"
-        description="Prepare a Mantle-native execution brief for a RealClaw-controlled agent: budget, policy, x402 endpoint, contract addresses, privacy boundary, and allowed assets."
+        description="Prepare a safe execution brief for a RealClaw Telegram agent: budget, policy, x402 endpoint, contract addresses, privacy boundary, and allowed assets. RealClaw can stay mainnet-side while ArcPay proves the Mantle Testnet treasury layer."
         actions={<button type="button" onClick={copyPayload} className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"><ClipboardCopy className="h-4 w-4" /> Copy payload</button>}
       />
 
@@ -117,7 +123,7 @@ function RealClawRoute() {
           <div>
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Handoff builder</div>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">RealClaw strategy envelope</h2>
-            <p className="mt-1 text-sm text-muted-foreground">This creates an execution-ready payload. RealClaw keeps its Telegram token; ArcPay keeps treasury policy and on-chain records.</p>
+            <p className="mt-1 text-sm text-muted-foreground">This creates an execution-ready payload. RealClaw keeps its Telegram bot and secrets; ArcPay keeps treasury policy and on-chain testnet records.</p>
           </div>
           {Object.entries(form).map(([key, value]) => (
             <label key={key} className="block">

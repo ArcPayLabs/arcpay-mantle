@@ -120,6 +120,8 @@ try {
       protocol: "arcpay-realclaw-handoff",
       chain: "mantle-testnet",
       chainId: 5003,
+      realclawNetwork: "RealClaw mainnet bot, ArcPay Mantle Testnet proof",
+      telegramAgent: "configured-inside-realclaw-telegram",
       strategyName,
       agentSlug,
       objective: "Execute only policy-approved Mantle treasury work through ArcPay x402, escrow, privacy, invoice, and USDY card modules.",
@@ -143,10 +145,10 @@ try {
         reputation: info.contracts.AgentReputationBook,
       },
       setup: [
-        "Create the Telegram bot inside RealClaw.",
-        "Keep the Telegram bot token in RealClaw, not ArcPay.",
-        "Paste this payload into the RealClaw strategy prompt/config.",
-        "Route all paid work back through ArcPay x402 or AgentOrderBook.",
+        "Create and configure the agent inside the RealClaw Telegram bot.",
+        "Keep the Telegram bot token and RealClaw secrets in RealClaw, not ArcPay.",
+        "Paste this payload into the RealClaw Telegram agent instructions/config.",
+        "Use ArcPay as the Mantle Testnet policy, x402, contract, and audit proof layer.",
       ],
     }, null, 2));
   } else if (command === "demo-path") {

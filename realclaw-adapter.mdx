@@ -3,21 +3,23 @@ title: "RealClaw Adapter"
 description: "How ArcPay hands Mantle treasury policy, x402 endpoints, and execution constraints to RealClaw-controlled agents."
 ---
 
-ArcPay Mantle includes a RealClaw handoff layer for operators who want a Telegram-controlled agent to execute approved treasury work.
+ArcPay Mantle includes a RealClaw handoff layer for operators who want a Telegram-controlled agent to coordinate approved treasury work.
+
+If RealClaw is operating as a mainnet-only surface, ArcPay does not pretend RealClaw is executing Mantle Testnet contract calls directly. ArcPay treats RealClaw as the external agent control surface and keeps the live Mantle Testnet proof inside ArcPay contracts, x402, policy, privacy, invoices, and audit records.
 
 The boundary is intentional:
 
-- RealClaw owns the Telegram bot token and operator chat surface.
+- RealClaw owns the Telegram bot token, Telegram agent setup, and operator chat surface.
 - ArcPay owns treasury policy, x402 payment requirements, order escrow, privacy intents, USDY cards, invoices, reputation, and audit records.
 - The agent receives a structured handoff payload instead of unrestricted wallet authority.
 
 ## Operator Flow
 
-1. Create the Telegram bot inside RealClaw with BotFather.
+1. Create and configure the Telegram agent inside RealClaw with BotFather.
 2. Keep the bot token inside RealClaw. Do not paste it into ArcPay.
 3. Open ArcPay `/realclaw`.
 4. Set the strategy name, budget, allowed assets, risk limits, x402 resource, and executor slug.
-5. Copy the handoff payload into the RealClaw strategy prompt/config.
+5. Copy the handoff payload into the RealClaw Telegram agent instructions/config.
 6. Route execution back through ArcPay x402, policy, order, privacy, invoice, or card modules.
 
 ## Handoff Payload
@@ -43,7 +45,7 @@ ArcPay generates an agent-readable payload containing:
 
 RealClaw execution requires the operator to complete RealClaw's Telegram onboarding and connect their bot token inside RealClaw.
 
-ArcPay does not store the Telegram token. After RealClaw is configured, the operator can paste the ArcPay payload into the agent strategy and use ArcPay as the policy/payment/evidence layer.
+ArcPay does not store the Telegram token. After RealClaw is configured, the operator can paste the ArcPay payload into the Telegram agent and use ArcPay as the Mantle Testnet policy/payment/evidence layer.
 
 ## Safety Model
 
