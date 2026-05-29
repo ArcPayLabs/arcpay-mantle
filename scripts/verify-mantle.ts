@@ -49,11 +49,7 @@ async function main() {
     }
 
     try {
-      console.log(`Verifying ${item.name} at ${address}`);
-      await run("verify:verify", {
-        address,
-        constructorArguments: item.args,
-      });
+      await verifyWithRetry(item.name, address, item.args);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       if (message.toLowerCase().includes("already verified")) {
@@ -62,7 +58,47 @@ async function main() {
       }
       throw error;
     }
+
+    await sleep(5000);
   }
+}
+
+async function verifyWithRetry(name: string, address: string, args: unknown[]) {
+  const attempts = 4;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      console.log(`Verifying ${name} at ${address}${attempt > 1 ? ` (retry ${attempt}/${attempts})` : ""}`);
+      await run("verify:verify", {
+        address,
+        constructorArguments: args,
+      });
+      return;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (message.toLowerCase().includes("already verified")) {
+        console.log(`${name} already verified`);
+        return;
+      }
+
+      const retryable =
+        message.includes("Unexpected token '<'") ||
+        message.includes("Connect Timeout") ||
+        message.includes("network request failed") ||
+        message.includes("UND_ERR_CONNECT_TIMEOUT");
+
+      if (!retryable || attempt === attempts) {
+        throw error;
+      }
+
+      const waitMs = 15000 * attempt;
+      console.warn(`${name} explorer response was transient; retrying in ${Math.round(waitMs / 1000)}s`);
+      await sleep(waitMs);
+    }
+  }
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 main().catch((error) => {

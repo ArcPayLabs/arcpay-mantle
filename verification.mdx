@@ -60,6 +60,7 @@ Run `smoke:live` and `smoke:x402` sequentially. They share the funded signer and
 ## Latest Verified Scope
 
 - Contract suite: registry, order book, treasury policy, spend cards, operator controls, privacy vault, invoices, reputation, and risk oracle
+- Mantlescan source verification: all 12 deployed contracts are verified on Mantle Testnet
 - Live smoke: registry write, policy write, order escrow/settle, reputation review, claim code, webhook breaker, USDY card, MNT privacy release, USDY privacy release, invoice settlement, risk oracle
 - Mantle proof capture: `npm run proof:mantle` writes `proofs/mantle-live-proof.json` with RealClaw agent address, x402 order, unlock, settlement, privacy release, and invoice payment evidence.
 - x402 smoke: health, agent registration, HTTP 402 quote, on-chain payment order, verification, provider fulfillment, protected resource unlock, requester settlement

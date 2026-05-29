@@ -3,8 +3,9 @@ import "dotenv/config";
 import type { HardhatUserConfig } from "hardhat/config";
 
 const privateKey = normalizePrivateKey(process.env.PRIVATE_KEY);
-const mantlescanApiUrl = process.env.MANTLESCAN_API_URL ?? "https://api-sepolia.mantlescan.xyz/api";
+const mantlescanApiUrl = process.env.MANTLESCAN_API_URL ?? "https://api.etherscan.io/v2/api?chainid=5003";
 const mantlescanBrowserUrl = process.env.MANTLE_EXPLORER_URL ?? "https://sepolia.mantlescan.xyz";
+const etherscanApiKey = process.env.ETHERSCAN_API_KEY ?? process.env.MANTLESCAN_API_KEY ?? "";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -25,9 +26,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: {
-      mantleTestnet: process.env.MANTLESCAN_API_KEY ?? "",
-    },
+    apiKey: etherscanApiKey,
     customChains: [
       {
         network: "mantleTestnet",

@@ -175,6 +175,7 @@ Contracts:
  
 Machine-readable deployment metadata lives in
 `deployments/mantle-testnet.json`.
+All deployed contracts are source-verified on Mantlescan.
 
 Verify contracts on Mantlescan after deployment:
 
@@ -185,6 +186,8 @@ MANTLESCAN_API_KEY=your_mantlescan_key npm run verify:mantle
 The verification script reads constructor arguments from
 `deployments/mantle-testnet.json`, so the README, docs, and explorer stay
 aligned to the same live deployment.
+It uses Etherscan API V2 with `chainid=5003`, so a multichain Etherscan key
+works for Mantle Testnet.
 
 Privacy Intent builder docs live in `docs/privacy-intents.md`.
 
