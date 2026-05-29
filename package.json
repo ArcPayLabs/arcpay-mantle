@@ -38,7 +38,8 @@
     "check:deployer": "hardhat run scripts/check-deployer.ts --network mantleTestnet",
     "deploy:mantle": "hardhat run scripts/deploy.ts --network mantleTestnet",
     "deploy:invoice": "hardhat run scripts/deploy-invoice.ts --network mantleTestnet",
-    "deploy:reputation": "hardhat run scripts/deploy-reputation.ts --network mantleTestnet"
+    "deploy:reputation": "hardhat run scripts/deploy-reputation.ts --network mantleTestnet",
+    "verify:mantle": "hardhat run scripts/verify-mantle.ts --network mantleTestnet"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",

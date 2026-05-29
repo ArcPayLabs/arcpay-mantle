@@ -50,6 +50,7 @@ npm run check:x402
 npm run smoke:auth
 npm run smoke:live
 npm run smoke:x402
+MANTLESCAN_API_KEY=your_mantlescan_key npm run verify:mantle
 ```
 
 `smoke:live` requires a funded Mantle Testnet wallet. It writes small live transactions to validate registry, policy, orders, reputation, cards, privacy intents, invoices, and risk oracle flow.
@@ -68,7 +69,10 @@ Run `smoke:live` and `smoke:x402` sequentially. They share the funded signer and
 
 ## Contract Proofs
 
-All deployed contract addresses are listed in `mantle-contracts`. Each address links to the Mantle Testnet explorer from the app's public docs page and from the product `/proofs` page.
+All deployed contract addresses are listed in `mantle-contracts` and in
+`deployments/mantle-testnet.json`. Use `npm run verify:mantle` with a
+`MANTLESCAN_API_KEY` to verify source code on Mantlescan from the exact
+constructor arguments in that deployment file.
 
 ## Audit Screen
 

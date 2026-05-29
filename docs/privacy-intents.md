@@ -15,8 +15,8 @@ They are designed for:
 
 | Resource | Address |
 | --- | --- |
-| `MantlePrivacyVault` | `0x6948a15dED7F6708BD4DfD8c3Ee5314bC5B53D14` |
-| `USDY` | `pending Mantle Sepolia deployment` |
+| `MantlePrivacyVault` | `0x717CB18B08bE0c2ce1c897d879025c4a90861c20` |
+| `MockUSDY` | `0xda41b9EB708d32b29F4d90468298c69824A15E5C` |
 
 ## Privacy Boundary
 
