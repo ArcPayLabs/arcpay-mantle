@@ -167,6 +167,42 @@ server.tool("realclaw_handoff", "Return a RealClaw-ready ArcPay Mantle handoff p
   };
 });
 
+server.tool("mantle_defi_rwa_status", "Return Mantle DeFi/RWA adapter status and evidence requirements.", {}, async () => ({
+  content: [{
+    type: "text",
+    text: JSON.stringify({
+      chain: "mantle-testnet",
+      chainId: 5003,
+      boundary: "Actions complete only after tx, x402 order, signed operator record, or venue evidence exists.",
+      venues: [
+        { name: "RealClaw / Byreal Skills", state: "handoff-live", evidence: ["registered agent address", "venue response", "transaction hash", "volume/ROI snapshot"] },
+        { name: "Merchant Moe", state: "adapter-target", docs: "https://docs.merchantmoe.com/", evidence: ["route quote", "router address", "swap tx", "balances"] },
+        { name: "Agni Finance", state: "adapter-target", url: "https://agni.finance/", evidence: ["pool route", "transaction hash", "LP or swap state"] },
+        { name: "Fluxion", state: "campaign-evidence", evidence: ["agent address", "venue result", "transaction hash", "risk snapshot"] },
+        { name: "USDY / mETH", state: "intent-live", evidence: ["operator approval", "allocation tx", "final balance", "risk memo"] },
+      ],
+    }, null, 2),
+  }],
+}));
+
+server.tool("zerodev_status", "Return ZeroDev Mantle Testnet sponsorship setup and required evidence.", {}, async () => {
+  const projectId = process.env.ZERODEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || "";
+  const chainId = process.env.ZERODEV_CHAIN_ID || "5003";
+  return {
+    content: [{
+      type: "text",
+      text: JSON.stringify({
+        chain: "mantle-testnet",
+        chainId: Number(chainId),
+        configured: Boolean(projectId),
+        bundlerRpc: process.env.ZERODEV_BUNDLER_RPC_URL || (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null),
+        policyWebhook: process.env.ZERODEV_POLICY_WEBHOOK_URL || "https://arcpay-mantle.vercel.app/api/zerodev/sponsor-policy",
+        requiredEvidence: ["userOp hash", "sponsor decision JSON", "transaction hash", "ArcPay policy/audit record"],
+      }, null, 2),
+    }],
+  };
+});
+
 server.tool("demo_path", "Return the operator demo path for ArcPay Mantle.", {}, async () => ({
   content: [{
     type: "text",

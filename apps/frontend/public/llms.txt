@@ -11,6 +11,8 @@ Use these resources:
 - GitHub: https://github.com/ArcPayLabs/arcpay-mantle
 - Ecosystem thesis: /docs/ecosystem-thesis
 - Go to market: /docs/go-to-market
+- Mantle DeFi/RWA adapter status: /api/mantle/defi/status
+- ZeroDev configuration status: /api/zerodev/status
 
 Core flows:
 
@@ -19,6 +21,8 @@ Core flows:
 - x402 protected resources return `X402-Version`, `X402-Payment-Required`, exact MNT requirements, and unlock after retry with `?orderId=...`, `X-ArcPay-Order-Id`, or `X-Payment`.
 - Export RealClaw handoff payloads from `/realclaw` so a Telegram-controlled Mantle agent can use ArcPay policy, x402, escrow, privacy, invoice, and reputation modules without ArcPay storing the Telegram token.
 - Track RealClaw Mantle Skills venue evidence across Fluxion, Merchant Moe, and Agni Finance after the operator adds the registered RealClaw agent address.
+- Use ZeroDev only for sponsored UserOp flows with ArcPay policy approval, userOp hash, and receipt evidence.
+- Do not claim a Mantle swap, RWA, or RealClaw action is complete until a tx hash, x402 verification, signed operator record, or venue response is attached.
 - Enforce operator policies before treasury execution.
 - Issue MNT or USDY invoices with on-chain status evidence.
 - Create USDY spend cards with top-up, freeze, activate, and spend controls.

@@ -20,6 +20,46 @@ const network = {
   currency: "MNT",
 };
 
+const mantleDefiRwaVenues = [
+  {
+    name: "RealClaw / Byreal Skills",
+    category: "agent-executor",
+    state: "handoff-live",
+    execution: "operator-configured Telegram agent returns Mantle venue evidence",
+    evidence: ["registered agent address", "venue response", "transaction hash", "volume/ROI snapshot"],
+  },
+  {
+    name: "Merchant Moe",
+    category: "dex-router",
+    state: "adapter-target",
+    execution: "router/pool interaction after operator approval",
+    docs: "https://docs.merchantmoe.com/",
+    evidence: ["route quote", "router address", "swap transaction hash", "before/after balance"],
+  },
+  {
+    name: "Agni Finance",
+    category: "dex-liquidity",
+    state: "adapter-target",
+    execution: "liquidity route or manual signer execution after policy approval",
+    url: "https://agni.finance/",
+    evidence: ["pool route", "transaction hash", "LP or swap state"],
+  },
+  {
+    name: "Fluxion",
+    category: "realclaw-venue",
+    state: "campaign-evidence",
+    execution: "RealClaw venue activity with evidence mirrored into ArcPay",
+    evidence: ["agent address", "venue result", "transaction hash", "risk snapshot"],
+  },
+  {
+    name: "USDY / mETH",
+    category: "rwa-yield",
+    state: "intent-live",
+    execution: "RWA/yield allocation intent with policy, drawdown, and audit requirements",
+    evidence: ["operator approval", "allocation tx", "final balance", "risk memo"],
+  },
+];
+
 export const developerTools: ToolDefinition[] = [
   {
     name: "get_deployment",
@@ -72,6 +112,16 @@ export const developerTools: ToolDefinition[] = [
         budgetMnt: { type: "string" },
       },
     },
+  },
+  {
+    name: "mantle_defi_rwa_status",
+    description: "Return Mantle DeFi/RWA adapter status and required evidence for RealClaw, Merchant Moe, Agni, Fluxion, USDY, and mETH.",
+    inputSchema: { type: "object", properties: {} },
+  },
+  {
+    name: "zerodev_status",
+    description: "Return the ZeroDev Mantle Testnet configuration and required sponsored UserOp evidence.",
+    inputSchema: { type: "object", properties: {} },
   },
   {
     name: "starter_kit",
@@ -177,6 +227,28 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
           "Paste this payload into the RealClaw Telegram agent instructions/config.",
           "Use RealClaw for Mantle venue activity across Fluxion, Merchant Moe, and Agni, then attach tx/volume/ROI evidence back into ArcPay.",
         ],
+      });
+    }
+    case "mantle_defi_rwa_status":
+      return json({
+        network,
+        venues: mantleDefiRwaVenues,
+        policy: [
+          "No route, RWA, or RealClaw action may be marked complete without a transaction hash, x402 verification, signed operator record, or venue response.",
+          "All intents must include asset, amount, slippage or risk limit, executor, expiry, and before/after balance evidence.",
+          "RealClaw flows must include the registered agent address and keep Telegram bot secrets outside ArcPay.",
+        ],
+      });
+    case "zerodev_status": {
+      const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
+      const chainId = Number(process.env.ZERODEV_CHAIN_ID ?? 5003);
+      return json({
+        network,
+        configured: Boolean(projectId),
+        chainId,
+        bundlerRpc: process.env.ZERODEV_BUNDLER_RPC_URL ?? (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null),
+        policyWebhook: process.env.ZERODEV_POLICY_WEBHOOK_URL ?? "https://arcpay-mantle.vercel.app/api/zerodev/sponsor-policy",
+        requiredEvidence: ["userOp hash", "sponsor decision JSON", "transaction hash", "ArcPay policy/audit record"],
       });
     }
     case "starter_kit":

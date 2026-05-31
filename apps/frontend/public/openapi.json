@@ -55,6 +55,75 @@
     }
   ],
   "paths": {
+    "/api/mantle/defi/status": {
+      "get": {
+        "tags": ["Status"],
+        "summary": "Check Mantle DeFi/RWA adapter status",
+        "description": "Returns the current RealClaw, Merchant Moe, Agni, Fluxion, USDY, and mETH adapter map with the evidence required before ArcPay marks an action complete.",
+        "operationId": "getMantleDefiStatus",
+        "responses": {
+          "200": {
+            "description": "Mantle DeFi/RWA adapter status.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ok": true,
+                  "chain": "mantle-testnet",
+                  "chainId": 5003,
+                  "mode": "agentic-defi-rwa-intents"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zerodev/status": {
+      "get": {
+        "tags": ["Status"],
+        "summary": "Check ZeroDev configuration status",
+        "description": "Reports the configured ZeroDev Mantle Testnet project, bundler/paymaster URLs, policy webhook, and required sponsored UserOp evidence.",
+        "operationId": "getZeroDevStatus",
+        "responses": {
+          "200": {
+            "description": "ZeroDev configuration status.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ok": true,
+                  "chain": "mantle-testnet",
+                  "chainId": 5003
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zerodev/sponsor-policy": {
+      "get": {
+        "tags": ["Status"],
+        "summary": "Inspect ZeroDev sponsorship policy",
+        "description": "Returns the ArcPay contract allowlist and conservative sponsorship limits used by the ZeroDev webhook.",
+        "operationId": "getZeroDevSponsorPolicy",
+        "responses": {
+          "200": {
+            "description": "Policy inspection result."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Status"],
+        "summary": "Evaluate a ZeroDev sponsorship request",
+        "description": "Webhook endpoint for ZeroDev sponsorship policy checks. It approves only policy-safe ArcPay Mantle contract interactions within configured limits.",
+        "operationId": "postZeroDevSponsorPolicy",
+        "responses": {
+          "200": {
+            "description": "Sponsorship decision."
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "tags": ["x402"],

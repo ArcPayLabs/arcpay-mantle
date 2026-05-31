@@ -28,6 +28,8 @@ Commands:
   arcpay-mantle invoice-guide          Print invoice settlement guide
   arcpay-mantle x402-guide             Print x402 HTTP payment gate guide
   arcpay-mantle realclaw-handoff       Print RealClaw handoff payload template
+  arcpay-mantle defi-status            Print Mantle DeFi/RWA adapter and evidence status
+  arcpay-mantle zerodev-status         Print ZeroDev Mantle sponsorship setup
   arcpay-mantle demo-path              Print operator demo steps
   arcpay-mantle smoke                  Print smoke-test commands
   arcpay-mantle mcp-config             Print MCP host config
@@ -157,6 +159,30 @@ try {
         "Paste this payload into the RealClaw Telegram agent instructions/config.",
         "Use RealClaw for Mantle venue activity across Fluxion, Merchant Moe, and Agni, then attach tx/volume/ROI evidence back into ArcPay.",
       ],
+    }, null, 2));
+  } else if (command === "defi-status") {
+    console.log(JSON.stringify({
+      chain: "mantle-testnet",
+      chainId: 5003,
+      boundary: "Actions complete only after tx, x402 order, signed operator record, or venue evidence exists.",
+      venues: [
+        { name: "RealClaw / Byreal Skills", state: "handoff-live", evidence: ["registered agent address", "venue response", "transaction hash", "volume/ROI snapshot"] },
+        { name: "Merchant Moe", state: "adapter-target", docs: "https://docs.merchantmoe.com/", evidence: ["route quote", "router address", "swap tx", "balances"] },
+        { name: "Agni Finance", state: "adapter-target", url: "https://agni.finance/", evidence: ["pool route", "transaction hash", "LP or swap state"] },
+        { name: "Fluxion", state: "campaign-evidence", evidence: ["agent address", "venue result", "transaction hash", "risk snapshot"] },
+        { name: "USDY / mETH", state: "intent-live", evidence: ["operator approval", "allocation tx", "final balance", "risk memo"] },
+      ],
+    }, null, 2));
+  } else if (command === "zerodev-status") {
+    const projectId = process.env.ZERODEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || "";
+    const chainId = process.env.ZERODEV_CHAIN_ID || "5003";
+    console.log(JSON.stringify({
+      chain: "mantle-testnet",
+      chainId: Number(chainId),
+      configured: Boolean(projectId),
+      bundlerRpc: process.env.ZERODEV_BUNDLER_RPC_URL || (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null),
+      policyWebhook: process.env.ZERODEV_POLICY_WEBHOOK_URL || "https://arcpay-mantle.vercel.app/api/zerodev/sponsor-policy",
+      requiredEvidence: ["userOp hash", "sponsor decision JSON", "transaction hash", "ArcPay policy/audit record"],
     }, null, 2));
   } else if (command === "demo-path") {
     console.log([
