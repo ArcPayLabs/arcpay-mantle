@@ -60,6 +60,8 @@ const mantleDefiRwaVenues = [
   },
 ];
 
+const DEFAULT_ZERODEV_PROJECT_ID = "264dd246-2927-4d4e-bcdc-9adbab13d7fd";
+
 export const developerTools: ToolDefinition[] = [
   {
     name: "get_deployment",
@@ -240,7 +242,7 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
         ],
       });
     case "zerodev_status": {
-      const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.ZERO_DEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
+      const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.ZERO_DEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID ?? DEFAULT_ZERODEV_PROJECT_ID;
       const chainId = Number(process.env.ZERODEV_CHAIN_ID ?? 5003);
       return json({
         network,

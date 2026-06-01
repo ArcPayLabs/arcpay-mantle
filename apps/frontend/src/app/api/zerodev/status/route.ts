@@ -6,8 +6,10 @@ function mask(value: string | undefined) {
   return `${value.slice(0, 6)}...${value.slice(-4)}`;
 }
 
+const DEFAULT_ZERODEV_PROJECT_ID = "264dd246-2927-4d4e-bcdc-9adbab13d7fd";
+
 export async function GET() {
-  const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.ZERO_DEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
+  const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.ZERO_DEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID ?? DEFAULT_ZERODEV_PROJECT_ID;
   const apiKey = process.env.ZERODEV_API_KEY;
   const chainId = Number(process.env.ZERODEV_CHAIN_ID ?? 5003);
   const bundlerRpc = process.env.ZERODEV_BUNDLER_RPC_URL ?? process.env.ZERODEV_RPC_URL ?? (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null);

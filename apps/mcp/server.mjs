@@ -22,6 +22,8 @@ const server = new McpServer({
   version: "0.1.1",
 });
 
+const DEFAULT_ZERODEV_PROJECT_ID = "264dd246-2927-4d4e-bcdc-9adbab13d7fd";
+
 server.tool("get_deployment", "Return Mantle testnet contract addresses and network metadata.", {}, async () => ({
   content: [{ type: "text", text: JSON.stringify(readDeployment(), null, 2) }],
 }));
@@ -186,7 +188,7 @@ server.tool("mantle_defi_rwa_status", "Return Mantle DeFi/RWA adapter status and
 }));
 
 server.tool("zerodev_status", "Return ZeroDev Mantle Testnet sponsorship setup and required evidence.", {}, async () => {
-  const projectId = process.env.ZERODEV_PROJECT_ID || process.env.ZERO_DEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || "";
+  const projectId = process.env.ZERODEV_PROJECT_ID || process.env.ZERO_DEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || DEFAULT_ZERODEV_PROJECT_ID;
   const chainId = process.env.ZERODEV_CHAIN_ID || "5003";
   return {
     content: [{

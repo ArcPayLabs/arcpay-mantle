@@ -37,6 +37,7 @@ Commands:
 }
 
 const [, , command, ...args] = process.argv;
+const DEFAULT_ZERODEV_PROJECT_ID = "264dd246-2927-4d4e-bcdc-9adbab13d7fd";
 
 try {
   if (!command || command === "help" || command === "--help") {
@@ -174,7 +175,7 @@ try {
       ],
     }, null, 2));
   } else if (command === "zerodev-status") {
-    const projectId = process.env.ZERODEV_PROJECT_ID || process.env.ZERO_DEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || "";
+    const projectId = process.env.ZERODEV_PROJECT_ID || process.env.ZERO_DEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || DEFAULT_ZERODEV_PROJECT_ID;
     const chainId = process.env.ZERODEV_CHAIN_ID || "5003";
     console.log(JSON.stringify({
       chain: "mantle-testnet",
