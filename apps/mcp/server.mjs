@@ -186,7 +186,7 @@ server.tool("mantle_defi_rwa_status", "Return Mantle DeFi/RWA adapter status and
 }));
 
 server.tool("zerodev_status", "Return ZeroDev Mantle Testnet sponsorship setup and required evidence.", {}, async () => {
-  const projectId = process.env.ZERODEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || "";
+  const projectId = process.env.ZERODEV_PROJECT_ID || process.env.ZERO_DEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || "";
   const chainId = process.env.ZERODEV_CHAIN_ID || "5003";
   return {
     content: [{
@@ -195,7 +195,7 @@ server.tool("zerodev_status", "Return ZeroDev Mantle Testnet sponsorship setup a
         chain: "mantle-testnet",
         chainId: Number(chainId),
         configured: Boolean(projectId),
-        bundlerRpc: process.env.ZERODEV_BUNDLER_RPC_URL || (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null),
+        bundlerRpc: process.env.ZERODEV_BUNDLER_RPC_URL || process.env.ZERODEV_RPC_URL || (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null),
         policyWebhook: process.env.ZERODEV_POLICY_WEBHOOK_URL || "https://arcpay-mantle.vercel.app/api/zerodev/sponsor-policy",
         requiredEvidence: ["userOp hash", "sponsor decision JSON", "transaction hash", "ArcPay policy/audit record"],
       }, null, 2),

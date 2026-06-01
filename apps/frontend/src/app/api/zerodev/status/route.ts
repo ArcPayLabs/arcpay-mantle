@@ -7,11 +7,11 @@ function mask(value: string | undefined) {
 }
 
 export async function GET() {
-  const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
+  const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.ZERO_DEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
   const apiKey = process.env.ZERODEV_API_KEY;
   const chainId = Number(process.env.ZERODEV_CHAIN_ID ?? 5003);
-  const bundlerRpc = process.env.ZERODEV_BUNDLER_RPC_URL ?? (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null);
-  const paymasterRpc = process.env.ZERODEV_PAYMASTER_RPC_URL ?? bundlerRpc;
+  const bundlerRpc = process.env.ZERODEV_BUNDLER_RPC_URL ?? process.env.ZERODEV_RPC_URL ?? (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null);
+  const paymasterRpc = process.env.ZERODEV_PAYMASTER_RPC_URL ?? process.env.ZERODEV_RPC_URL ?? bundlerRpc;
   const webhookUrl = process.env.ZERODEV_POLICY_WEBHOOK_URL ?? "https://arcpay-mantle.vercel.app/api/zerodev/sponsor-policy";
 
   return NextResponse.json({

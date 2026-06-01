@@ -240,13 +240,13 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
         ],
       });
     case "zerodev_status": {
-      const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
+      const projectId = process.env.ZERODEV_PROJECT_ID ?? process.env.ZERO_DEV_PROJECT_ID ?? process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
       const chainId = Number(process.env.ZERODEV_CHAIN_ID ?? 5003);
       return json({
         network,
         configured: Boolean(projectId),
         chainId,
-        bundlerRpc: process.env.ZERODEV_BUNDLER_RPC_URL ?? (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null),
+        bundlerRpc: process.env.ZERODEV_BUNDLER_RPC_URL ?? process.env.ZERODEV_RPC_URL ?? (projectId ? `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}` : null),
         policyWebhook: process.env.ZERODEV_POLICY_WEBHOOK_URL ?? "https://arcpay-mantle.vercel.app/api/zerodev/sponsor-policy",
         requiredEvidence: ["userOp hash", "sponsor decision JSON", "transaction hash", "ArcPay policy/audit record"],
       });
