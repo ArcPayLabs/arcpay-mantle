@@ -56,14 +56,17 @@ function BetaPage() {
     <MarketingShell navTone="light">
       <div className="px-6 py-12 md:py-16">
         <div className="mx-auto grid max-w-[88rem] gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <section className="rounded-[2rem] bg-foreground p-8 text-background md:p-10">
-            <div className="inline-flex rounded-full bg-background/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-background/75">
+          <section className="relative overflow-hidden rounded-[2.25rem] border border-orange-200/70 bg-[radial-gradient(circle_at_15%_10%,rgba(255,122,24,0.24),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(255,205,122,0.30),transparent_32%),linear-gradient(135deg,#fffaf2_0%,#f4efe4_52%,#fffdf8_100%)] p-8 shadow-[0_24px_80px_rgba(43,32,20,0.10)] md:p-10">
+            <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full border-[42px] border-orange-200/35" />
+            <div className="pointer-events-none absolute bottom-0 right-0 h-44 w-44 rounded-tl-[5rem] bg-white/45" />
+            <div className="relative">
+            <div className="inline-flex rounded-full border border-orange-200 bg-white/75 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-700 shadow-sm">
               Mantle private beta
             </div>
-            <h1 className="mt-8 max-w-2xl text-5xl font-medium leading-[0.95] tracking-[-0.05em] md:text-7xl">
+            <h1 className="mt-8 max-w-2xl text-5xl font-medium leading-[0.95] tracking-[-0.05em] text-foreground md:text-7xl">
               Bring your agents into a real treasury loop.
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-7 text-background/75">
+            <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground">
               ArcPay is onboarding Mantle builders who want wallet-first agent accounts, x402 paid endpoints, MNT escrow, USDY spend cards, privacy intents, risk checks, and reputation records on testnet.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -71,6 +74,12 @@ function BetaPage() {
               <Pill icon={RadioTower} title="x402 paid work" body="Charge for protected agent endpoints with on-chain settlement." />
               <Pill icon={ShieldCheck} title="Policy controls" body="Limit spend by hour, day, week, allowlist, and pause state." />
               <Pill icon={Users} title="Beta feedback" body="Use the product, report edge cases, and shape the Mantle stack." />
+            </div>
+            <div className="mt-8 grid gap-3 rounded-3xl border border-white/70 bg-white/70 p-4 shadow-sm backdrop-blur sm:grid-cols-3">
+              <Proof label="Network" value="Mantle Testnet" />
+              <Proof label="Rail" value="x402 + escrow" />
+              <Proof label="Proof" value="Live smoke tested" />
+            </div>
             </div>
           </section>
 
@@ -144,10 +153,19 @@ function BetaPage() {
 
 function Pill({ icon: Icon, title, body }: { icon: typeof Bot; title: string; body: string }) {
   return (
-    <div className="rounded-2xl border border-background/10 bg-background/5 p-4">
-      <Icon className="h-5 w-5 text-primary" />
-      <div className="mt-3 text-sm font-semibold">{title}</div>
-      <div className="mt-1 text-sm leading-6 text-background/65">{body}</div>
+    <div className="rounded-2xl border border-white/70 bg-white/65 p-4 shadow-sm backdrop-blur">
+      <Icon className="h-5 w-5 text-orange-600" />
+      <div className="mt-3 text-sm font-semibold text-foreground">{title}</div>
+      <div className="mt-1 text-sm leading-6 text-muted-foreground">{body}</div>
+    </div>
+  );
+}
+
+function Proof({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{label}</div>
+      <div className="mt-1 text-sm font-semibold text-foreground">{value}</div>
     </div>
   );
 }
