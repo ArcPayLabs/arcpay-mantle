@@ -3,6 +3,10 @@
 ArcPay Mantle is an agent-native treasury and autonomous service payment system
 for AI-agent businesses on Mantle Network.
 
+ArcPay is not only an app. It is a control plane plus developer distribution
+layer for agent payments, treasury policies, paid APIs, and verifiable execution
+across chain ecosystems.
+
 ## Source Use
 
 This repository is source-available for evaluation, review, and contribution.

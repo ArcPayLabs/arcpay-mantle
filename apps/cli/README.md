@@ -1,6 +1,6 @@
 # ArcPay Mantle CLI
 
-Developer CLI for ArcPay Mantle. It prints deployed contract addresses, derives IDs used by the contracts, returns integration guides, and generates MCP config.
+ArcPay Mantle CLI is the operator kit for wiring an agent into ArcPay without using the frontend. It helps builders register deterministic agent IDs, inspect deployed Mantle contracts, prepare invoice IDs and privacy commitments, generate x402 payment instructions, create RealClaw/Byreal handoff payloads, inspect ZeroDev and Mantle DeFi/RWA readiness, and print exact smoke-test commands for proving the integration works on Mantle Testnet.
 
 ## Install
 
@@ -33,4 +33,4 @@ arcpay-mantle mcp-config
 - x402: https://mantle-x402.20.208.46.195.nip.io
 - OpenAPI: https://arcpay-mantle.vercel.app/openapi.json
 
-The CLI is a developer helper. It does not hold private keys or sign treasury transactions.
+The CLI is part of ArcPay's developer distribution layer. It does not hold private keys or sign treasury transactions; it prepares the IDs, payloads, guides, and verification steps an operator or agent team needs before sending a transaction.

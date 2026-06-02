@@ -1,6 +1,6 @@
 {
   "name": "@arcpaylabs/mantle-mcp",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "description": "MCP server for ArcPay Mantle contracts, x402, privacy intents, invoices, and demo flows.",
   "type": "module",

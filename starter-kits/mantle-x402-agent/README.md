@@ -1,6 +1,6 @@
 # ArcPay Mantle x402 Agent Starter
 
-This starter shows how a developer can integrate with ArcPay's live Mantle x402 server.
+This starter is the plug-and-play client for Mantle agent builders who want to sell or consume paid agent work through ArcPay. Point it at ArcPay's live Mantle x402 server, request a protected resource, read the HTTP 402 quote, verify an order, and unlock the result after payment evidence exists.
 
 It covers:
 
@@ -10,7 +10,7 @@ It covers:
 - verifying an order id
 - deriving the agent id locally
 
-It does not hold private keys by default. Wallet payment is intentionally left to your app or operator wallet.
+It does not hold private keys by default. Wallet payment is intentionally left to your app, operator wallet, RealClaw flow, or agent wallet so teams can plug it into their own custody model.
 
 ## Setup
 
