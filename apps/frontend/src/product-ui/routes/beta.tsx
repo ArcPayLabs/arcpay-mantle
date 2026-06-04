@@ -57,8 +57,8 @@ function BetaPage() {
       <div className="px-6 py-12 md:py-16">
         <div className="mx-auto grid max-w-[88rem] gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <section className="relative overflow-hidden rounded-[2.25rem] border border-orange-200/70 bg-[radial-gradient(circle_at_15%_10%,rgba(255,122,24,0.24),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(255,205,122,0.30),transparent_32%),linear-gradient(135deg,#fffaf2_0%,#f4efe4_52%,#fffdf8_100%)] p-8 shadow-[0_24px_80px_rgba(43,32,20,0.10)] md:p-10">
-            <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full border-[42px] border-orange-200/35" />
-            <div className="pointer-events-none absolute bottom-0 right-0 h-44 w-44 rounded-tl-[5rem] bg-white/45" />
+            <div className="pointer-events-none absolute -right-20 -top-20 hidden h-72 w-72 rounded-full border-[42px] border-orange-200/35 sm:block" />
+            <div className="pointer-events-none absolute bottom-0 right-0 hidden h-44 w-44 rounded-tl-[5rem] bg-white/45 sm:block" />
             <div className="relative">
             <div className="inline-flex rounded-full border border-orange-200 bg-white/75 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-700 shadow-sm">
               Mantle private beta
