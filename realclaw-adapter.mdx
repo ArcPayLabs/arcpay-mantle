@@ -7,6 +7,8 @@ ArcPay Mantle includes a RealClaw handoff layer for operators who want a Telegra
 
 RealClaw's Mantle campaign surface uses Mantle Skills and venue activity across Fluxion, Merchant Moe, and Agni Finance. ArcPay treats RealClaw as an agent execution/control surface and keeps treasury policy, x402 payments, escrow, privacy intents, invoices, reputation, and audit records inside ArcPay.
 
+We also reviewed `byreal-git/byreal-sdk`. That package is a Solana DEX SDK: it imports `@solana/web3.js`, exposes Solana CLMM pool/position/swap/copy-farming helpers, and uses Solana mint/pool addresses. It is useful for understanding Byreal's DEX product surface, but it is not a Mantle execution SDK. ArcPay Mantle therefore does not pretend to execute Mantle actions through that SDK.
+
 The boundary is intentional:
 
 - RealClaw owns the Telegram bot token, Telegram agent setup, Mantle Skills workflow, and operator chat surface.
@@ -43,12 +45,15 @@ ArcPay generates an agent-readable payload containing:
 - Local and Supabase-backed audit record when a handoff is saved.
 - Developer tool output through `/api/developer/tools/realclaw_handoff`.
 - CLI/MCP guidance for RealClaw setup.
+- Public adapter status at `/api/mantle/defi/status`, including the Byreal SDK boundary and RealClaw evidence requirements.
 
 ## What Requires RealClaw Setup
 
 RealClaw execution requires the operator to complete RealClaw's Telegram onboarding and connect the agent wallet RealClaw registers for Mantle activity.
 
 ArcPay does not store the Telegram token. After RealClaw is configured, the operator can paste the ArcPay payload into the Telegram agent and use ArcPay as the Mantle policy/payment/evidence layer.
+
+Direct venue execution must come from RealClaw/Mantle Skills, Mantle venue contracts, or an operator wallet flow. The Solana Byreal SDK should not be used as a Mantle executor.
 
 ## Safety Model
 

@@ -31,6 +31,18 @@ For ArcPay Mantle, the strongest primary track is Agentic Economy because the pr
 | Use case clarity & validity | 10 | The use case is a treasury CFO layer for agent businesses: operators set policy and budgets; agents buy work, route strategy intents, and submit proof before payment or completion is accepted. |
 | Verifiability & demo quality | 8 | `proofs/mantle-live-proof.json` captures Mantle Testnet tx hashes for agent update, policy setup, x402 order create/fulfill/settle, privacy intent create/release, and invoice create/pay. |
 
+## Byreal SDK Review
+
+We reviewed `https://github.com/byreal-git/byreal-sdk` for possible deeper integration.
+
+Finding: the SDK is for Solana Byreal DEX workflows. It exposes Solana CLMM pools, token queries, swap quotes/execution, position management, copy-farming, staking, and launchpad helpers. Its package metadata and examples use `@solana/web3.js`, Solana RPC, Solana mint addresses, and Solana transaction signing.
+
+Mantle implication: ArcPay Mantle should not import this SDK as a Mantle executor. For the Mantle Agentic Economy scorecard, the correct integration path is:
+
+- RealClaw / Byreal Skills for Mantle agent execution and venue activity.
+- ArcPay policy, x402, escrow, privacy, invoices, cards, reputation, and audit as the control plane.
+- Mantle transaction hashes, RealClaw venue responses, or signed operator records as completion evidence.
+
 ## Demo Evidence To Show
 
 The demo should show these artifacts in this order:

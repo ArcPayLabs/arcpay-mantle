@@ -10,6 +10,14 @@ const venues = [
     evidence: ["registered agent address", "venue response", "transaction hash", "volume/ROI snapshot"],
   },
   {
+    name: "Byreal SDK",
+    category: "byreal-reference-sdk",
+    state: "reference-only-solana-sdk",
+    execution: "official SDK is Solana-focused; ArcPay Mantle does not import it as a Mantle executor",
+    url: "https://github.com/byreal-git/byreal-sdk",
+    evidence: ["SDK package metadata", "Solana web3 dependency", "CLMM/router examples", "Mantle boundary note"],
+  },
+  {
     name: "Merchant Moe",
     category: "dex-router",
     state: "adapter-target",
