@@ -1,0 +1,66 @@
+---
+title: "Mantle Scorecard Alignment"
+description: "How ArcPay Mantle maps to the AI Awakening judging scorecard, with proof targets for the Agentic Economy track."
+---
+
+ArcPay Mantle is positioned for the **Agentic Economy** track while also supporting the general Mantle scorecard.
+
+The judging spreadsheet uses two scorecards:
+
+- **Part A: Mantle general criteria, 50 points**
+- **Part B: track-specific criteria, 50 points**
+
+For ArcPay Mantle, the strongest primary track is Agentic Economy because the product is built around policy-bound autonomous agents, Byreal/RealClaw handoff, x402 paid work, treasury controls, and verifiable execution evidence.
+
+## General Mantle Scorecard
+
+| Dimension | Points | ArcPay Mantle proof |
+| --- | ---: | --- |
+| Technical | 15 | Deployed Mantle Testnet contracts for registry, order book, treasury policy, privacy vault, cards, invoices, risk oracle, and reputation. Frontend, CLI, MCP, x402 server, OpenAPI, and proof scripts are runnable. |
+| Ecosystem fit | 10 | Uses Mantle Testnet as the execution and settlement layer, supports MNT, USDY, mETH, RealClaw/Byreal handoff, Merchant Moe/Agni/Fluxion intent targets, ZeroDev sponsorship policy, and Mantle-specific proof files. |
+| Business potential | 10 | Solves a concrete agent-business problem: teams need policy, budgets, paid APIs, invoices, privacy intents, reputation, and audit evidence before agents can safely spend treasury funds. |
+| Innovation | 10 | Combines x402 paid resources, agent treasury policy, on-chain escrow, privacy commitments, agent reputation, MCP tools, CLI onboarding, and RealClaw handoff into one control plane. |
+| User experience | 5 | Wallet-first app with workspace setup, agent onboarding, dashboard flows, docs, starter kits, and ZeroDev sponsorship policy to reduce Web3 friction. |
+
+## Agentic Economy Scorecard
+
+| Dimension | Points | ArcPay Mantle proof |
+| --- | ---: | --- |
+| Byreal integration depth | 18 | `/realclaw` generates structured RealClaw handoff payloads with venue allowlists, budget constraints, x402 endpoint, agent slug, ArcPay contract addresses, policy rules, and required evidence. CLI/MCP expose the same payload for external agents. |
+| Agent autonomy | 14 | Agents can discover services, request x402 paid resources, create/settle escrowed work, operate under time-window budgets, generate privacy intents, attach invoice evidence, and hand off approved venue activity to RealClaw. |
+| Use case clarity & validity | 10 | The use case is a treasury CFO layer for agent businesses: operators set policy and budgets; agents buy work, route strategy intents, and submit proof before payment or completion is accepted. |
+| Verifiability & demo quality | 8 | `proofs/mantle-live-proof.json` captures Mantle Testnet tx hashes for agent update, policy setup, x402 order create/fulfill/settle, privacy intent create/release, and invoice create/pay. |
+
+## Demo Evidence To Show
+
+The demo should show these artifacts in this order:
+
+1. `https://arcpay-mantle.vercel.app/api/status`
+2. Mantle Testnet contract addresses in `/contracts`
+3. RealClaw handoff payload in `/realclaw`
+4. x402 quote, order, verification, unlock, and settlement in `/x402`
+5. Privacy intent creation/release in `/privacy`
+6. Invoice creation/payment in `/invoices`
+7. ZeroDev sponsorship policy in `/zerodev`
+8. Audit record and proof JSON in `/audit`
+9. `proofs/mantle-live-proof.json` with Mantlescan links
+
+## Submission Positioning
+
+Use this one-line pitch:
+
+```text
+ArcPay Mantle is a policy and payment control plane for autonomous agents: RealClaw/Byreal-style agents can plan treasury work, pay for x402 resources, operate under on-chain budget policy, and submit verifiable Mantle evidence before execution is accepted.
+```
+
+## What Not To Claim
+
+ArcPay should not claim an external RealClaw venue trade, DEX fill, or RWA rebalance is complete unless the operator attaches one of:
+
+- Mantle transaction hash
+- fulfilled ArcPay order id
+- x402 verification result
+- signed operator record
+- RealClaw venue response
+
+This is important because the scorecard rewards verifiability and punishes black-box claims.
