@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const body = `# ArcPay Mantle auth
+const body = `# Auth.md - ArcPay Mantle auth
 
 ArcPay supports wallet-first operator access and hosted MCP developer keys.
 
