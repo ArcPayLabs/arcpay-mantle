@@ -19,8 +19,6 @@ import {
   RadioTower,
   Trophy,
   Activity,
-  KeyRound,
-  BarChart3,
   Cable,
 } from "lucide-react";
 import {
@@ -58,9 +56,6 @@ const ITEMS = [
   { title: "Policies", url: "/policies", icon: SlidersHorizontal, networks: ["mantle"] },
   { title: "Audit", url: "/audit", icon: ScrollText, networks: ["mantle"] },
   { title: "Status", url: "/status", icon: Activity, networks: ["mantle"] },
-  { title: "Analytics", url: "/analytics", icon: BarChart3, networks: ["mantle"] },
-  { title: "Developer Access", url: "/developer-access", icon: KeyRound, networks: ["mantle"] },
-  { title: "Beta Admin", url: "/beta-admin", icon: Users, networks: ["mantle"] },
 ] as const;
 
 export function AppSidebar() {
