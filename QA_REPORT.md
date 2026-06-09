@@ -1,14 +1,24 @@
 # ArcPay Mantle QA Report
 
-Generated: 2026-06-04
+Generated: 2026-06-09
 
 ## Automated Browser QA
 
 - Public app: https://arcpay-mantle.vercel.app
-- API checks: 11 / 11 passed
-- Browser route checks: 24 / 24 passed
+- API checks: 11 / 11 passed on the latest local smoke sweep
+- Browser route checks: 43 / 43 covered on the latest full route crawl
 - Viewports: desktop 1440x1000, mobile 390x844
-- Screenshot artifacts: `C:\Users\RICHEY_SON\Desktop\arcpay-qa-artifacts-rerun\mantle`
+- Latest screenshot artifacts: `C:\Users\RICHEY_SON\Desktop\arcpay-mantle\qa-full-ui`
+- Earlier walkthrough artifacts: `C:\Users\RICHEY_SON\Desktop\arcpay-qa-artifacts-rerun\mantle`
+
+## Latest Cross-Chain Polish Sweep
+
+- Production build passed with Next.js/Turbopack.
+- Public API and agent-readiness endpoints returned `200` or expected `207` partial-status.
+- Landing hero was adjusted to avoid cropped/oversized card rendering on desktop and mobile.
+- Dashboard topbar now uses stable native workspace/search controls instead of fragile command overlays.
+- Admin/dev-only pages are removed from normal sidebar navigation.
+- Focused landing/topbar checks passed after final navigation polish.
 
 ## Routes Checked
 
