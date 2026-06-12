@@ -19,16 +19,16 @@ await privacyVault.createNativeIntent(
 await privacyVault.releaseIntent(commitment, nullifier, recipient);
 ```
 
-## USDY Intent
+## ArcPay Test-Credit Intent
 
 ```ts
 const amount = 5_000000n;
-await usdy.approve(privacyVaultAddress, amount);
+await testCredit.approve(privacyVaultAddress, amount);
 await privacyVault.createTokenIntent(
   commitment,
-  usdyAddress,
+  testCreditAddress,
   amount,
-  "ipfs://encrypted-usdy-memo",
+  "ipfs://encrypted-test-credit-memo",
 );
 ```
 

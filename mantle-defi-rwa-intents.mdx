@@ -3,7 +3,9 @@ title: "Mantle DeFi and RWA Intents"
 description: "How ArcPay prepares swap and yield requests for Mantle operators and agents without claiming execution before proof exists."
 ---
 
-ArcPay Mantle treats swaps and yield as governed intents first.
+ArcPay Mantle treats swaps and yield as governed intents first, then only
+marks a Mantle Testnet action complete when a live ArcPay tx or attached venue
+proof exists.
 
 That means an operator or agent can prepare a route, budget, risk limit, adapter target, and evidence requirement before any wallet signature or external execution happens.
 
@@ -20,14 +22,22 @@ Agent execution can create real treasury risk. ArcPay separates:
 
 This avoids the common failure mode where an agent dashboard says a strategy executed before there is a transaction hash, order state, or signed result.
 
+## Mantle Testnet Boundary
+
+The official `@mantleio/mantle-core@0.1.19` package supports Mantle Sepolia
+chain/account/token reads, but its Sepolia protocol registry is empty and its
+Sepolia token registry only includes `MNT` and `WMNT`.
+
+Because of that, ArcPay does not present Merchant Moe, Agni, Fluxion, Aave,
+USDY, or mETH as live Mantle Sepolia executors.
+
 ## Swap Adapters
 
-The `/swaps` page supports Mantle route intents for:
+The `/swaps` page supports:
 
-- RealClaw / Mantle Skills agent handoff
-- Fluxion venue activity
-- Merchant Moe adapter candidate
-- Agni Finance adapter candidate
+- ArcPay Mantle DeFi Vault live wallet-signed MNT swap-credit proof
+- Mantle MCP / CLI Sepolia reads and registry inspection
+- RealClaw / Byreal handoff as evidence-only external execution
 - manual signer execution
 
 ArcPay records the swap intent and exports a structured payload with source asset, target asset, amount, slippage, expiry, executor, policy requirement, and contract context.
@@ -36,12 +46,12 @@ When RealClaw is selected, ArcPay expects a registered RealClaw agent address an
 
 ## Yield and RWA Strategy
 
-The `/yield` page supports Mantle strategy intents for:
+The `/yield` page supports Mantle strategy controls for:
 
-- USDY conservative reserve
-- mETH treasury sleeve
-- RealClaw Mantle rebalancer
-- manual RWA review
+- live MNT testnet vault deposit/withdraw
+- WMNT readiness checks
+- RealClaw evidence review
+- mainnet RWA watchlist for USDY/mETH
 
 The strategy payload includes allocation cap, drawdown cap, rebalance cadence, leverage restriction, operator approval requirement, and ArcPay module addresses.
 
@@ -58,7 +68,10 @@ Until then the status remains an intent.
 
 ## Production Boundary
 
-The current implementation is ready for policy-bound agent handoff and audit capture on Mantle Testnet. Direct DEX/vault execution should only be enabled after the chosen Mantle adapter is tested with reliable liquidity and failure handling.
+The current implementation is ready for policy-bound ArcPay vault execution,
+agent handoff, and audit capture on Mantle Testnet. Direct partner DEX/RWA
+execution must stay disabled until official Mantle Sepolia adapter contracts
+are available and tested with reliable liquidity and failure handling.
 
 ## Public Status
 

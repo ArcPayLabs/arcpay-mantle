@@ -8,7 +8,7 @@ export function YieldRisk() {
         <SectionHeading
           eyebrow="Treasury intelligence"
           title={<>Cards, risk, and policy, <span className="text-primary">built for agents</span>.</>}
-          description="ArcPay does not overclaim missing DeFi rails. It gives Mantle agents real order escrow, USDY spend cards, risk requests, privacy commitments, and policy checks today."
+          description="ArcPay does not overclaim missing DeFi rails. It gives Mantle agents real order escrow, test-credit spend cards, risk requests, privacy commitments, and policy checks today."
         />
         <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="rounded-3xl border border-border bg-card p-8">
@@ -18,12 +18,12 @@ export function YieldRisk() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between rounded-2xl bg-muted p-5">
                 <div>
-                  <div className="text-sm font-semibold">Research Agent USDY Card</div>
+                  <div className="text-sm font-semibold">Research Agent Credit Card</div>
                   <div className="mt-0.5 text-xs text-muted-foreground">Create, top up, freeze, activate</div>
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-medium">5</div>
-                  <div className="text-xs text-muted-foreground">USDY limit</div>
+                  <div className="text-xs text-muted-foreground">Credit limit</div>
                 </div>
               </div>
               <div className="flex items-center justify-between rounded-2xl bg-muted p-5">
@@ -66,7 +66,7 @@ export function YieldRisk() {
               </div>
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
-              {["Hourly / daily / weekly limits", "Allowed: MNT, USDY", "Risk floor 60", "Emergency pause"].map((p) => (
+              {["Hourly / daily / weekly limits", "Allowed: MNT, CREDIT", "Risk floor 60", "Emergency pause"].map((p) => (
                 <span key={p} className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs text-foreground/70">
                   <Layers className="h-3 w-3" /> {p}
                 </span>

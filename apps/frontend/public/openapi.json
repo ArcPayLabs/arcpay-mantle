@@ -59,7 +59,7 @@
       "get": {
         "tags": ["Status"],
         "summary": "Check Mantle DeFi/RWA adapter status",
-        "description": "Returns the current RealClaw, Merchant Moe, Agni, Fluxion, USDY, and mETH adapter map with the evidence required before ArcPay marks an action complete.",
+        "description": "Returns Mantle Testnet live ArcPay vault status plus mainnet-only partner boundary notes. Merchant Moe, Agni, Fluxion, Aave, USDY, and mETH are not marked as Mantle Sepolia live executors unless official testnet contracts exist.",
         "operationId": "getMantleDefiStatus",
         "responses": {
           "200": {
@@ -70,7 +70,7 @@
                   "ok": true,
                   "chain": "mantle-testnet",
                   "chainId": 5003,
-                  "mode": "agentic-defi-rwa-intents"
+                  "mode": "live-testnet-vault-plus-mainnet-references"
                 }
               }
             }

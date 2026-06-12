@@ -4,18 +4,18 @@ import { useState } from "react";
 import { CreditCard, Pause, Plus, WalletCards } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { StatCard } from "@/components/primitives/StatCard";
-import { connectedAddress, erc20Contract, hashText, shortAddress, USDY_TOKEN_ADDRESS, spendCardVaultContract, toUnits, writeRecord } from "@mantle/lib/mantle";
+import { connectedAddress, erc20Contract, hashText, shortAddress, spendCardVaultContract, TEST_CREDIT_LABEL, TEST_CREDIT_SYMBOL, TEST_CREDIT_TOKEN_ADDRESS, toUnits, writeRecord } from "@mantle/lib/mantle";
 
 export const Route = { options: { component: CardsRoute } };
 
 function CardsRoute() {
-  const [form, setForm] = useState({ slug: "research-card-001", agent: "", label: "Research Agent USDY Card", limit: "5", topUp: "5" });
-  const [status, setStatus] = useState("Create USDY cards for agents with limits, top-ups, freeze, and activation controls.");
+  const [form, setForm] = useState({ slug: "research-card-001", agent: "", label: "Research Agent Credit Card", limit: "5", topUp: "5" });
+  const [status, setStatus] = useState("Create ArcPay test-credit cards for agents with limits, top-ups, freeze, and activation controls.");
 
   async function createCard() {
     const vault = await spendCardVaultContract() as any;
     const agent = form.agent.trim() || await connectedAddress();
-    const tx = await vault.createCard(hashText(form.slug), agent, USDY_TOKEN_ADDRESS, toUnits(form.limit), form.label);
+    const tx = await vault.createCard(hashText(form.slug), agent, TEST_CREDIT_TOKEN_ADDRESS, toUnits(form.limit), form.label);
     await tx.wait();
     writeRecord({ id: crypto.randomUUID(), type: "card", title: `Created ${form.label}`, status: "created", amount: form.limit, txHash: tx.hash });
     setStatus(`Card created: ${tx.hash}`);
@@ -23,7 +23,7 @@ function CardsRoute() {
 
   async function topUpCard() {
     const amount = toUnits(form.topUp);
-    const token = await erc20Contract(USDY_TOKEN_ADDRESS) as any;
+    const token = await erc20Contract(TEST_CREDIT_TOKEN_ADDRESS) as any;
     const vault = await spendCardVaultContract() as any;
     const approve = await token.approve(vault.target, amount);
     await approve.wait();
@@ -42,10 +42,10 @@ function CardsRoute() {
 
   return (
     <div className="space-y-6">
-      <PageHeader icon={CreditCard} eyebrow="Agent spend cards" title="USDY cards" description="Create token-backed agent budgets with card limits and operational freeze controls." />
+      <PageHeader icon={CreditCard} eyebrow="Agent spend cards" title="Agent credit cards" description="Create token-backed testnet agent budgets with card limits and operational freeze controls." />
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        <StatCard icon={WalletCards} label="Token" value="USDY" hint={shortAddress(USDY_TOKEN_ADDRESS)} />
-        <StatCard label="Limit" value={`${form.limit} USDY`} hint="Per card" />
+        <StatCard icon={WalletCards} label="Token" value={TEST_CREDIT_SYMBOL} hint={shortAddress(TEST_CREDIT_TOKEN_ADDRESS)} />
+        <StatCard label="Limit" value={`${form.limit} ${TEST_CREDIT_SYMBOL}`} hint={TEST_CREDIT_LABEL} />
         <StatCard label="Status controls" value="Live" hint="Freeze and activate" emphasis />
       </div>
       <div className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">{status}</div>

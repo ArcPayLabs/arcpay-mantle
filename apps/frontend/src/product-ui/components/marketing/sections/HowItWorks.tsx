@@ -15,7 +15,7 @@ const STEPS = [
   {
     icon: CreditCard,
     name: "Control",
-    body: "Treasury policies, claim-code onboarding, webhook circuit breakers, and USDY cards control what each agent can spend.",
+    body: "Treasury policies, claim-code onboarding, webhook circuit breakers, and test-credit cards control what each agent can spend.",
   },
   {
     icon: Shield,

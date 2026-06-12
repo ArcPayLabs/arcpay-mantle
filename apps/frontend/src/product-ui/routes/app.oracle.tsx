@@ -9,7 +9,7 @@ import { fromWei, hashText, riskOracleContract, riskOracleQuote, shortAddress, t
 export const Route = { options: { component: OracleRoute } };
 
 function OracleRoute() {
-  const [prompt, setPrompt] = useState("Score contractor wallet before USDY card funding");
+  const [prompt, setPrompt] = useState("Score contractor wallet before agent card funding");
   const [orderId, setOrderId] = useState(hashText("demo-order"));
   const [status, setStatus] = useState("Request Mantle risk oracle decisions and persist evidence for policy checks.");
   const [requestId, setRequestId] = useState("");

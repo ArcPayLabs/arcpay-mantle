@@ -16,7 +16,7 @@ They are designed for:
 | Resource | Address |
 | --- | --- |
 | `MantlePrivacyVault` | `0x717CB18B08bE0c2ce1c897d879025c4a90861c20` |
-| `MockUSDY` | `0xda41b9EB708d32b29F4d90468298c69824A15E5C` |
+| `ArcPayTestCredit` | `0xda41b9EB708d32b29F4d90468298c69824A15E5C` |
 
 ## Privacy Boundary
 
@@ -39,7 +39,7 @@ function releaseIntent(bytes32 commitment, bytes32 nullifier, address payable re
 function cancelIntent(bytes32 commitment) external;
 ```
 
-## USDY Flow
+## ArcPay Test-Credit Flow
 
 ```ts
 import { Contract, keccak256, toUtf8Bytes } from "ethers";
@@ -47,10 +47,10 @@ import { Contract, keccak256, toUtf8Bytes } from "ethers";
 const commitment = keccak256(toUtf8Bytes("invoice-42-secret"));
 const nullifier = keccak256(toUtf8Bytes("release-secret-42"));
 
-await usdy.approve(privacyVaultAddress, amount);
+await testCredit.approve(privacyVaultAddress, amount);
 await privacyVault.createTokenIntent(
   commitment,
-  usdyAddress,
+  testCreditAddress,
   amount,
   "encrypted://your-ciphertext-or-ipfs-pointer",
 );

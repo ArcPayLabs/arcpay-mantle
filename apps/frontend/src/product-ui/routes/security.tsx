@@ -30,7 +30,7 @@ const ITEMS = [
   {
     icon: Lock,
     title: "Privacy-intent layer",
-    body: "MantlePrivacyVault creates MNT or USDY commitments, encrypted memo pointers, delayed recipient release, cancel/refund, and nullifier protection. It is not marketed as a full shielded pool.",
+    body: "MantlePrivacyVault creates MNT or ArcPay test-credit commitments, encrypted memo pointers, delayed recipient release, cancel/refund, and nullifier protection. It is not marketed as a full shielded pool.",
   },
   {
     icon: FileSearch,

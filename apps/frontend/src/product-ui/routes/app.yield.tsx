@@ -5,29 +5,31 @@ import type { ReactNode } from "react";
 import { Bot, CheckCircle2, ClipboardCopy, Landmark, ShieldCheck, TrendingUp, WalletCards, Workflow } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { StatCard } from "@/components/primitives/StatCard";
-import { CONTRACTS, shortAddress, writeRecord } from "@mantle/lib/mantle";
+import { connectedAddress, CONTRACTS, defiVaultContract, fromWei, shortAddress, toWei, txUrl, writeRecord } from "@mantle/lib/mantle";
 
 export const Route = { options: { component: YieldRoute } };
 
 const STRATEGIES = [
-  { name: "USDY conservative reserve", asset: "USDY", description: "Keep operating capital in a tokenized dollar-yield bucket with strict drawdown and withdrawal controls." },
-  { name: "mETH treasury sleeve", asset: "mETH", description: "Prepare an ETH-denominated Mantle treasury sleeve for operator-approved yield exposure." },
-  { name: "RealClaw Mantle rebalancer", asset: "MNT/USDY", description: "Hand policy-approved strategy instructions to a registered RealClaw Mantle agent and attach Fluxion/Merchant Moe/Agni evidence." },
-  { name: "Manual RWA review", asset: "USDY/mETH", description: "Export a risk memo for a human operator before any signed transaction." },
+  { name: "MNT testnet vault", asset: "MNT", description: "Deposit and withdraw MNT in the deployed ArcPay Mantle Sepolia vault with wallet-signed tx evidence." },
+  { name: "WMNT readiness check", asset: "WMNT", description: "Prepare WMNT route metadata using Mantle Sepolia token support without claiming external yield." },
+  { name: "RealClaw evidence review", asset: "MNT", description: "Hand strategy instructions to a registered RealClaw agent and attach external venue tx evidence before completion." },
+  { name: "Mainnet RWA watchlist", asset: "USDY/mETH", description: "Track Mantle mainnet RWA targets as non-testnet-live references until official Sepolia assets exist." },
 ] as const;
 
 function YieldRoute() {
   const [form, setForm] = useState({
-    strategy: "USDY conservative reserve",
-    asset: "USDY",
-    amount: "10",
-    target: "Preserve runway while keeping idle treasury in low-risk Mantle RWA exposure.",
+    strategy: "MNT testnet vault",
+    asset: "MNT",
+    amount: "0.01",
+    target: "Prove live Mantle Testnet treasury yield controls without claiming unsupported partner yield.",
     maxDrawdown: "2",
     maxAllocation: "25",
     rebalanceCadence: "weekly",
     agent: "yield-strategy-agent",
   });
-  const [message, setMessage] = useState("Create a governed Mantle RWA/yield strategy request. ArcPay requires policy and evidence before execution.");
+  const [message, setMessage] = useState("Create a governed Mantle yield request. ArcPay executes live MNT vault deposits on Mantle Testnet and keeps partner RWA routes evidence-only until official Sepolia support exists.");
+  const [pending, setPending] = useState(false);
+  const [position, setPosition] = useState<{ nativeBalance: string; tokenBalance: string; yieldPoints: string } | null>(null);
 
   const payload = useMemo(() => ({
     kind: "arcpay-mantle-yield-intent",
@@ -46,9 +48,11 @@ function YieldRoute() {
     agent: form.agent,
     integrations: {
       realclaw: form.strategy.includes("RealClaw"),
-      usdyCards: true,
+      testnetVault: true,
+      usdyCards: false,
       invoices: true,
       privacyIntents: true,
+      mainnetReferenceOnly: ["USDY", "mETH", "Merchant Moe", "Agni", "Fluxion", "Aave V3"],
     },
     contracts: {
       policy: CONTRACTS.TreasuryPolicy,
@@ -59,15 +63,63 @@ function YieldRoute() {
     },
   }), [form]);
 
-  function saveIntent() {
+  function saveIntent(status = form.strategy.includes("RealClaw") ? "realclaw_yield_intent_ready" : "mantle_yield_intent_ready", txHash?: string) {
     writeRecord({
       id: crypto.randomUUID(),
       type: "audit",
       title: `Yield strategy ${form.strategy}`,
       amount: `${form.amount} ${form.asset}`,
-      status: form.strategy.includes("RealClaw") ? "realclaw_yield_intent_ready" : "mantle_yield_intent_ready",
+      status,
+      txHash,
     });
-    setMessage("Yield intent saved. It can now move through policy review, RealClaw handoff, or manual operator execution.");
+    setMessage("Yield intent saved. Mantle Testnet completion requires ArcPay vault tx evidence or attached external venue proof.");
+  }
+
+  async function refreshPosition() {
+    const vault = await defiVaultContract() as any;
+    const account = await connectedAddress();
+    const next = await vault.positions(account);
+    setPosition({
+      nativeBalance: fromWei(next.nativeBalance),
+      tokenBalance: next.tokenBalance.toString(),
+      yieldPoints: next.yieldPoints.toString(),
+    });
+  }
+
+  async function depositLiveYield() {
+    setPending(true);
+    try {
+      const vault = await defiVaultContract() as any;
+      const strategyUri = `arcpay://mantle/yield/${encodeURIComponent(form.agent)}?strategy=${encodeURIComponent(form.strategy)}&asset=${form.asset}`;
+      const tx = await vault.depositNativeYield(strategyUri, { value: toWei(form.amount) });
+      setMessage(`Yield deposit submitted: ${tx.hash}`);
+      const receipt = await tx.wait();
+      saveIntent("mantle_yield_deposited", receipt.hash);
+      await refreshPosition();
+      setMessage(`Live Mantle yield deposit recorded: ${receipt.hash}`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : String(error));
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function withdrawLiveYield() {
+    setPending(true);
+    try {
+      const vault = await defiVaultContract() as any;
+      const account = await connectedAddress();
+      const tx = await vault.withdrawNativeYield(toWei(form.amount), account);
+      setMessage(`Yield withdraw submitted: ${tx.hash}`);
+      const receipt = await tx.wait();
+      saveIntent("mantle_yield_withdrawn", receipt.hash);
+      await refreshPosition();
+      setMessage(`Live Mantle yield withdrawal recorded: ${receipt.hash}`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : String(error));
+    } finally {
+      setPending(false);
+    }
   }
 
   async function copyPayload() {
@@ -86,17 +138,17 @@ function YieldRoute() {
     <div className="space-y-6">
       <PageHeader
         icon={TrendingUp}
-        eyebrow="Mantle RWA / yield"
-        title="Agent-managed yield strategy"
-        description="Prepare policy-approved USDY, mETH, and RealClaw strategy requests with explicit risk caps, allocation limits, and evidence requirements before any treasury movement."
+        eyebrow="Mantle yield"
+        title="Agent-managed testnet yield"
+        description="Prepare policy-approved yield requests with explicit risk caps. ArcPay executes live MNT vault actions on Mantle Sepolia and keeps USDY/mETH as mainnet reference targets."
         actions={<button type="button" onClick={copyPayload} className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"><ClipboardCopy className="h-4 w-4" /> Copy strategy</button>}
       />
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-        <StatCard icon={Landmark} label="Mantle thesis" value="RWA" hint="USDY / mETH" emphasis />
+        <StatCard icon={Landmark} label="Mantle thesis" value="Yield" hint="MNT testnet" emphasis />
         <StatCard icon={ShieldCheck} label="Policy" value="Required" hint="Before allocation" />
-        <StatCard icon={WalletCards} label="Runway asset" value="USDY" hint="Invoice/card compatible" />
-        <StatCard icon={Bot} label="Agent" value="Optional" hint="RealClaw handoff" />
+        <StatCard icon={WalletCards} label="Live vault" value={shortAddress(CONTRACTS.ArcPayMantleDeFiVault)} hint="Wallet-signed" />
+        <StatCard icon={Bot} label="Position" value={position?.nativeBalance ?? "--"} hint="MNT deposited" />
       </div>
 
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-[0.8fr_1.2fr]">
@@ -125,7 +177,16 @@ function YieldRoute() {
           <Field label="Treasury objective">
             <textarea className="min-h-24 w-full rounded-xl border border-border bg-background px-3 py-3 text-sm" value={form.target} onChange={(event) => setForm({ ...form, target: event.target.value })} />
           </Field>
-          <button className="h-12 rounded-xl bg-primary px-5 font-semibold text-primary-foreground" type="submit">Save yield intent</button>
+          <div className="flex flex-wrap gap-3">
+            <button className="h-12 rounded-xl bg-primary px-5 font-semibold text-primary-foreground" type="submit">Save yield intent</button>
+            <button className="h-12 rounded-xl bg-foreground px-5 font-semibold text-background disabled:opacity-60" type="button" disabled={pending || CONTRACTS.ArcPayMantleDeFiVault === "0x0000000000000000000000000000000000000000"} onClick={depositLiveYield}>
+              {pending ? "Waiting for wallet..." : "Deposit live MNT"}
+            </button>
+            <button className="h-12 rounded-xl border border-border px-5 font-semibold disabled:opacity-60" type="button" disabled={pending || CONTRACTS.ArcPayMantleDeFiVault === "0x0000000000000000000000000000000000000000"} onClick={withdrawLiveYield}>
+              Withdraw MNT
+            </button>
+            <button className="h-12 rounded-xl border border-border px-5 font-semibold" type="button" onClick={refreshPosition}>Refresh position</button>
+          </div>
           <div className="rounded-xl border border-border bg-muted p-3 text-sm text-muted-foreground">{message}</div>
         </form>
 
@@ -157,8 +218,10 @@ function YieldRoute() {
             <pre className="mt-4 max-h-[360px] overflow-auto rounded-2xl bg-black/35 p-4 text-xs leading-relaxed text-white/75">{JSON.stringify(payload, null, 2)}</pre>
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-white/50">
               <span>Policy {shortAddress(CONTRACTS.TreasuryPolicy)}</span>
+              <span>Vault {shortAddress(CONTRACTS.ArcPayMantleDeFiVault)}</span>
               <span>Privacy {shortAddress(CONTRACTS.MantlePrivacyVault)}</span>
               <span>Invoices {shortAddress(CONTRACTS.AgentInvoiceBook)}</span>
+              {message.startsWith("Live Mantle yield") ? <a className="underline" href={txUrl(message.split(": ").at(-1) ?? "")} target="_blank" rel="noreferrer">Open tx</a> : null}
             </div>
           </div>
         </div>

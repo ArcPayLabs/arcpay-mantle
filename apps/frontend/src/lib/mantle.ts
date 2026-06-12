@@ -19,15 +19,27 @@ export const CONTRACTS = {
   MantlePrivacyVault: deployedContracts.MantlePrivacyVault ?? NATIVE_TOKEN,
   AgentInvoiceBook: deployedContracts.AgentInvoiceBook ?? NATIVE_TOKEN,
   AgentReputationBook: deployedContracts.AgentReputationBook ?? NATIVE_TOKEN,
+  ArcPayMantleDeFiVault: deployedContracts.ArcPayMantleDeFiVault ?? NATIVE_TOKEN,
 } as const;
 
 export const DEPTH_CONTRACTS_READY =
   CONTRACTS.OperatorControls !== NATIVE_TOKEN && CONTRACTS.MantleAgentRiskOracle !== NATIVE_TOKEN;
-export const USDY_TOKEN_ADDRESS = (deployment as { usdyToken?: string }).usdyToken ?? NATIVE_TOKEN;
+export const TEST_CREDIT_TOKEN_ADDRESS = (deployment as { usdyToken?: string }).usdyToken ?? NATIVE_TOKEN;
+export const TEST_CREDIT_SYMBOL = "CREDIT";
+export const TEST_CREDIT_LABEL = "ArcPay Test Credit";
+export const USDY_TOKEN_ADDRESS = TEST_CREDIT_TOKEN_ADDRESS;
 export const MANTLE_AGENT_PLATFORM_ADDRESS =
   (deployment as { mantleAgentPlatform?: string }).mantleAgentPlatform ?? NATIVE_TOKEN;
 export const MANTLE_RISK_AGENT_ID =
   (deployment as { mantleRiskAgentId?: string }).mantleRiskAgentId ?? "13174292974160097713";
+
+export const AGNI_TESTNET_CONTRACTS = {
+  Factory: "0xA9AcD50B042A72c33d05fDcC8ad209d3aD361762",
+  SwapRouter: "0xe38cfa32cCd918d94E2e20230dFaD1A4Fd8aEF16",
+  Quoter: "0xA82F8dC4704d3512b120de70480219761F24B6Eb",
+  QuoterV2: "0x9Da17239a4170f50A5A2c11813BD0C601b5c9693",
+  WMNT: "0x67A1f4A939b477A6b7c5BF94D97E45dE87E608eF",
+} as const;
 
 export const AGENT_REGISTRY_ABI = [
   "function registerAgent(bytes32 agentId,string name,string endpoint,string capabilities,uint256 priceWei)",
@@ -129,6 +141,19 @@ export const REPUTATION_BOOK_ABI = [
   "function reviewedBy(bytes32 orderId,address reviewer) view returns (bool)",
   "function reputationScore(bytes32 agentId) view returns (uint256)",
   "event ReputationRecorded(bytes32 indexed reviewId,bytes32 indexed agentId,bytes32 indexed orderId,address reviewer,uint8 score,bool disputed,string evidenceUri)",
+] as const;
+
+export const DEFI_VAULT_ABI = [
+  "function quoteNativeToToken(uint256 nativeAmount) view returns (uint256)",
+  "function swapNativeToToken(address recipient,string routeUri) payable returns (uint256 tokenAmount)",
+  "function swapTokenToNative(uint256 tokenAmount,address recipient,string routeUri) returns (uint256 nativeAmount)",
+  "function depositNativeYield(string strategyUri) payable",
+  "function depositTokenYield(uint256 amount,string strategyUri)",
+  "function withdrawNativeYield(uint256 amount,address recipient)",
+  "function withdrawTokenYield(uint256 amount,address recipient)",
+  "function positions(address operator) view returns (uint256 nativeBalance,uint256 tokenBalance,uint256 yieldPoints,uint256 updatedAt)",
+  "function nativeToUsdyRate() view returns (uint256)",
+  "function yieldBps() view returns (uint256)",
 ] as const;
 
 export const ORDER_STATUS = ["Pending", "Accepted", "Processing", "Fulfilled", "Settled", "Refunded", "Failed"] as const;
@@ -290,6 +315,11 @@ export async function invoiceBookContract() {
 export async function reputationBookContract() {
   const signer = await signerProvider();
   return new Contract(CONTRACTS.AgentReputationBook, REPUTATION_BOOK_ABI, signer);
+}
+
+export async function defiVaultContract() {
+  const signer = await signerProvider();
+  return new Contract(CONTRACTS.ArcPayMantleDeFiVault, DEFI_VAULT_ABI, signer);
 }
 
 export type LocalRecord = {

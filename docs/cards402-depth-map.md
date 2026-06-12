@@ -14,8 +14,8 @@ Stellar/card-specific implementation.
 | Circuit-breaker webhooks | `OperatorControls` tracks per-origin webhook failures and opens a breaker after repeated failures. |
 | Agent claim code onboarding | `OperatorControls` creates and redeems expiring claim codes by hash. |
 | CLI tool | `apps/cli/arcpay-mantle.mjs` supports contracts, wallet, agent ID, claim hash, demo path, and MCP config commands. Published as `@arcpaylabs/mantle-cli`. |
-| Card-like spend product | `AgentSpendCardVault` creates USDY-backed virtual cards for agent budgets. |
-| Privacy layer | `MantlePrivacyVault` creates commitment-based USDY/MNT payment intents with encrypted metadata and nullifier release. |
+| Card-like spend product | `AgentSpendCardVault` creates ArcPay test-credit-backed virtual cards for agent budgets. |
+| Privacy layer | `MantlePrivacyVault` creates commitment-based MNT/test-credit payment intents with encrypted metadata and nullifier release. |
 
 ## Mantle-Native Layer
 

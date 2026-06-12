@@ -9,7 +9,7 @@ import { ReviewModal, type ReviewRow } from "@/components/primitives/ReviewModal
 import { StatCard } from "@/components/primitives/StatCard";
 import { readLocalJson, writeLocalJson } from "@/lib/browser-cache";
 import { checkActionPolicies } from "@/lib/policy";
-import { connectedAddress, CONTRACTS, erc20Contract, hashText, privacyVaultContract, shortAddress, USDY_TOKEN_ADDRESS, toUnits, toWei, txUrl, writeRecord } from "@mantle/lib/mantle";
+import { connectedAddress, CONTRACTS, erc20Contract, hashText, privacyVaultContract, shortAddress, TEST_CREDIT_SYMBOL, TEST_CREDIT_TOKEN_ADDRESS, toUnits, toWei, txUrl, writeRecord } from "@mantle/lib/mantle";
 
 export const Route = { options: { component: PrivacyPage } };
 
@@ -19,7 +19,7 @@ type PrivacyIntent = {
   amount: string;
   memoUri: string;
   recipient: string;
-  token: "MNT" | "USDY";
+  token: "MNT" | "CREDIT";
   status: "Prepared" | "Submitted" | "Disclosure ready" | "Cancelled";
   txHash?: string;
   releaseTxHash?: string;
@@ -35,8 +35,8 @@ function PrivacyPage() {
   const [open, setOpen] = useState<"shield" | "key" | null>(null);
   const [review, setReview] = useState<PrivacyIntent | null>(null);
   const [releaseTarget, setReleaseTarget] = useState<PrivacyIntent | null>(null);
-  const [message, setMessage] = useState("Create MNT or USDY privacy intents with encrypted memo pointers, delayed recipient release, cancellation, and one-time nullifiers.");
-  const [form, setForm] = useState({ amount: "0.01", token: "MNT" as "MNT" | "USDY", recipient: "", memoUri: "ipfs://encrypted-agent-payment-memo", nullifier: "release-secret-001" });
+  const [message, setMessage] = useState("Create MNT or ArcPay test-credit privacy intents with encrypted memo pointers, delayed recipient release, cancellation, and one-time nullifiers.");
+  const [form, setForm] = useState({ amount: "0.01", token: "MNT" as "MNT" | "CREDIT", recipient: "", memoUri: "ipfs://encrypted-agent-payment-memo", nullifier: "release-secret-001" });
 
   const submitted = items.filter((item) => item.status === "Submitted");
   const disclosures = items.filter((item) => item.status === "Disclosure ready");
@@ -82,12 +82,12 @@ function PrivacyPage() {
     const signer = await connectedAddress();
     const contract = await privacyVaultContract() as any;
     let tx;
-    if (review.token === "USDY") {
-      const token = await erc20Contract(USDY_TOKEN_ADDRESS) as any;
+    if (review.token === "CREDIT") {
+      const token = await erc20Contract(TEST_CREDIT_TOKEN_ADDRESS) as any;
       const units = toUnits(review.amount);
       const approve = await token.approve(CONTRACTS.MantlePrivacyVault, units);
       await approve.wait();
-      tx = await contract.createTokenIntent(review.commitment, USDY_TOKEN_ADDRESS, units, review.memoUri);
+      tx = await contract.createTokenIntent(review.commitment, TEST_CREDIT_TOKEN_ADDRESS, units, review.memoUri);
     } else {
       tx = await contract.createNativeIntent(review.commitment, review.memoUri, { value: toWei(review.amount) });
     }
@@ -149,7 +149,7 @@ function PrivacyPage() {
   const rows: ReviewRow[] = review ? [
     { label: "Amount", value: `${review.amount} ${review.token}`, mono: true },
     { label: "Commitment", value: shortAddress(review.commitment), mono: true },
-    { label: "Token route", value: review.token === "USDY" ? `USDY ${shortAddress(USDY_TOKEN_ADDRESS)}` : "Native MNT", mono: review.token === "USDY" },
+    { label: "Token route", value: review.token === "CREDIT" ? `${TEST_CREDIT_SYMBOL} ${shortAddress(TEST_CREDIT_TOKEN_ADDRESS)}` : "Native MNT", mono: review.token === "CREDIT" },
     { label: "Memo URI", value: review.memoUri, mono: true },
     { label: "Vault", value: "MantlePrivacyVault" },
   ] : [];
@@ -160,7 +160,7 @@ function PrivacyPage() {
         icon={EyeOff}
         eyebrow="Privacy layer"
         title="Private agent treasury"
-        description="A Mantle privacy-intent layer for MNT and USDY: commitments, encrypted memo pointers, delayed recipient release, cancellation, and one-time nullifier evidence."
+        description="A Mantle privacy-intent layer for MNT and ArcPay test credit: commitments, encrypted memo pointers, delayed recipient release, cancellation, and one-time nullifier evidence."
         actions={
           <>
             <button onClick={() => setOpen("key")} className="inline-flex items-center gap-2 rounded-full bg-muted px-4 py-2.5 text-sm font-semibold">
@@ -174,7 +174,7 @@ function PrivacyPage() {
       />
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard icon={Lock} label="Privacy intents" value={items.length} hint="MNT + USDY commitments" />
+        <StatCard icon={Lock} label="Privacy intents" value={items.length} hint={`MNT + ${TEST_CREDIT_SYMBOL} commitments`} />
         <StatCard icon={Sparkles} label="Submitted" value={submitted.length} hint="Vault transactions" />
         <StatCard icon={Eye} label="Disclosures" value={disclosures.length} hint="Viewing-key records" />
         <StatCard label="Latest" value={latest ? shortAddress(latest.commitment) : "--"} hint="Commitment hash" emphasis />
@@ -186,7 +186,7 @@ function PrivacyPage() {
         <section className="rounded-3xl border border-border bg-card p-5 md:p-6">
           <div className="grid gap-4 md:grid-cols-3">
             <Field label={`Amount ${form.token}`}><input value={form.amount} onChange={(event) => setForm({ ...form, amount: event.target.value })} className="ap-in" inputMode="decimal" /></Field>
-            <Field label="Token"><select value={form.token} onChange={(event) => setForm({ ...form, token: event.target.value as "MNT" | "USDY" })} className="ap-in"><option>MNT</option><option>USDY</option></select></Field>
+            <Field label="Token"><select value={form.token} onChange={(event) => setForm({ ...form, token: event.target.value as "MNT" | "CREDIT" })} className="ap-in"><option>MNT</option><option value="CREDIT">{TEST_CREDIT_SYMBOL}</option></select></Field>
             <Field label="Recipient / auditor"><input value={form.recipient} onChange={(event) => setForm({ ...form, recipient: event.target.value })} className="ap-in" placeholder="0x... or auditor name" /></Field>
             <Field label="Encrypted memo URI"><input value={form.memoUri} onChange={(event) => setForm({ ...form, memoUri: event.target.value })} className="ap-in" /></Field>
             <Field label="Release secret"><input value={form.nullifier} onChange={(event) => setForm({ ...form, nullifier: event.target.value })} className="ap-in" /></Field>
@@ -207,7 +207,7 @@ function PrivacyPage() {
               <EmptyState
                 icon={EyeOff}
                 title="No privacy intents"
-                description="Create a MNT or USDY commitment with an encrypted memo URI, then release it later with a one-time nullifier or selective disclosure."
+                description="Create a MNT or test-credit commitment with an encrypted memo URI, then release it later with a one-time nullifier or selective disclosure."
                 actionLabel="Shield intent"
                 onAction={() => setOpen("shield")}
               />

@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-06-11T22:54:09.208Z",
+  "network": "mantle-testnet",
+  "chainId": 5003,
+  "vault": "0x41903813e9c555C767b9F19F0cb099dc4d325c8e",
+  "operator": "0xB883e76A4f6841E72cAF1C28ba00f78df974f448",
+  "swapTxHash": "0x105cf22a2356caac8300263af4bbb32f3d5c5f3f28aab2841b0a4d0c974642e5",
+  "yieldDepositTxHash": "0x6829050bdaf9e3d054ba4fb922b8f9908b432612401ce159b015cd2b3332ca1b",
+  "position": {
+    "nativeBalanceWei": "100000000000000",
+    "tokenBalance": "0",
+    "yieldPoints": "5200000000000",
+    "updatedAt": "1781218445"
+  },
+  "explorer": {
+    "swap": "https://sepolia.mantlescan.xyz/tx/0x105cf22a2356caac8300263af4bbb32f3d5c5f3f28aab2841b0a4d0c974642e5",
+    "yieldDeposit": "https://sepolia.mantlescan.xyz/tx/0x6829050bdaf9e3d054ba4fb922b8f9908b432612401ce159b015cd2b3332ca1b"
+  }
+}

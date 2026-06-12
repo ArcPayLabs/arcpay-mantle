@@ -1,0 +1,43 @@
+{
+  "repo": "mantle",
+  "total": 43,
+  "failures": [
+    {
+      "route": "/",
+      "desktop": {
+        "ok": false,
+        "error": "page.goto: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:4313/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "errors": []
+      },
+      "mobile": {
+        "ok": true,
+        "status": 200,
+        "url": "http://127.0.0.1:4313/",
+        "textLength": 4550,
+        "hasNextError": false,
+        "errors": []
+      }
+    },
+    {
+      "route": "/onboard",
+      "desktop": {
+        "ok": true,
+        "status": 200,
+        "url": "http://127.0.0.1:4313/onboard",
+        "textLength": 450,
+        "hasNextError": false,
+        "errors": []
+      },
+      "mobile": {
+        "ok": true,
+        "status": 200,
+        "url": "http://127.0.0.1:4313/onboard",
+        "textLength": 456,
+        "hasNextError": false,
+        "errors": [
+          "Failed to load resource: net::ERR_NO_BUFFER_SPACE"
+        ]
+      }
+    }
+  ]
+}

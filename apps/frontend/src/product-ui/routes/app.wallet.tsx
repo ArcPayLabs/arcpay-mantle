@@ -38,7 +38,7 @@ function WalletRoute() {
         icon={Wallet}
         eyebrow="Wallet interface"
         title="Mantle wallet control"
-        description="The wallet is the signing layer for account access, MNT transfers, agent orders, USDY cards, policy updates, oracle requests, and privacy intents."
+        description="The wallet is the signing layer for account access, MNT transfers, agent orders, test-credit cards, policy updates, oracle requests, and privacy intents."
       />
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         <StatCard icon={Wallet} label="Signer" value={address ? shortAddress(address) : "--"} hint="Connected EVM account" />

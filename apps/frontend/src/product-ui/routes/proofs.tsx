@@ -26,7 +26,7 @@ const STATUS_STYLE: Record<Status, string> = {
 
 const CHECKS: { surface: string; status: Status; evidence: string }[] = [
   { surface: "Mantle Testnet contracts", status: "testnet", evidence: "AgentRegistry, TreasuryPolicy, AgentOrderBook, OperatorControls, RiskOracle, SpendCardVault, PrivacyVault, AgentInvoiceBook, and AgentReputationBook are deployed on chain 5003." },
-  { surface: "Funded live smoke", status: "testnet", evidence: "npm run smoke:live performs live writes for registry, policy, escrowed orders, reputation reviews, operator controls, USDY cards, privacy release, on-chain invoice settlement, and Mantle agent risk fulfillment." },
+  { surface: "Funded live smoke", status: "testnet", evidence: "npm run smoke:live performs live writes for registry, policy, escrowed orders, reputation reviews, operator controls, test-credit cards, privacy release, on-chain invoice settlement, and Mantle agent risk fulfillment." },
   { surface: "x402 payment gate", status: "testnet", evidence: "npm run smoke:x402 starts the HTTP 402 server, registers an agent, creates an on-chain order, fulfills it, unlocks the protected resource, and settles." },
   { surface: "Auth and workspace smoke", status: "live", evidence: "npm run smoke:auth verifies Supabase records, email sign-in workspace upsert, wallet workspace creation, and Mantle contract reads." },
   { surface: "Frontend", status: "live", evidence: "Next.js product UI builds successfully with Mantle-only wallet/auth/dashboard content." },

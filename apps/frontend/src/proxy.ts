@@ -18,9 +18,9 @@ ArcPay Mantle is a control plane and developer distribution layer for AI-agent t
 - Agent registry and bring-your-own-agent onboarding
 - x402 protected paid agent work
 - MNT escrow and order verification
-- USDY spend cards
+- ArcPay test-credit spend cards
 - Privacy intents and audit release records
-- RealClaw handoff, Merchant Moe adapter status, ZeroDev sponsorship, CLI, MCP, and starter kits
+- RealClaw evidence handoff, Mantle partner boundary status, ZeroDev sponsorship, CLI, MCP, and starter kits
 `;
 
 export function proxy(request: NextRequest) {

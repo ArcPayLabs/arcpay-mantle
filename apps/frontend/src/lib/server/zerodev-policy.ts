@@ -156,7 +156,7 @@ function namedContracts() {
     MantlePrivacyVault: contracts.MantlePrivacyVault,
     AgentInvoiceBook: contracts.AgentInvoiceBook,
     AgentReputationBook: contracts.AgentReputationBook,
-    MockUSDY: deployment.usdyToken,
+    ArcPayTestCredit: deployment.usdyToken,
   });
   return entries.reduce<Record<string, string>>((acc, [name, address]) => {
     const normalized = normalizeAddress(address);

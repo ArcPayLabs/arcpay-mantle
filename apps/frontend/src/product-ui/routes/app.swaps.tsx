@@ -5,30 +5,32 @@ import type { ReactNode } from "react";
 import { ArrowLeftRight, Bot, CheckCircle2, ClipboardCopy, Route as RouteIcon, ShieldCheck, Workflow } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { StatCard } from "@/components/primitives/StatCard";
-import { CONTRACTS, shortAddress, writeRecord } from "@mantle/lib/mantle";
+import { AGNI_TESTNET_CONTRACTS, connectedAddress, CONTRACTS, defiVaultContract, shortAddress, toWei, txUrl, writeRecord } from "@mantle/lib/mantle";
 
 export const Route = { options: { component: SwapsRoute } };
 
 const ADAPTERS = [
-  { name: "RealClaw / Mantle Skills", status: "Agent executor", description: "Route approved intents to a registered RealClaw Mantle agent and attach venue tx/volume evidence." },
-  { name: "Fluxion", status: "RealClaw venue", description: "Mantle campaign venue for RealClaw trading activity and execution evidence." },
-  { name: "Merchant Moe", status: "Router candidate", description: "Mantle DEX route candidate for swap execution once production testnet adapter is locked." },
-  { name: "Agni Finance", status: "Router candidate", description: "Mantle liquidity route candidate for operator-approved treasury swaps." },
-  { name: "Manual signer", status: "Available now", description: "Export a policy-approved payload for a human or agent signer to execute." },
+  { name: "ArcPay Testnet Vault", status: "Live on Sepolia", description: "Wallet-signed Mantle Testnet swap proof through the deployed ArcPay vault." },
+  { name: "Mantle MCP / CLI", status: "Sepolia reads", description: "Official Mantle chain, account, token, and registry tooling for Sepolia. DEX protocols are mainnet-only in the current package registry." },
+  { name: "Agni Sepolia Router", status: "Contracts verified", description: "Agni factory/router/quoter/WMNT contracts have Mantle Sepolia bytecode. Completion still requires a quote, signed swap tx, and balance evidence." },
+  { name: "RealClaw / Byreal", status: "Evidence handoff", description: "Agent handoff is supported, but completion requires a RealClaw/venue tx hash or response attached to ArcPay." },
+  { name: "Mainnet DEX venues", status: "Reference only", description: "Merchant Moe, Fluxion, Aave, USDY, and mETH are not exposed as Mantle Sepolia executors until official testnet contract support exists." },
+  { name: "Manual signer", status: "Available now", description: "Export a policy-approved payload for a human or agent signer to execute and attach proof." },
 ] as const;
 
 function SwapsRoute() {
   const [form, setForm] = useState({
     from: "MNT",
-    to: "USDY",
+    to: "Vault credit",
     amount: "1",
     maxSlippage: "0.5",
     expiryMinutes: "20",
-    adapter: "RealClaw / Mantle Skills",
+    adapter: "ArcPay Testnet Vault",
     agent: "treasury-router",
-    objective: "Acquire USDY for invoices and agent spend cards without exceeding policy.",
+    objective: "Acquire ArcPay test credit for invoices and agent spend cards without exceeding policy.",
   });
-  const [message, setMessage] = useState("Create a policy-ready Mantle route intent. ArcPay does not mark a swap filled until an executor returns signed evidence.");
+  const [message, setMessage] = useState("Create a policy-ready Mantle route intent, then execute a live ArcPay testnet swap when the operator signs.");
+  const [pending, setPending] = useState(false);
 
   const payload = useMemo(() => ({
     kind: "arcpay-mantle-swap-intent",
@@ -46,9 +48,13 @@ function SwapsRoute() {
       requireOperatorApproval: true,
       emergencyPauseAware: true,
       noFillClaimWithoutTxHash: true,
-      requireRealClawAgentAddressForRealClaw: form.adapter.includes("RealClaw") || form.adapter === "Fluxion",
-      supportedRealClawVenues: ["Fluxion", "Merchant Moe", "Agni Finance"],
+      requireRealClawAgentAddressForRealClaw: form.adapter.includes("RealClaw"),
+      testnetLiveVenues: ["ArcPay Testnet Vault"],
+      testnetContractVenues: ["Agni Sepolia Router"],
+      mainnetReferenceOnlyVenues: ["Merchant Moe", "Fluxion", "Aave V3", "USDY", "mETH"],
+      noAgniCompletionWithoutQuoteAndTx: true,
     },
+    agni: form.adapter.includes("Agni") ? AGNI_TESTNET_CONTRACTS : undefined,
     contracts: {
       registry: CONTRACTS.AgentRegistry,
       orderBook: CONTRACTS.AgentOrderBook,
@@ -57,15 +63,34 @@ function SwapsRoute() {
     },
   }), [form]);
 
-  function saveIntent() {
+  function saveIntent(status = form.adapter.includes("RealClaw") ? "realclaw_route_intent_ready" : "mantle_route_intent_ready", txHash?: string) {
     writeRecord({
       id: crypto.randomUUID(),
       type: "audit",
       title: `Swap intent ${form.amount} ${form.from} to ${form.to}`,
       amount: `${form.amount} ${form.from}`,
-      status: form.adapter.includes("RealClaw") ? "realclaw_route_intent_ready" : "mantle_route_intent_ready",
+      status,
+      txHash,
     });
-    setMessage("Swap intent saved. It is ready for policy review, x402/escrow order creation, or RealClaw handoff.");
+    setMessage("Swap intent saved. Mantle Testnet execution is live only through the ArcPay vault unless external venue evidence is attached.");
+  }
+
+  async function executeArcPaySwap() {
+    setPending(true);
+    try {
+      const vault = await defiVaultContract() as any;
+      const recipient = await connectedAddress();
+      const routeUri = `arcpay://mantle/swap/${encodeURIComponent(form.agent)}?from=${form.from}&to=vault-credit&slippage=${form.maxSlippage}`;
+      const tx = await vault.swapNativeToToken(recipient, routeUri, { value: toWei(form.amount) });
+      setMessage(`Swap submitted: ${tx.hash}`);
+      const receipt = await tx.wait();
+      saveIntent("mantle_swap_executed", receipt.hash);
+      setMessage(`Live Mantle swap executed: ${receipt.hash}`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : String(error));
+    } finally {
+      setPending(false);
+    }
   }
 
   async function copyPayload() {
@@ -86,15 +111,15 @@ function SwapsRoute() {
         icon={ArrowLeftRight}
         eyebrow="Mantle routing"
         title="Policy-checked swap intents"
-        description="Build execution-ready Mantle swap requests for RealClaw, Byreal-style agents, DEX adapters, or manual signers. ArcPay records the intent, policy envelope, and evidence requirement before any fill is claimed."
+        description="Build execution-ready Mantle swap requests with a strict testnet boundary: ArcPay vault execution is live on Mantle Sepolia; Agni Sepolia contracts are configured but require quote and tx evidence; other venues remain reference-only."
         actions={<button type="button" onClick={copyPayload} className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"><ClipboardCopy className="h-4 w-4" /> Copy route</button>}
       />
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-        <StatCard icon={RouteIcon} label="Intent type" value="Swap" hint="Evidence-gated" />
+        <StatCard icon={RouteIcon} label="Intent type" value="Swap" hint="Wallet-signed" />
         <StatCard icon={ShieldCheck} label="Policy" value="Required" hint="Before execution" emphasis />
-        <StatCard icon={Bot} label="Primary adapter" value="RealClaw" hint="Agent handoff" />
-        <StatCard icon={Workflow} label="Order path" value="x402/escrow" hint="Optional paid execution" />
+        <StatCard icon={Bot} label="Live rail" value="ArcPay vault" hint={shortAddress(CONTRACTS.ArcPayMantleDeFiVault)} />
+        <StatCard icon={Workflow} label="Agni path" value="Configured" hint={shortAddress(AGNI_TESTNET_CONTRACTS.SwapRouter)} />
       </div>
 
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-[0.8fr_1.2fr]">
@@ -120,7 +145,12 @@ function SwapsRoute() {
           <Field label="Objective">
             <textarea className="min-h-24 w-full rounded-xl border border-border bg-background px-3 py-3 text-sm" value={form.objective} onChange={(event) => setForm({ ...form, objective: event.target.value })} />
           </Field>
-          <button className="h-12 rounded-xl bg-primary px-5 font-semibold text-primary-foreground" type="submit">Save swap intent</button>
+          <div className="flex flex-wrap gap-3">
+            <button className="h-12 rounded-xl bg-primary px-5 font-semibold text-primary-foreground" type="submit">Save swap intent</button>
+            <button className="h-12 rounded-xl bg-foreground px-5 font-semibold text-background disabled:opacity-60" type="button" disabled={pending || CONTRACTS.ArcPayMantleDeFiVault === "0x0000000000000000000000000000000000000000"} onClick={executeArcPaySwap}>
+              {pending ? "Waiting for wallet..." : "Execute live MNT -> vault credit"}
+            </button>
+          </div>
           <div className="rounded-xl border border-border bg-muted p-3 text-sm text-muted-foreground">{message}</div>
         </form>
 
@@ -144,6 +174,8 @@ function SwapsRoute() {
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-white/50">
               {reviewItems.map((item) => <span key={item.label}>{item.label}: {item.value}</span>)}
               <span>Policy {shortAddress(CONTRACTS.TreasuryPolicy)}</span>
+              <span>Vault {shortAddress(CONTRACTS.ArcPayMantleDeFiVault)}</span>
+              {message.startsWith("Live Mantle swap executed:") ? <a className="underline" href={txUrl(message.replace("Live Mantle swap executed: ", ""))} target="_blank" rel="noreferrer">Open tx</a> : null}
             </div>
           </div>
         </div>

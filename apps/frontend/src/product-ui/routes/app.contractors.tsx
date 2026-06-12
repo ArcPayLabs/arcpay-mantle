@@ -83,7 +83,7 @@ function ContractorsPage() {
     const blockReason = checkActionPolicies({
       action: "Send",
       network: "mantle",
-      token: "USDY",
+      token: "CREDIT",
       amount: totalSelected,
       counterpartyWallets: selected.map((item) => item.wallet),
       minObservedScore: selected.length ? Math.min(...selected.map((item) => item.riskScore)) : null,
@@ -99,7 +99,7 @@ function ContractorsPage() {
 
   const rows: ReviewRow[] = [
     { label: "Recipients", value: selected.length },
-    { label: "Total", value: `${totalSelected.toLocaleString()} USDY`, mono: true },
+    { label: "Total", value: `${totalSelected.toLocaleString()} CREDIT`, mono: true },
     { label: "Lowest score", value: selected.length ? Math.min(...selected.map((item) => item.riskScore)) : "--" },
     { label: "Policy", value: "Allowlist + risk floor enforced" },
   ];
@@ -125,7 +125,7 @@ function ContractorsPage() {
         <StatCard icon={Users} label="Contractors" value={items.length} hint="Mantle wallet identities" />
         <StatCard icon={ShieldCheck} label="Allowed" value={items.filter((item) => item.allowed).length} hint="Policy-approved recipients" />
         <StatCard label="Average risk" value={items.length ? avgRisk : "--"} hint="Deterministic testnet scorer" />
-        <StatCard label="Selected payroll" value={`${totalSelected.toLocaleString()} USDY`} emphasis />
+        <StatCard label="Selected payroll" value={`${totalSelected.toLocaleString()} CREDIT`} emphasis />
       </div>
 
       <div className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">{message}</div>
@@ -136,7 +136,7 @@ function ContractorsPage() {
             <Field label="Name"><input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="ap-in" /></Field>
             <Field label="Mantle wallet"><input value={form.wallet} onChange={(event) => setForm({ ...form, wallet: event.target.value })} className="ap-in" placeholder="0x..." /></Field>
             <Field label="Role"><input value={form.role} onChange={(event) => setForm({ ...form, role: event.target.value })} className="ap-in" /></Field>
-            <Field label="Monthly limit USDY"><input value={form.monthlyLimit} onChange={(event) => setForm({ ...form, monthlyLimit: event.target.value })} className="ap-in" inputMode="decimal" /></Field>
+            <Field label="Monthly limit CREDIT"><input value={form.monthlyLimit} onChange={(event) => setForm({ ...form, monthlyLimit: event.target.value })} className="ap-in" inputMode="decimal" /></Field>
           </div>
           <div className="mt-5 flex gap-2">
             <button onClick={addContractor} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"><Plus className="h-4 w-4" /> Save contractor</button>
@@ -159,7 +159,7 @@ function ContractorsPage() {
               <EmptyState
                 icon={Users}
                 title="No contractors found"
-                description="Add contractor wallets, assign monthly USDY limits, score counterparties, and prepare policy-checked payout batches."
+                description="Add contractor wallets, assign monthly test-credit limits, score counterparties, and prepare policy-checked payout batches."
                 actionLabel="Add contractor"
                 onAction={() => setOpen(true)}
               />
@@ -170,7 +170,7 @@ function ContractorsPage() {
               <div className="md:col-span-1"><input type="checkbox" checked={Boolean(item.selected)} onChange={() => toggle(item.id)} className="accent-primary" /></div>
               <div className="md:col-span-3"><div className="font-medium">{item.name}</div><div className="text-xs text-muted-foreground">{item.role}</div></div>
               <div className="md:col-span-3 font-mono text-xs text-muted-foreground">{shortAddress(item.wallet)}</div>
-              <div className="md:col-span-2">{item.monthlyLimit} USDY</div>
+              <div className="md:col-span-2">{item.monthlyLimit} CREDIT</div>
               <div className="md:col-span-1">{item.riskScore}</div>
               <div className="md:col-span-2">
                 <button onClick={() => toggleAllow(item.id)} className={`rounded-full px-3 py-1 text-xs font-semibold ${item.allowed ? "bg-success/15 text-success" : "bg-warning/20 text-warning-foreground"}`}>

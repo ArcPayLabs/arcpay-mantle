@@ -106,6 +106,7 @@ server.tool("x402_guide", "Return builder instructions for the ArcPay Mantle x40
         "Protected resource: GET /agent/:slug/work",
         "No order returns HTTP 402 with exact MNT payment requirements.",
         "Pay by calling AgentOrderBook.createOrder(agentId, requestUri) with quoted msg.value.",
+        "Read orderId from the OrderCreated event in the createOrder transaction receipt.",
         "Verify: POST /x402/verify with { orderId, agentSlug }.",
         "Unlock: GET /agent/:slug/work?orderId=... after Fulfilled or Settled.",
         "Proof: npm run smoke:x402.",
@@ -113,6 +114,149 @@ server.tool("x402_guide", "Return builder instructions for the ArcPay Mantle x40
     }],
   };
 });
+
+server.tool("order_id_guide", "Explain how ArcPay order ids are produced, found, and reused across x402/order/audit flows.", {
+  agentSlug: z.string().optional(),
+}, async ({ agentSlug = "research-agent" }) => {
+  const deployment = readDeployment();
+  return {
+    content: [{
+      type: "text",
+      text: JSON.stringify({
+        chain: "mantle-testnet",
+        chainId: 5003,
+        orderBook: deployment.contracts.AgentOrderBook,
+        agentSlug,
+        agentId: id(agentSlug),
+        createCall: "AgentOrderBook.createOrder(bytes32 agentId, string requestUri) payable",
+        generatedOnChain: "keccak256(abi.encodePacked(block.chainid, address(orderBook), requester, agentId, orderNonce))",
+        sourceOfTruth: "OrderCreated(orderId, agentId, requester, provider, amountWei, requestUri) event in the tx receipt",
+        useOrderIdFor: ["/orders load", "/x402 verify", "/agent/:slug/work?orderId=...", "/oracle risk request", "/reputation review", "/audit evidence"],
+        testCommands: [
+          `curl https://mantle-x402.20.208.46.195.nip.io/x402/verify -H "content-type: application/json" -d "{\\"orderId\\":\\"0x...\\",\\"agentSlug\\":\\"${agentSlug}\\"}"`,
+          `curl "https://mantle-x402.20.208.46.195.nip.io/agent/${agentSlug}/work?orderId=0x..."`,
+        ],
+      }, null, 2),
+    }],
+  };
+});
+
+server.tool("agent_onboarding_payload", "Generate a bring-your-own-agent onboarding payload for ArcPay Mantle.", {
+  slug: z.string().min(1),
+  endpoint: z.string().url().optional(),
+  priceMnt: z.string().optional(),
+}, async ({ slug, endpoint, priceMnt = "0.001" }) => {
+  const deployment = readDeployment();
+  return {
+    content: [{
+      type: "text",
+      text: JSON.stringify({
+        protocol: "arcpay-mantle-agent-onboarding",
+        network: deployment.network,
+        chainId: deployment.chainId,
+        agentSlug: slug,
+        agentId: id(slug),
+        endpoint: endpoint ?? `https://mantle-x402.20.208.46.195.nip.io/agent/${slug}/work`,
+        priceMnt,
+        contracts: {
+          registry: deployment.contracts.AgentRegistry,
+          orderBook: deployment.contracts.AgentOrderBook,
+          policy: deployment.contracts.TreasuryPolicy,
+          operatorControls: deployment.contracts.OperatorControls,
+          spendCardVault: deployment.contracts.AgentSpendCardVault,
+          reputation: deployment.contracts.AgentReputationBook,
+        },
+        nextSteps: [
+          "Register the slug/capabilities on AgentRegistry.",
+          "Create or redeem a claim code in OperatorControls if the agent is external.",
+          "Attach workspace policy and optional per-agent limits.",
+          "Quote x402, create escrowed order, verify/fulfill, then record audit evidence.",
+        ],
+      }, null, 2),
+    }],
+  };
+});
+
+server.tool("usdy_card_plan", "Generate a USDY spend-card setup plan for a Mantle agent.", {
+  slug: z.string().min(1),
+  agentWallet: z.string().optional(),
+  limitUsdy: z.string().optional(),
+}, async ({ slug, agentWallet = "<agent-wallet-address>", limitUsdy = "5" }) => {
+  const deployment = readDeployment();
+  const cardSlug = `${slug}-usdy-card`;
+  return {
+    content: [{
+      type: "text",
+      text: JSON.stringify({
+        protocol: "arcpay-mantle-usdy-card",
+        network: deployment.network,
+        chainId: deployment.chainId,
+        cardSlug,
+        cardId: keccak256(toUtf8Bytes(cardSlug)),
+        agentWallet,
+        limitUsdy,
+        contracts: {
+          spendCardVault: deployment.contracts.AgentSpendCardVault,
+          usdy: deployment.usdyToken,
+        },
+        calls: [
+          "USDY.approve(AgentSpendCardVault, amountBaseUnits)",
+          "AgentSpendCardVault.createCard(cardId, agentWallet, USDY, limitBaseUnits, label)",
+          "AgentSpendCardVault.topUpCard(cardId, amountBaseUnits)",
+          "AgentSpendCardVault.setCardStatus(cardId, true|false)",
+          "AgentSpendCardVault.spendCard(cardId, recipient, amountBaseUnits, memo) by assigned agent",
+        ],
+        proofRequired: ["cardId", "createCard tx hash", "approve tx hash", "topUpCard tx hash", "cards(cardId) state", "spend tx hash if used"],
+      }, null, 2),
+    }],
+  };
+});
+
+server.tool("policy_plan", "Generate global workspace and per-agent policy requirements for ArcPay Mantle execution.", {
+  slug: z.string().min(1),
+  dailyLimit: z.string().optional(),
+}, async ({ slug, dailyLimit = "10" }) => ({
+  content: [{
+    type: "text",
+    text: JSON.stringify({
+      protocol: "arcpay-mantle-policy-plan",
+      agentSlug: slug,
+      agentId: id(slug),
+      workspacePolicy: {
+        scope: "Global workspace controls",
+        enforcedAcross: ["payments", "orders", "x402", "cards", "invoices", "privacy", "RealClaw", "DeFi/RWA intents"],
+        checks: ["wallet required", "treasury pause", "allowed token", "allowed network", "risk floor", "per-transaction max", "daily max"],
+      },
+      agentPolicy: {
+        scope: "Per-agent controls",
+        dailyLimitMntOrUsdy: dailyLimit,
+        allowedActions: ["x402 work", "escrow order", "USDY card spend", "RealClaw handoff", "RWA intent"],
+        evidenceRequired: ["tx hash", "x402 verification", "ArcPay order id", "RealClaw/venue evidence when applicable"],
+      },
+    }, null, 2),
+  }],
+}));
+
+server.tool("evidence_template", "Return the audit evidence checklist ArcPay Mantle requires before an agent can claim completion.", {
+  slug: z.string().optional(),
+}, async ({ slug = "treasury-router" }) => ({
+  content: [{
+    type: "text",
+    text: [
+      `Agent: ${slug}`,
+      "Wallet address and chain id 5003.",
+      "Agent slug, agent id, registered endpoint, and capability metadata.",
+      "Policy snapshot: global workspace policy plus per-agent limits.",
+      "x402 quote response: HTTP status, payment requirements, request URI, amount.",
+      "Order evidence: createOrder tx hash, order id, state before/after fulfill, settle/refund tx.",
+      "Card evidence: card id, approve/top-up tx, card state, spend tx if used.",
+      "Privacy evidence: commitment, encrypted memo URI, create/release tx, nullifier.",
+      "Invoice evidence: invoice id, create/pay/cancel tx, payer and token state.",
+      "RealClaw/Byreal evidence: agent address, venue response, transaction hash, volume/ROI snapshot.",
+      "Audit page screenshot and Mantlescan links for every tx hash.",
+    ].join("\n"),
+  }],
+}));
 
 server.tool("realclaw_handoff", "Return a RealClaw-ready ArcPay Mantle handoff payload template.", {
   strategyName: z.string().optional(),
@@ -130,14 +274,15 @@ server.tool("realclaw_handoff", "Return a RealClaw-ready ArcPay Mantle handoff p
         realclawNetwork: "RealClaw Mantle agent, ArcPay Mantle Testnet proof",
         telegramAgent: "configured-inside-realclaw-telegram",
         realclawAgentAddress: "set-after-realclaw-wallet-connection",
-        primaryVenue: "Fluxion / Merchant Moe / Agni",
+        primaryVenue: "ArcPay Testnet contracts; partner venues require returned evidence",
         strategyName,
         agentSlug,
-        objective: "Execute only policy-approved Mantle treasury work through ArcPay x402, escrow, privacy, invoice, and USDY card modules.",
+        objective: "Execute only policy-approved Mantle Testnet treasury work through ArcPay x402, escrow, privacy, invoice, and card modules.",
         constraints: {
           maxBudgetMnt: budgetMnt,
-          allowedAssets: ["MNT", "USDY", "mETH"],
-          allowedVenues: ["Fluxion", "Merchant Moe", "Agni Finance"],
+          allowedAssets: ["MNT", "WMNT"],
+          liveTestnetVenues: ["ArcPay contracts"],
+          mainnetReferenceOnlyVenues: ["Fluxion", "Merchant Moe", "Agni Finance", "Aave V3", "USDY", "mETH"],
           requireArcPayPolicy: true,
           requireOperatorApprovalForLeverage: true,
           requireRegisteredRealClawAgentAddress: true,
@@ -162,30 +307,46 @@ server.tool("realclaw_handoff", "Return a RealClaw-ready ArcPay Mantle handoff p
           "Connect the wallet RealClaw registers as the Mantle agent address.",
           "Keep the Telegram bot token and RealClaw secrets in RealClaw, not ArcPay.",
           "Paste this payload into the RealClaw Telegram agent instructions/config.",
-          "Use RealClaw for Mantle venue activity across Fluxion, Merchant Moe, and Agni, then attach tx/volume/ROI evidence back into ArcPay.",
+          "Do not mark Merchant Moe, Agni, Fluxion, Aave, USDY, or mETH as Mantle Sepolia live unless official testnet contracts are supplied.",
+          "If RealClaw produces venue activity, attach tx/volume/ROI evidence back into ArcPay before claiming completion.",
         ],
       }, null, 2),
     }],
   };
 });
 
-server.tool("mantle_defi_rwa_status", "Return Mantle DeFi/RWA adapter status and evidence requirements.", {}, async () => ({
-  content: [{
-    type: "text",
-    text: JSON.stringify({
+server.tool("mantle_defi_rwa_status", "Return Mantle DeFi/RWA adapter status and evidence requirements.", {}, async () => {
+  const deployment = readDeployment();
+  return {
+    content: [{
+      type: "text",
+      text: JSON.stringify({
       chain: "mantle-testnet",
       chainId: 5003,
-      boundary: "Actions complete only after tx, x402 order, signed operator record, or venue evidence exists.",
+      boundary: "ArcPay vault swap/yield actions are wallet-signed on Mantle Testnet. Official @mantleio/mantle-core Sepolia protocol registry is empty; partner DEX/RWA venues are not testnet-live.",
+      packageAudit: {
+        package: "@mantleio/mantle-core@0.1.19",
+        sepoliaProtocols: "empty",
+        sepoliaTokens: ["MNT", "WMNT"],
+      },
+      liveVault: {
+        address: deployment.contracts.ArcPayMantleDeFiVault,
+        swap: "swapNativeToToken(recipient, routeUri) payable",
+        yield: "depositNativeYield(strategyUri) payable / withdrawNativeYield(amount, recipient)",
+        proof: "/proofs/mantle-defi-vault-live-proof.json",
+      },
       venues: [
-        { name: "RealClaw / Byreal Skills", state: "handoff-live", evidence: ["registered agent address", "venue response", "transaction hash", "volume/ROI snapshot"] },
-        { name: "Merchant Moe", state: "adapter-target", docs: "https://docs.merchantmoe.com/", evidence: ["route quote", "router address", "swap tx", "balances"] },
-        { name: "Agni Finance", state: "adapter-target", url: "https://agni.finance/", evidence: ["pool route", "transaction hash", "LP or swap state"] },
-        { name: "Fluxion", state: "campaign-evidence", evidence: ["agent address", "venue result", "transaction hash", "risk snapshot"] },
-        { name: "USDY / mETH", state: "intent-live", evidence: ["operator approval", "allocation tx", "final balance", "risk memo"] },
+        { name: "ArcPay Mantle DeFi Vault", state: "live-wallet-signed", evidence: ["swap tx", "yield deposit tx", "vault position"] },
+        { name: "RealClaw / Byreal", state: "handoff-evidence-only", evidence: ["registered agent address", "venue response", "transaction hash", "volume/ROI snapshot"] },
+        { name: "Merchant Moe", state: "not-testnet-live", docs: "https://docs.merchantmoe.com/", reason: "mainnet contracts only in @mantleio/mantle-core" },
+        { name: "Agni Finance", state: "not-testnet-live", reason: "mainnet contracts only in @mantleio/mantle-core" },
+        { name: "Fluxion", state: "not-testnet-live", reason: "mainnet contracts only in @mantleio/mantle-core" },
+        { name: "USDY / mETH", state: "not-testnet-live", reason: "Sepolia token registry only exposes MNT and WMNT" },
       ],
     }, null, 2),
-  }],
-}));
+    }],
+  };
+});
 
 server.tool("zerodev_status", "Return ZeroDev Mantle Testnet sponsorship setup and required evidence.", {}, async () => {
   const projectId = process.env.ZERODEV_PROJECT_ID || process.env.ZERO_DEV_PROJECT_ID || process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || DEFAULT_ZERODEV_PROJECT_ID;

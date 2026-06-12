@@ -9,8 +9,8 @@ export const FOOTER_VIDEO_URL =
 
 export const PARTNERS = [
   "Mantle",
-  "USDY",
-  "mETH",
+  "MNT",
+  "ArcPay Credit",
   "Byreal-ready",
   "RealClaw-ready",
   "Agent Registry",

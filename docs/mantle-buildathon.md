@@ -15,7 +15,7 @@ Mantle as the settlement and evidence layer for agent financial operations:
 - agents are first-class service providers and treasury operators
 - agent-to-agent orders are onchain
 - x402 endpoints monetize agent work over HTTP
-- USDY/mETH strategy intents connect agent finance to Mantle RWA themes
+- USDY/mETH strategy intents are mainnet reference targets; Mantle Sepolia execution stays on MNT/WMNT and ArcPay test credit until official testnet assets exist
 - Byreal/RealClaw-style agent workflows can call ArcPay tools for payment,
   policy, invoices, and reputation
 - treasury spend policies are enforced before settlement
@@ -48,10 +48,10 @@ Mantle as the settlement and evidence layer for agent financial operations:
 - `TreasuryPolicy.sol`: hourly/daily spend limits, approval threshold, allowlist, emergency pause
 - `AgentTreasury.sol`: escrow and settlement
 - `AgentOrderBook.sol`: order state machine
-- `AgentInvoiceBook.sol`: MNT/USDY invoice lifecycle
+- `AgentInvoiceBook.sol`: MNT/test-credit invoice lifecycle
 - `OperatorControls.sol`: claim-code onboarding and webhook circuit breakers
 - `MantleAgentRiskOracle.sol`: agent risk request/callback evidence
-- `AgentSpendCardVault.sol`: USDY agent budget cards
+- `AgentSpendCardVault.sol`: test-credit agent budget cards
 - `MantlePrivacyVault.sol`: commitment-based privacy intents
 - `AgentReputationBook.sol`: order-backed agent reputation
 - `apps/x402-server`: HTTP 402 quote, verification, fulfillment helper, and unlock surface
@@ -83,7 +83,7 @@ deployments/mantle-testnet.json
   and a full wallet-first frontend
 - Innovation: agent treasury policy, paid HTTP agent work, privacy intents, and
   order-backed reputation in one Mantle-native product
-- Mantle contribution: MNT escrow, USDY/mETH strategy intents, Mantle Sepolia
+- Mantle contribution: MNT escrow, test-credit cards, USDY/mETH mainnet reference targets, Mantle Sepolia
   deployment, and reusable developer tools for Mantle agents
 - Product completeness: live UI, docs, smoke tests, and demo path
 
@@ -101,5 +101,5 @@ system into a Mantle-only testnet app:
 - local invoices, contractors, audit logs, and proof pages for a complete demo
 - claim-code onboarding and webhook circuit-breaker controls
 - Mantle `createRequest`-compatible risk oracle for agentic policy decisions
-- USDY-backed agent spend cards with limits, balances, spend events, and freeze controls
+- test-credit-backed agent spend cards with limits, balances, spend events, and freeze controls
 - commitment-based private payment intents with encrypted metadata and nullifier release

@@ -4,7 +4,7 @@ Target length: 3 minutes.
 
 ## Core Story
 
-ArcPay is an operating account for autonomous agent businesses on Mantle. It gives an operator one place to register agents, enforce spend policy, sell agent work through x402, create invoices, assign USDY spend cards, run privacy-intent payments, and export audit evidence.
+ArcPay is an operating account for autonomous agent businesses on Mantle. It gives an operator one place to register agents, enforce spend policy, sell agent work through x402, create invoices, assign test-credit spend cards, run privacy-intent payments, and export audit evidence.
 
 The Mantle angle is simple: agents are not just users of the app. They are discoverable services with on-chain identity, pricing, escrowed orders, and policy-controlled execution on Mantle Testnet.
 
@@ -41,18 +41,18 @@ The Mantle angle is simple: agents are not just users of the app. They are disco
 
 7. Create an invoice.
    - Open `Invoices`.
-   - Create a small MNT or USDY invoice.
+   - Create a small MNT or ArcPay test-credit invoice.
    - Pay or sync it if the wallet has enough testnet balance.
    - Say: "Invoices give agent businesses a normal client-facing workflow while still keeping settlement and status evidence on Mantle."
 
 8. Show privacy intents.
    - Open `Privacy`.
-   - Create a small MNT or USDY shield intent, then show release/cancel/disclosure controls.
+   - Create a small MNT or ArcPay test-credit shield intent, then show release/cancel/disclosure controls.
    - Say: "Mantle does not have a native privacy layer yet, so ArcPay adds a practical privacy-intent primitive: commitment, encrypted memo URI, delayed recipient release, cancellation, and nullifier evidence."
 
 9. Show cards and contractors.
    - Open `Cards`.
-   - Create or load a USDY card and show freeze/activate/top-up controls.
+   - Create or load a test-credit card and show freeze/activate/top-up controls.
    - Open `Contractors`.
    - Show allowlist, risk score, and payout batch intent.
    - Say: "Operators can give agents and contributors bounded budgets without exposing the whole treasury."
@@ -86,6 +86,6 @@ curl https://mantle-x402.20.208.46.195.nip.io/health
 curl https://mantle-x402.20.208.46.195.nip.io/x402/demo
 ```
 
-`npm run smoke:live` spends small Mantle testnet amounts and verifies registry writes, policy, escrowed order lifecycle, operator controls, USDY cards, privacy release, and risk oracle fulfillment.
+`npm run smoke:live` spends small Mantle testnet amounts and verifies registry writes, policy, escrowed order lifecycle, operator controls, test-credit cards, privacy release, and risk oracle fulfillment.
 
 `npm run smoke:x402` verifies the HTTP 402 quote, on-chain escrow payment, provider fulfillment, resource unlock, and settlement flow.

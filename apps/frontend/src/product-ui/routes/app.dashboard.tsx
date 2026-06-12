@@ -38,7 +38,7 @@ function DashboardRoute() {
         icon={Workflow}
         eyebrow="Overview"
         title="Good morning, operator."
-        description="Private treasury OS for Mantle agents: x402 paid work, wallet-signed MNT payments, escrowed orders, USDY cards, policy controls, privacy intents, and trust exports."
+        description="Private treasury OS for Mantle agents: x402 paid work, wallet-signed MNT payments, escrowed orders, test-credit cards, policy controls, privacy intents, and trust exports."
         actions={<Link href="/payments" className="rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background">New payment</Link>}
         back={false}
       />
@@ -57,7 +57,7 @@ function DashboardRoute() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <StatCard icon={Wallet} label="Operating" value={wallet ? `${Number(balance || 0).toFixed(4)} MNT` : "--"} hint="Live Mantle wallet balance" />
         <StatCard icon={Workflow} label="Agent orders" value={counts.orders} hint="Escrow and x402 order records" />
-        <StatCard icon={CreditCard} label="USDY cards" value={records.filter((record) => record.title.toLowerCase().includes("card")).length} hint="Agent card events" />
+        <StatCard icon={CreditCard} label="Credit cards" value={records.filter((record) => record.title.toLowerCase().includes("card")).length} hint="Agent card events" />
         <StatCard icon={Lock} label="Privacy intents" value={counts.privacy} hint="Commitment-based intents" emphasis />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">

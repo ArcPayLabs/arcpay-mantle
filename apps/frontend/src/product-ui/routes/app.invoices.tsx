@@ -16,11 +16,12 @@ import { checkActionPolicies } from "@/lib/policy";
 import {
   CONTRACTS,
   NATIVE_TOKEN,
-  USDY_TOKEN_ADDRESS,
   erc20Contract,
   hashText,
   invoiceBookContract,
   shortAddress,
+  TEST_CREDIT_SYMBOL,
+  TEST_CREDIT_TOKEN_ADDRESS,
   toUnits,
   toWei,
   txUrl,
@@ -33,8 +34,8 @@ export const Route = createFileRoute("/app/invoices")({
   component: InvoicesPage,
 });
 
-const TOKENS = ["MNT", "USDY"] as const;
-const TOKENS_BY_NETWORK = { mantle: ["MNT", "USDY"] } as const;
+const TOKENS = ["MNT", "CREDIT"] as const;
+const TOKENS_BY_NETWORK = { mantle: ["MNT", "CREDIT"] } as const;
 const ZERO_PAYER = "0x0000000000000000000000000000000000000000";
 const INVOICE_STATUS = ["pending", "paid", "cancelled"] as const;
 
@@ -139,7 +140,7 @@ function InvoicesPage() {
 
     const publicId = createInvoiceId();
     const onchainId = hashText(publicId);
-    const tokenAddress = review.token === "MNT" ? NATIVE_TOKEN : USDY_TOKEN_ADDRESS;
+    const tokenAddress = review.token === "MNT" ? NATIVE_TOKEN : TEST_CREDIT_TOKEN_ADDRESS;
     const amountUnits = review.token === "MNT" ? toWei(String(review.amount)) : toUnits(String(review.amount), 6);
     const payer = normalizePayer(review.payer);
     const metadataUri = buildMetadataUri(publicId, review);
@@ -192,7 +193,7 @@ function InvoicesPage() {
       if (invoice.token === "MNT") {
         tx = await book.payNativeInvoice(invoice.onchainId, { value: BigInt(invoice.amountUnits) });
       } else {
-        const token = await erc20Contract(USDY_TOKEN_ADDRESS);
+        const token = await erc20Contract(TEST_CREDIT_TOKEN_ADDRESS);
         await (await token.approve(CONTRACTS.AgentInvoiceBook, BigInt(invoice.amountUnits))).wait();
         tx = await book.payTokenInvoice(invoice.onchainId);
       }
@@ -275,7 +276,7 @@ function InvoicesPage() {
         icon={FileText}
         eyebrow="Treasury"
         title="Invoices"
-        description="Issue MNT or USDY invoices, settle them through wallet signatures, and keep transaction evidence attached to the treasury record."
+        description="Issue MNT or ArcPay test-credit invoices, settle them through wallet signatures, and keep transaction evidence attached to the treasury record."
         actions={
           <button onClick={() => setOpen(true)} className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90">
             <Plus className="h-4 w-4" /> New invoice
@@ -284,7 +285,7 @@ function InvoicesPage() {
       />
 
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard label="Outstanding" value={`${sum(outstanding).toLocaleString()} MNT/USDY`} hint={`${outstanding.length} open`} icon={WalletCards} />
+        <StatCard label="Outstanding" value={`${sum(outstanding).toLocaleString()} MNT/${TEST_CREDIT_SYMBOL}`} hint={`${outstanding.length} open`} icon={WalletCards} />
         <StatCard label="Paid" value={paid.length} hint={`${sum(paid).toLocaleString()} total units`} />
         <StatCard label="Cancelled" value={items.filter((item) => item.status === "cancelled").length} />
         <StatCard label="Contract" value={onchainReady ? "Live" : "Missing"} hint={onchainReady ? shortAddress(CONTRACTS.AgentInvoiceBook) : "Deploy invoice book"} />
@@ -309,7 +310,7 @@ function InvoicesPage() {
               <EmptyState
                 icon={FileText}
                 title="No invoices yet"
-                description="Create a MNT or USDY invoice, attach client metadata, then settle it with a wallet signature and explorer-backed evidence."
+                description="Create a MNT or test-credit invoice, attach client metadata, then settle it with a wallet signature and explorer-backed evidence."
                 actionLabel="Create invoice"
                 onAction={() => setOpen(true)}
               />
@@ -400,7 +401,7 @@ function InvoicesPage() {
           { label: "Amount", value: `${review.amount.toLocaleString()} ${review.token}`, mono: true },
           { label: "Due", value: review.due },
         ] : []}
-        warnings={["Invoice creation is on-chain and visible on the Mantle explorer.", "USDY payments require token approval before settlement."]}
+        warnings={["Invoice creation is on-chain and visible on the Mantle explorer.", "Test-credit payments require token approval before settlement."]}
         confirmLabel="Create on-chain invoice"
         onConfirm={confirm}
       />

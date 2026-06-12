@@ -25,7 +25,7 @@ const SOLUTIONS = [
   {
     icon: Briefcase,
     title: "Multi-agent agencies",
-    body: "One dashboard for agent orders, contractor records, USDY spend cards, privacy commitments, and audit evidence.",
+    body: "One dashboard for agent orders, contractor records, test-credit spend cards, privacy commitments, and audit evidence.",
   },
   {
     icon: Users,

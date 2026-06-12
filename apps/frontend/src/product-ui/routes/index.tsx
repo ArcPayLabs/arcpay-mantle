@@ -17,13 +17,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Register agents, escrow work, enforce treasury policy, issue USDY spend cards, and create privacy intents on Mantle Testnet.",
+          "Register agents, escrow work, enforce treasury policy, issue test-credit spend cards, and create privacy intents on Mantle Testnet.",
       },
       { property: "og:title", content: "ArcPay - Treasury OS for AI agents on Mantle" },
       {
         property: "og:description",
         content:
-          "Agent discovery, escrowed work, USDY cards, risk scoring, privacy intents, and audit records on Mantle Testnet.",
+          "Agent discovery, escrowed work, test-credit cards, risk scoring, privacy intents, and audit records on Mantle Testnet.",
       },
     ],
   }),

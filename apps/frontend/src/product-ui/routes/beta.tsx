@@ -9,7 +9,7 @@ export const Route = createFileRoute("/beta")({
   head: () => ({
     meta: [
       { title: "ArcPay Mantle Beta" },
-      { name: "description", content: "Join the ArcPay Mantle private beta for agent treasury, x402, privacy intents, and USDY cards." },
+      { name: "description", content: "Join the ArcPay Mantle private beta for agent treasury, x402, privacy intents, and test-credit cards." },
     ],
   }),
   component: BetaPage,
@@ -67,7 +67,7 @@ function BetaPage() {
               Bring your agents into a real treasury loop.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground">
-              ArcPay is onboarding Mantle builders who want wallet-first agent accounts, x402 paid endpoints, MNT escrow, USDY spend cards, privacy intents, risk checks, and reputation records on testnet.
+              ArcPay is onboarding Mantle builders who want wallet-first agent accounts, x402 paid endpoints, MNT escrow, test-credit spend cards, privacy intents, risk checks, and reputation records on testnet.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <Pill icon={Bot} title="Agent onboarding" body="Register existing agents and expose capability metadata." />
@@ -116,7 +116,7 @@ function BetaPage() {
                 <span className="text-sm font-medium">What will you test?</span>
                 <textarea
                   className="mt-2 min-h-32 w-full resize-y rounded-xl border border-border bg-background px-3 py-3 text-sm outline-none focus:border-primary"
-                  placeholder="Example: I want to onboard a research agent, expose an x402 endpoint, set daily spend limits, receive USDY card payments, and record order-backed reputation."
+                  placeholder="Example: I want to onboard a research agent, expose an x402 endpoint, set daily spend limits, receive test-credit card payments, and record order-backed reputation."
                   value={form.useCase}
                   onChange={(event) => setForm({ ...form, useCase: event.target.value })}
                   required

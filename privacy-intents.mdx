@@ -16,6 +16,10 @@ This is not a full ZK mixer. It provides application-level privacy:
 - cancellation and refund while unreleased
 - on-chain release evidence for audits
 
+The live token paths are MNT and ArcPay Test Credit on Mantle Sepolia. USDY
+and mETH remain mainnet/reference-only until official Mantle Sepolia assets are
+available.
+
 ## Solidity Interface
 
 ```solidity
@@ -47,6 +51,25 @@ npm run arcpay -- privacy-commit "invoice-42-secret"
 npm run arcpay -- privacy-guide
 npm run arcpay -- privacy-abi
 ```
+
+## Noir Roadmap Boundary
+
+ArcPay includes a circuit-ready direction for proving a payment intent was
+authorized without revealing the secret off-chain memo. Do not claim this as a
+deployed verifier until the full Noir toolchain has been run:
+
+```bash
+cd circuits/mantle-privacy-intent
+nargo check
+nargo execute
+bb prove -b ./target/mantle_privacy_intent.json -w ./target/mantle_privacy_intent.gz -o ./proofs
+bb write_vk -b ./target/mantle_privacy_intent.json -o ./proofs
+bb write_solidity_verifier -k ./proofs/vk -o ./proofs/MantlePrivacyIntentVerifier.sol
+```
+
+Submission-safe claim today: live commitment/nullifier privacy intents on
+Mantle Sepolia, plus a documented Noir verifier path for the next privacy
+upgrade.
 
 ## Product Screen
 

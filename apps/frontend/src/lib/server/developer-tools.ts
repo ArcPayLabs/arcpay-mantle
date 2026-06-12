@@ -24,38 +24,45 @@ const mantleDefiRwaVenues = [
   {
     name: "RealClaw / Byreal Skills",
     category: "agent-executor",
-    state: "handoff-live",
-    execution: "operator-configured Telegram agent returns Mantle venue evidence",
+    state: "handoff-evidence-only",
+    execution: "operator-configured Telegram agent returns venue evidence; ArcPay does not mark partner venue execution complete without tx/evidence",
     evidence: ["registered agent address", "venue response", "transaction hash", "volume/ROI snapshot"],
   },
   {
     name: "Merchant Moe",
     category: "dex-router",
-    state: "adapter-target",
-    execution: "router/pool interaction after operator approval",
+    state: "mainnet-reference",
+    execution: "not marked as Mantle Sepolia live; official Mantle package exposes no Sepolia protocol registry entry",
     docs: "https://docs.merchantmoe.com/",
     evidence: ["route quote", "router address", "swap transaction hash", "before/after balance"],
   },
   {
     name: "Agni Finance",
     category: "dex-liquidity",
-    state: "adapter-target",
-    execution: "liquidity route or manual signer execution after policy approval",
+    state: "testnet-contracts-discovered",
+    execution: "Mantle Sepolia contracts have bytecode; require route quote, signed tx, and before/after balances before marking complete",
     url: "https://agni.finance/",
+    contracts: {
+      factory: "0xA9AcD50B042A72c33d05fDcC8ad209d3aD361762",
+      swapRouter: "0xe38cfa32cCd918d94E2e20230dFaD1A4Fd8aEF16",
+      quoter: "0xA82F8dC4704d3512b120de70480219761F24B6Eb",
+      quoterV2: "0x9Da17239a4170f50A5A2c11813BD0C601b5c9693",
+      wmnt: "0x67A1f4A939b477A6b7c5BF94D97E45dE87E608eF",
+    },
     evidence: ["pool route", "transaction hash", "LP or swap state"],
   },
   {
     name: "Fluxion",
     category: "realclaw-venue",
-    state: "campaign-evidence",
-    execution: "RealClaw venue activity with evidence mirrored into ArcPay",
+    state: "mainnet-reference",
+    execution: "RealClaw/venue evidence only unless the operator provides a Mantle tx or venue proof",
     evidence: ["agent address", "venue result", "transaction hash", "risk snapshot"],
   },
   {
     name: "USDY / mETH",
     category: "rwa-yield",
-    state: "intent-live",
-    execution: "RWA/yield allocation intent with policy, drawdown, and audit requirements",
+    state: "mainnet-reference",
+    execution: "not marked as Mantle Sepolia live; Sepolia registry currently exposes MNT/WMNT only",
     evidence: ["operator approval", "allocation tx", "final balance", "risk memo"],
   },
 ];
@@ -95,7 +102,7 @@ export const developerTools: ToolDefinition[] = [
   },
   {
     name: "invoice_guide",
-    description: "Return integration steps for MNT and USDY invoices.",
+    description: "Return integration steps for MNT and ArcPay test-credit invoices.",
     inputSchema: { type: "object", properties: {} },
   },
   {
@@ -117,7 +124,7 @@ export const developerTools: ToolDefinition[] = [
   },
   {
     name: "mantle_defi_rwa_status",
-    description: "Return Mantle DeFi/RWA adapter status and required evidence for RealClaw, Merchant Moe, Agni, Fluxion, USDY, and mETH.",
+    description: "Return Mantle DeFi/RWA adapter status and required evidence, including which venues are mainnet/reference-only instead of Sepolia live.",
     inputSchema: { type: "object", properties: {} },
   },
   {
@@ -153,10 +160,10 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
       return text([
         "ArcPay Privacy Intents",
         `Vault: ${deployment.contracts.MantlePrivacyVault}`,
-        `USDY: ${deployment.usdyToken}`,
+        `ArcPay Test Credit: ${deployment.usdyToken}`,
         "1. commitment = keccak256(secret).",
         "2. For MNT, call createNativeIntent(commitment, encryptedMemoUri) with msg.value.",
-        "3. For USDY, approve the vault and call createTokenIntent(commitment, USDY, amount, encryptedMemoUri).",
+        "3. For ArcPay Test Credit, approve the vault and call createTokenIntent(commitment, token, amount, encryptedMemoUri).",
         "4. Release with releaseIntent(commitment, nullifier, recipient).",
         "5. Cancellation refunds unreleased intents to the operator.",
         "Boundary: this hides metadata and recipient until release; it is not a full shielded pool.",
@@ -165,12 +172,12 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
       return text([
         "ArcPay Mantle Invoices",
         `InvoiceBook: ${deployment.contracts.AgentInvoiceBook}`,
-        `USDY: ${deployment.usdyToken}`,
+        `ArcPay Test Credit: ${deployment.usdyToken}`,
         "1. invoiceId = keccak256(publicInvoiceId).",
         "2. Create MNT invoices with token address(0) and amountWei.",
-        "3. Create USDY invoices with the USDY token address and base-unit amount.",
+        "3. Create ArcPay Test Credit invoices with the token address and base-unit amount.",
         "4. Pay MNT with payNativeInvoice(invoiceId) and exact msg.value.",
-        "5. Pay USDY by approving InvoiceBook, then calling payTokenInvoice(invoiceId).",
+        "5. Pay test-credit invoices by approving InvoiceBook, then calling payTokenInvoice(invoiceId).",
       ].join("\n"));
     case "x402_guide":
       return text([
@@ -195,14 +202,16 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
         realclawNetwork: "RealClaw Mantle agent, ArcPay Mantle Testnet proof",
         telegramAgent: "configured-inside-realclaw-telegram",
         realclawAgentAddress: "set-after-realclaw-wallet-connection",
-        primaryVenue: "Fluxion / Merchant Moe / Agni",
+        primaryVenue: "ArcPay Testnet contracts; RealClaw/Byreal evidence handoff",
         strategyName,
         agentSlug,
-        objective: "Execute only policy-approved Mantle treasury work through ArcPay x402, escrow, privacy, invoice, and USDY card modules.",
+        objective: "Execute only policy-approved Mantle treasury work through ArcPay x402, escrow, privacy, invoice, and test-credit card modules.",
         constraints: {
           maxBudgetMnt: budgetMnt,
-          allowedAssets: ["MNT", "USDY", "mETH"],
-          allowedVenues: ["Fluxion", "Merchant Moe", "Agni Finance"],
+          allowedAssets: ["MNT", "WMNT", "ArcPay Test Credit"],
+          mainnetReferenceOnlyAssets: ["USDY", "mETH"],
+          testnetContractVenues: ["Agni Finance"],
+          mainnetReferenceOnlyVenues: ["Fluxion", "Merchant Moe"],
           requireArcPayPolicy: true,
           requireOperatorApprovalForLeverage: true,
           requireRegisteredRealClawAgentAddress: true,
@@ -213,7 +222,7 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
           x402Gateway: "https://mantle-x402.20.208.46.195.nip.io",
           protectedResource: `https://mantle-x402.20.208.46.195.nip.io/agent/${encodeURIComponent(agentSlug)}/work`,
           status: "https://arcpay-mantle.vercel.app/api/status",
-          realclawCampaign: "https://openclaw.mantle.xyz/",
+          realclawCampaign: "https://www.byreal.io/en/realclaw",
         },
         contracts: {
           registry: deployment.contracts.AgentRegistry,
@@ -227,7 +236,7 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
           "Connect the wallet RealClaw registers as the Mantle agent address.",
           "Keep the Telegram bot token and RealClaw secrets in RealClaw, not ArcPay.",
           "Paste this payload into the RealClaw Telegram agent instructions/config.",
-          "Use RealClaw for Mantle venue activity across Fluxion, Merchant Moe, and Agni, then attach tx/volume/ROI evidence back into ArcPay.",
+          "Use ArcPay for Mantle Sepolia policy/x402/escrow/privacy/invoice/card evidence. Attach RealClaw or partner tx/volume/ROI evidence only when a real venue action exists.",
         ],
       });
     }
@@ -238,6 +247,8 @@ export async function runDeveloperTool(name: string, args: Record<string, unknow
         policy: [
           "No route, RWA, or RealClaw action may be marked complete without a transaction hash, x402 verification, signed operator record, or venue response.",
           "All intents must include asset, amount, slippage or risk limit, executor, expiry, and before/after balance evidence.",
+          "Agni Sepolia contracts are configured, but Agni actions still require real quote/tx/balance evidence before completion.",
+          "Merchant Moe, Fluxion, USDY, mETH, and Aave are not marked as Mantle Sepolia live unless official testnet contracts are provided.",
           "RealClaw flows must include the registered agent address and keep Telegram bot secrets outside ArcPay.",
         ],
       });

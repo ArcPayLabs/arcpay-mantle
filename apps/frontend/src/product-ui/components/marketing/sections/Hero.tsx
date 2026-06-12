@@ -42,7 +42,7 @@ export function Hero() {
               </h1>
               <p className="text-white/75 text-base md:text-lg max-w-xl mb-8 leading-relaxed">
                 ArcPay is the private operating account for AI-agent businesses on Mantle:
-                discover agents, escrow work, enforce policy, issue USDY cards,
+                discover agents, escrow work, enforce policy, issue test-credit cards,
                 coordinate RWA strategy intents, and create privacy intents under one operator console.
               </p>
               <div className="flex flex-wrap items-center gap-3">
@@ -85,4 +85,3 @@ export function Hero() {
     </section>
   );
 }
-

@@ -8,10 +8,10 @@ It backfills and polls:
 - `TreasuryPolicy` policy, allowlist, approval, and spend events
 - `AgentTreasury` escrow deposit, settlement, and refund events
 - `AgentOrderBook` order lifecycle events
-- `AgentSpendCardVault` USDY card events
+- `AgentSpendCardVault` ArcPay test-credit card events
 - `OperatorControls` claim-code and webhook-circuit events
-- `MantlePrivacyVault` MNT/USDY privacy intent events
-- `AgentInvoiceBook` MNT/USDY invoice creation, payment, and cancellation events
+- `MantlePrivacyVault` MNT/test-credit privacy intent events
+- `AgentInvoiceBook` MNT/test-credit invoice creation, payment, and cancellation events
 - `MantleAgentRiskOracle` risk request and fulfillment events
 
 ## Run Locally

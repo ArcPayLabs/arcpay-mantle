@@ -9,7 +9,7 @@ import { ReviewModal, type ReviewRow } from "@/components/primitives/ReviewModal
 import { StatCard } from "@/components/primitives/StatCard";
 import { readLocalJson, writeLocalJson } from "@/lib/browser-cache";
 import { checkActionPolicies } from "@/lib/policy";
-import { connectedAddress, shortAddress, toWei, writeRecord } from "@mantle/lib/mantle";
+import { connectedAddress, shortAddress, TEST_CREDIT_SYMBOL, toWei, writeRecord } from "@mantle/lib/mantle";
 
 export const Route = { options: { component: PaymentsPage } };
 
@@ -17,9 +17,9 @@ type PaymentRequest = {
   id: string;
   recipient: string;
   amount: string;
-  token: "MNT" | "USDY";
+  token: "MNT" | "CREDIT";
   memo: string;
-  route: "Agent order" | "Contractor payout" | "USDY card top-up";
+  route: "Agent order" | "Contractor payout" | "Credit card top-up";
   status: "Draft" | "Ready to sign" | "Signed intent";
   createdAt: string;
 };
@@ -107,7 +107,7 @@ function PaymentsPage() {
     { label: "Recipient", value: shortAddress(review.recipient), mono: true },
     { label: "Amount", value: `${review.amount} ${review.token}`, mono: true },
     { label: "Route", value: review.route },
-    { label: "Wei", value: review.token === "MNT" ? toWei(review.amount).toString() : "USDY token units", mono: true },
+    { label: "Wei", value: review.token === "MNT" ? toWei(review.amount).toString() : `${TEST_CREDIT_SYMBOL} token units`, mono: true },
     { label: "Policy", value: "Mantle Testnet enforced" },
   ] : [];
 
@@ -117,7 +117,7 @@ function PaymentsPage() {
         icon={Send}
         eyebrow="Treasury execution"
         title="Payments"
-        description="Create signer-gated payment intents for agent orders, contractor payouts, and USDY spend cards on Mantle Testnet."
+        description="Create signer-gated payment intents for agent orders, contractor payouts, and test-credit spend cards on Mantle Testnet."
         actions={
           <button onClick={() => setOpen(true)} className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90">
             <Plus className="h-4 w-4" /> New payment
@@ -144,7 +144,7 @@ function PaymentsPage() {
               <select value={form.route} onChange={(event) => setForm({ ...form, route: event.target.value as PaymentRequest["route"] })} className="ap-in">
                 <option>Agent order</option>
                 <option>Contractor payout</option>
-                <option>USDY card top-up</option>
+                <option>Credit card top-up</option>
               </select>
             </Field>
             <Field label="Amount">
@@ -153,7 +153,7 @@ function PaymentsPage() {
             <Field label="Token">
               <select value={form.token} onChange={(event) => setForm({ ...form, token: event.target.value as PaymentRequest["token"] })} className="ap-in">
                 <option>MNT</option>
-                <option>USDY</option>
+                <option value="CREDIT">{TEST_CREDIT_SYMBOL}</option>
               </select>
             </Field>
             <Field label="Memo">
@@ -181,7 +181,7 @@ function PaymentsPage() {
               <EmptyState
                 icon={Send}
                 title="No payment intents"
-                description="Stage an agent payout, contractor transfer, or USDY card top-up before submitting the wallet-signed transaction."
+                description="Stage an agent payout, contractor transfer, or test-credit card top-up before submitting the wallet-signed transaction."
                 actionLabel="New payment"
                 onAction={() => setOpen(true)}
               />

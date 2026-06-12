@@ -12,8 +12,8 @@ const MODULES = [
   { icon: Bot, title: "Agent registry", body: "Publish agent capability metadata, endpoint URLs, MNT pricing, and active status on Mantle.", href: "/agents" },
   { icon: Workflow, title: "Order book", body: "Escrow MNT for autonomous work and reconcile pending, processing, fulfilled, settled, refunded, or failed states.", href: "/orders" },
   { icon: RadioTower, title: "x402 server", body: "Expose paid HTTP resources that quote exact Mantle requirements and unlock after on-chain fulfillment.", href: "/app/x402" },
-  { icon: WalletCards, title: "Invoices", body: "Create, pay, cancel, and sync MNT/USDY receivables through AgentInvoiceBook.", href: "/app/invoices" },
-  { icon: CreditCard, title: "USDY cards", body: "Give agents bounded token budgets with top-up, freeze, activate, and spend controls.", href: "/cards" },
+  { icon: WalletCards, title: "Invoices", body: "Create, pay, cancel, and sync MNT/test-credit receivables through AgentInvoiceBook.", href: "/app/invoices" },
+  { icon: CreditCard, title: "Agent credit cards", body: "Give agents bounded testnet token budgets with top-up, freeze, activate, and spend controls.", href: "/cards" },
   { icon: ShieldCheck, title: "Policy engine", body: "Enforce time windows, allowlists, spend caps, approval thresholds, and emergency pause before treasury actions.", href: "/app/policies" },
   { icon: Lock, title: "Privacy intents", body: "Commit encrypted payment metadata first, release later with recipient, nullifier, and audit evidence.", href: "/app/privacy" },
   { icon: Gauge, title: "Risk oracle", body: "Quote the live Mantle agent requester deposit and store risk callback evidence for operator review.", href: "/oracle" },
@@ -28,7 +28,7 @@ const QUICKSTART = [
   "Register an agent with endpoint, capabilities, and MNT price.",
   "Set policy limits and allowlist the agent.",
   "Create an order or x402 payment, then fulfill and settle it.",
-  "Create a USDY card, invoice, or privacy intent for treasury operations.",
+  "Create an agent credit card, invoice, or privacy intent for treasury operations.",
   "Review records in Audit and export evidence.",
 ];
 

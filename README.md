@@ -26,8 +26,8 @@ ArcPay Mantle focuses on:
 - agent discovery
 - agent-to-agent paid work
 - Byreal/RealClaw-style agent workflow integration
-- RealClaw Mantle Skills handoff with Fluxion, Merchant Moe, and Agni evidence capture
-- Mantle AI x RWA treasury controls for USDY and mETH strategy intents
+- RealClaw/Byreal handoff with evidence capture when an external venue returns proof
+- Mantle Sepolia treasury controls around live MNT/WMNT testnet flows
 - RealClaw handoff payloads that keep Telegram bot secrets outside ArcPay
 - onchain order lifecycle
 - treasury spend policy
@@ -59,10 +59,10 @@ arcpay-mantle-x402-agent quote research-agent
 | `TreasuryPolicy.sol` | Enforce hourly/daily limits, approval threshold, allowlist, and emergency pause. |
 | `AgentTreasury.sol` | Escrow and release native Mantle funds for orders. |
 | `AgentOrderBook.sol` | Agent order state machine from pending to settled/refunded. |
-| `AgentInvoiceBook.sol` | MNT/USDY invoice creation, payment, cancellation, and settlement evidence. |
+| `AgentInvoiceBook.sol` | MNT and test-token invoice creation, payment, cancellation, and settlement evidence. |
 | `OperatorControls.sol` | Agent claim-code onboarding and webhook circuit-breaker controls. |
 | `MantleAgentRiskOracle.sol` | Agentic risk request/callback flow for treasury policy decisions. |
-| `AgentSpendCardVault.sol` | USDY-backed virtual spend cards for agent budgets. |
+| `AgentSpendCardVault.sol` | Token-backed virtual spend cards for agent budgets. |
 | `MantlePrivacyVault.sol` | Commitment-based payment intents with encrypted memo URIs and nullifier release. |
 | `AgentReputationBook.sol` | Order-backed score, review, and dispute evidence for service agents. |
 
@@ -174,7 +174,7 @@ Contracts:
 | `MantlePrivacyVault` | `0x717CB18B08bE0c2ce1c897d879025c4a90861c20` |
 | `AgentInvoiceBook` | `0xb379a8926980A23c60D5c29A343f73D054CEdc61` |
 | `AgentReputationBook` | `0xADA1E468a640A4ff4171c53523095Af58e30aC51` |
-| `MockUSDY` | `0xda41b9EB708d32b29F4d90468298c69824A15E5C` |
+| `ArcPayTestCredit` | `0xda41b9EB708d32b29F4d90468298c69824A15E5C` |
 | `MockMantleAgentPlatform` | `0x3970Bf330fd72Fc6C0eBc555806f82C759401794` |
  
 Machine-readable deployment metadata lives in
@@ -196,6 +196,70 @@ works for Mantle Testnet.
 Privacy Intent builder docs live in `docs/privacy-intents.md`.
 
 x402 payment-gated agent docs live in `docs/x402-mantle.md`.
+
+## Mantle Partner Boundary
+
+ArcPay does not claim Merchant Moe, Fluxion, Aave, USDY, or mETH as Mantle
+Sepolia live executors. The official `@mantleio/mantle-core@0.1.19` package
+includes Mantle Sepolia chain/account/token support, but its Sepolia protocol
+registry is empty and its Sepolia token registry only includes `MNT` and
+`WMNT`.
+
+Deeper Agni research found separate Mantle Sepolia contracts with bytecode:
+
+| Agni Sepolia contract | Address |
+| --- | --- |
+| Factory | `0xA9AcD50B042A72c33d05fDcC8ad209d3aD361762` |
+| SwapRouter | `0xe38cfa32cCd918d94E2e20230dFaD1A4Fd8aEF16` |
+| Quoter | `0xA82F8dC4704d3512b120de70480219761F24B6Eb` |
+| QuoterV2 | `0x9Da17239a4170f50A5A2c11813BD0C601b5c9693` |
+| WMNT | `0x67A1f4A939b477A6b7c5BF94D97E45dE87E608eF` |
+
+ArcPay therefore treats Agni as a configured testnet contract path, not as a
+completed swap path. An Agni action still requires a quote, signed swap
+transaction, before/after balances, and an ArcPay audit record before it can be
+marked complete.
+
+Current Mantle Testnet live execution is therefore:
+
+- ArcPay contracts on Mantle Sepolia
+- x402 payment-gated orders backed by `AgentOrderBook`
+- ZeroDev sponsorship policy for approved ArcPay calls
+- MNT vault swap-credit and MNT yield deposit/withdraw proof
+- Agni Sepolia contract references for future quote/swap evidence capture
+- invoices, cards, privacy intents, risk requests, reputation, and audit records
+
+Other partner DEX/RWA venues remain mainnet references or external evidence
+handoffs until official Mantle Sepolia contracts are available.
+
+## How To Get An Order ID
+
+`orderId` is emitted by the `OrderCreated` event after a wallet signs
+`AgentOrderBook.createOrder(agentId, requestUri)` and the transaction confirms.
+It is not manually invented by the user.
+
+The contract computes it as:
+
+```solidity
+keccak256(abi.encodePacked(block.chainid, address(this), msg.sender, agentId, orderNonce))
+```
+
+In the app, `/orders` and `/x402` parse the transaction receipt and fill the
+order ID automatically. For scripts and agents, parse this event:
+
+```solidity
+event OrderCreated(
+  bytes32 indexed orderId,
+  bytes32 indexed agentId,
+  address indexed requester,
+  address provider,
+  uint256 amountWei,
+  string requestUri
+);
+```
+
+Use the resulting `orderId` in `/x402`, `/orders`, `/oracle`, `/reputation`, and
+the audit evidence package.
 
 ## Persistence
 
@@ -284,7 +348,7 @@ The repo now includes and deploys the Cards402-depth layer:
 - `AgentSpendCardVault`
 - `MantlePrivacyVault`
 - HTTP 402 server for paid agent endpoints
-- on-chain MNT/USDY invoices
+- on-chain MNT/test-credit invoices
 - upgraded `TreasuryPolicy`
 - upgraded `AgentOrderBook`
 
@@ -298,8 +362,23 @@ The command rewrites `deployments/mantle-testnet.json`; the frontend imports
 that file automatically. Current Mantle agent platform:
 `mock Mantle agent platform until a live Byreal/agent platform address is provided`.
 
-Current USDY testnet token:
+Current ArcPay Test Credit token:
 `0xda41b9EB708d32b29F4d90468298c69824A15E5C`.
+
+This is a deployed Mantle Sepolia ERC20 used for live wallet-signed card,
+invoice, and privacy-intent testing. It is not presented as real USDY.
+
+## Mantle Privacy Boundary
+
+The live Mantle privacy layer is `MantlePrivacyVault`: commitment IDs,
+encrypted memo URIs, delayed recipient release, cancellation/refund, and
+one-time nullifier release evidence. It is live on Mantle Sepolia, but it is
+not a full shielded pool.
+
+Noir/full-ZK work should only be claimed after `nargo`/`bb` build, proof
+generation, Solidity verifier generation, verifier deployment, and an explorer
+transaction are completed. Until then, Noir remains a circuit-ready roadmap
+path, not a submitted proof claim.
 
 ## Operator Demo Path
 
@@ -347,16 +426,16 @@ demo paths resolve to Mantle infrastructure.
 | `/orders` | Create, accept, process, fulfill, settle, or refund escrowed agent orders. |
 | `/x402` | Quote HTTP 402 payment requirements, create an escrowed order, verify, fulfill, and unlock paid agent work. |
 | `/realclaw` | Generate a policy-bound RealClaw/Byreal handoff payload without storing Telegram bot tokens. |
-| `/cards` | Create USDY-backed agent spend cards with limits and freeze controls. |
+| `/cards` | Create ArcPay test-credit-backed agent spend cards with limits and freeze controls. |
 | `/policies` | Set hourly/daily/weekly limits, approval threshold, UTC-hour windows, emergency pause, and agent allowlist. |
-| `/privacy` | Create and release commitment-based USDY/MNT payment intents with encrypted metadata and nullifiers. |
+| `/privacy` | Create and release commitment-based MNT/test-credit payment intents with encrypted metadata and nullifiers. |
 | `/operator` | Claim-code onboarding and webhook circuit-breaker controls. |
 | `/oracle` | Mantle agent risk request/callback flow. |
 | `/payments` | Wallet-signed direct MNT payments for operator payouts. |
-| `/invoices` | Create, pay, cancel, and sync MNT/USDY invoices through `AgentInvoiceBook`. |
+| `/invoices` | Create, pay, cancel, and sync MNT/test-credit invoices through `AgentInvoiceBook`. |
 | `/contractors` | Local contractor/agent workforce records. |
 | `/swaps` | Mantle swap intent builder for RealClaw, DEX adapter candidates, or manual signer execution. |
-| `/yield` | Mantle USDY/mETH strategy intent builder with allocation and drawdown controls. |
+| `/yield` | Mantle MNT vault yield flow with USDY/mETH kept as mainnet reference targets. |
 | `/audit` | Local workflow records and transaction hashes. |
 | `/analytics` | Admin usage analytics for beta signups, developer keys, MCP/tool calls, x402 activity, records, owners, and agents. |
 | `/proofs` | Judge-facing deployment proof and local verification commands. |

@@ -39,7 +39,7 @@ export function WorkflowPreview() {
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             <StatCard tone="dark" icon={Wallet} label="Signer" value="5003" hint="Mantle Testnet chain" />
             <StatCard tone="dark" icon={Lock} label="Privacy" value="Vault" hint="Commitment intents" />
-            <StatCard tone="dark" icon={Coins} label="USDY" value="Cards" hint="Agent budgets" />
+            <StatCard tone="dark" icon={Coins} label="CREDIT" value="Cards" hint="Agent budgets" />
             <StatCard tone="dark" icon={TrendingUp} label="Worker" value="Azure" hint="Event monitor active" emphasis />
           </div>
 
@@ -66,7 +66,7 @@ export function WorkflowPreview() {
                 {[
                   { who: "Register research agent", amt: "0.01 MNT price", risk: "Approve" },
                   { who: "Escrow work order", amt: "0.01 MNT", risk: "Review" },
-                  { who: "Top up USDY card", amt: "5 USDY", risk: "Approve" },
+                  { who: "Top up credit card", amt: "5 CREDIT", risk: "Approve" },
                 ].map((r) => (
                   <div key={r.who} className="flex items-center justify-between rounded-xl border border-white/5 bg-black/30 px-3 py-3">
                     <div>

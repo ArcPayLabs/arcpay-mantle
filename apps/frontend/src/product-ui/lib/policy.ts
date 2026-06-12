@@ -34,7 +34,7 @@ export const DEFAULT_POLICY_SETTINGS: PolicySettings = {
   paused: false,
   perTx: 0,
   requireApproval: 0,
-  tokens: ["MNT", "USDY"],
+  tokens: ["MNT", "CREDIT"],
 };
 
 export const DEFAULT_WORKSPACE_SETTINGS: WorkspaceSettingsSnapshot = {

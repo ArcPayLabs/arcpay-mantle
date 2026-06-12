@@ -5,11 +5,11 @@ import { SectionHeading } from "@/components/primitives/SectionHeading";
 const FAQS = [
   {
     q: "Which tokens does ArcPay support?",
-    a: "Today in the Mantle build: MNT for native gas/order escrow and USDY for agent spend cards. Extra rails can be added after native Mantle liquidity and provider APIs are confirmed live.",
+    a: "Today in the Mantle build: MNT for native gas/order escrow and ArcPay test credit for agent spend cards. USDY, mETH, and partner DeFi venues stay reference-only until official Mantle Sepolia contracts are available.",
   },
   {
     q: "How is privacy actually delivered?",
-    a: "Through the MantlePrivacyVault contract: MNT or USDY commitments, encrypted memo URIs, delayed recipient release, cancel/refund, nullifier protection, and selective disclosure records. It is a privacy-intent layer, not a full zero-knowledge shielded pool.",
+    a: "Through the MantlePrivacyVault contract: MNT or ArcPay test-credit commitments, encrypted memo URIs, delayed recipient release, cancel/refund, nullifier protection, and selective disclosure records. It is a privacy-intent layer, not a full zero-knowledge shielded pool.",
   },
   {
     q: "Do you hold custody of funds?",

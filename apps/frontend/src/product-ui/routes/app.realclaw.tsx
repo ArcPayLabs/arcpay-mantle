@@ -29,13 +29,13 @@ const DEFAULT_FORM: Handoff = {
   realclawNetwork: "RealClaw Mantle agent, ArcPay Mantle Testnet proof",
   telegramAgent: "ArcPay Mantle CFO",
   realclawAgentAddress: "",
-  primaryVenue: "Fluxion / Merchant Moe / Agni",
+  primaryVenue: "ArcPay Testnet contracts + RealClaw evidence",
   operator: "ArcPay operator",
   agentSlug: "treasury-router",
-  objective: "Route approved Mantle treasury work across x402 payments, USDY invoices, and RWA yield intents only when policy allows it.",
+  objective: "Route approved Mantle treasury work across x402 payments, test-credit invoices, and evidence-backed partner handoffs only when policy allows it.",
   budgetMnt: "0.05",
   riskLimit: "Low risk, no leverage, operator approval above daily budget",
-  assets: "MNT, USDY, mETH",
+  assets: "MNT, WMNT, ArcPay Test Credit",
   x402Resource: "https://mantle-x402.20.208.46.195.nip.io/agent/research-agent/work",
   webhookUrl: "https://arcpay-mantle.vercel.app/api/developer/tools/realclaw_handoff",
 };
@@ -60,7 +60,7 @@ function RealClawRoute() {
       maxBudgetMnt: form.budgetMnt,
       riskLimit: form.riskLimit,
       allowedAssets: form.assets.split(",").map((asset) => asset.trim()).filter(Boolean),
-      allowedVenues: ["Fluxion", "Merchant Moe", "Agni Finance"],
+      mainnetReferenceOnlyVenues: ["Fluxion", "Merchant Moe", "Agni Finance"],
       requireArcPayPolicy: true,
       requireOperatorOverrideForLeverage: true,
       requireRegisteredRealClawAgentAddress: true,
@@ -70,7 +70,7 @@ function RealClawRoute() {
       x402ProtectedResource: form.x402Resource,
       arcPayDeveloperTool: form.webhookUrl,
       x402Gateway: "https://mantle-x402.20.208.46.195.nip.io",
-      realclawCampaign: "https://openclaw.mantle.xyz/",
+      realclawCampaign: "https://www.byreal.io/en/realclaw",
     },
     contracts: {
       registry: CONTRACTS.AgentRegistry,
@@ -113,13 +113,13 @@ function RealClawRoute() {
     "Connect the wallet RealClaw registers as your Mantle agent address.",
     "Keep the bot token and RealClaw secrets inside RealClaw. Do not paste them into ArcPay.",
     "Paste this ArcPay handoff payload into the Telegram agent instructions/config.",
-    "Use RealClaw for Mantle venue activity across Fluxion, Merchant Moe, and Agni, then attach tx/volume/ROI evidence back into ArcPay.",
+    "Use ArcPay for live Mantle Sepolia policy/x402/escrow/privacy/invoice/card evidence. Attach RealClaw or partner venue tx/volume/ROI only when that external action exists.",
   ];
 
   const integrations = [
     { label: "RealClaw", value: "Mantle Skills", hint: "Telegram agent + wallet" },
     { label: "ArcPay x402", value: "Paid work", hint: "HTTP 402 + order escrow" },
-    { label: "Venues", value: "3", hint: "Fluxion, Merchant Moe, Agni" },
+    { label: "Venues", value: "Evidence", hint: "No fake testnet venue claims" },
     { label: "Policy", value: "Required", hint: "Budget/risk gate" },
   ];
 
@@ -129,7 +129,7 @@ function RealClawRoute() {
         icon={Bot}
         eyebrow="Byreal / RealClaw"
         title="RealClaw agent handoff"
-        description="Prepare a safe execution brief for a RealClaw Mantle agent: budget, policy, x402 endpoint, venue targets, contract addresses, privacy boundary, and allowed assets."
+        description="Prepare a safe execution brief for a RealClaw Mantle agent: budget, policy, x402 endpoint, contract addresses, privacy boundary, allowed assets, and required evidence before any venue activity is claimed."
         actions={<button type="button" onClick={copyPayload} className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"><ClipboardCopy className="h-4 w-4" /> Copy payload</button>}
       />
 
@@ -137,7 +137,7 @@ function RealClawRoute() {
         <StatCard icon={Bot} label="Adapter" value="RealClaw" hint="Operator handoff" emphasis />
         <StatCard icon={RadioTower} label="x402" value="Live" hint="Paid agent resource" />
         <StatCard icon={ShieldCheck} label="Policy" value="Enforced" hint="Budget first" />
-        <StatCard icon={WalletCards} label="Assets" value="MNT/USDY" hint="mETH strategy-ready" />
+        <StatCard icon={WalletCards} label="Assets" value="MNT/CREDIT" hint="USDY/mETH reference-only" />
       </div>
 
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-[0.85fr_1.15fr]">

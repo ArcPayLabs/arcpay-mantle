@@ -1,0 +1,818 @@
+[
+  {
+    "route": "/",
+    "desktop": {
+      "ok": false,
+      "error": "page.goto: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:4313/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/",
+      "textLength": 4550,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/agents",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/agents",
+      "textLength": 2427,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/agents",
+      "textLength": 2210,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/analytics",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/analytics",
+      "textLength": 935,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/analytics",
+      "textLength": 718,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/app/agents",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/agents",
+      "textLength": 2427,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/agents",
+      "textLength": 2210,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/app/analytics",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/analytics",
+      "textLength": 935,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/analytics",
+      "textLength": 718,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/app/cards",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/cards",
+      "textLength": 640,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/cards",
+      "textLength": 423,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/app/oracle",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/oracle",
+      "textLength": 676,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/oracle",
+      "textLength": 459,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/app/orders",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/orders",
+      "textLength": 773,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/orders",
+      "textLength": 556,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/app/x402",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/x402",
+      "textLength": 1372,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/x402",
+      "textLength": 1155,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/audit",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/audit",
+      "textLength": 944,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/audit",
+      "textLength": 727,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/beta",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/beta",
+      "textLength": 1304,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/beta",
+      "textLength": 1242,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/beta-admin",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/beta-admin",
+      "textLength": 689,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/beta-admin",
+      "textLength": 472,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/cards",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/cards",
+      "textLength": 640,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/cards",
+      "textLength": 423,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/contractors",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/contractors",
+      "textLength": 874,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/contractors",
+      "textLength": 657,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/dashboard",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/dashboard",
+      "textLength": 1121,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/dashboard",
+      "textLength": 904,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/developer-access",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/developer-access",
+      "textLength": 884,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/developer-access",
+      "textLength": 667,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/docs/overview",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/docs/overview",
+      "textLength": 3422,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/docs/overview",
+      "textLength": 3360,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/forgot-password",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/forgot-password",
+      "textLength": 181,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/forgot-password",
+      "textLength": 118,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/invoices",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/invoices",
+      "textLength": 775,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/invoices",
+      "textLength": 522,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/onboard",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/onboard",
+      "textLength": 450,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/onboard",
+      "textLength": 456,
+      "hasNextError": false,
+      "errors": [
+        "Failed to load resource: net::ERR_NO_BUFFER_SPACE"
+      ]
+    }
+  },
+  {
+    "route": "/operator",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/operator",
+      "textLength": 611,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/operator",
+      "textLength": 611,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/oracle",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/oracle",
+      "textLength": 676,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/oracle",
+      "textLength": 459,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/orders",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/orders",
+      "textLength": 773,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/app/orders",
+      "textLength": 556,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/payments",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/payments",
+      "textLength": 815,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/payments",
+      "textLength": 598,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/policies",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/policies",
+      "textLength": 1228,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/policies",
+      "textLength": 1011,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/pricing",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/pricing",
+      "textLength": 1030,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/pricing",
+      "textLength": 968,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/privacy",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/privacy",
+      "textLength": 952,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/privacy",
+      "textLength": 735,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/profile",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/profile",
+      "textLength": 662,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/profile",
+      "textLength": 445,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/proofs",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/proofs",
+      "textLength": 3022,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/proofs",
+      "textLength": 2960,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/realclaw",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/realclaw",
+      "textLength": 3596,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/realclaw",
+      "textLength": 3379,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/reputation",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/reputation",
+      "textLength": 943,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/reputation",
+      "textLength": 726,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/reset-password",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/reset-password",
+      "textLength": 160,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/reset-password",
+      "textLength": 105,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/risk",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/risk",
+      "textLength": 1038,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/risk",
+      "textLength": 821,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/security",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/security",
+      "textLength": 1527,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/security",
+      "textLength": 1465,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/settings",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/settings",
+      "textLength": 1704,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/settings",
+      "textLength": 1487,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/sign-in",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/sign-in",
+      "textLength": 354,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/sign-in",
+      "textLength": 206,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/sign-up",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/sign-up",
+      "textLength": 465,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/sign-up",
+      "textLength": 311,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/solutions",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/solutions",
+      "textLength": 1084,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/solutions",
+      "textLength": 1022,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/status",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/status",
+      "textLength": 725,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/status",
+      "textLength": 508,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/swaps",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/swaps",
+      "textLength": 2724,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/swaps",
+      "textLength": 2507,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/wallet",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/wallet",
+      "textLength": 694,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/wallet",
+      "textLength": 477,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/x402",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/x402",
+      "textLength": 1372,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/x402",
+      "textLength": 1155,
+      "hasNextError": false,
+      "errors": []
+    }
+  },
+  {
+    "route": "/yield",
+    "desktop": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/yield",
+      "textLength": 2713,
+      "hasNextError": false,
+      "errors": []
+    },
+    "mobile": {
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:4313/yield",
+      "textLength": 2496,
+      "hasNextError": false,
+      "errors": []
+    }
+  }
+]

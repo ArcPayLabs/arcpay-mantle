@@ -1,6 +1,6 @@
 {
   "name": "@arcpaylabs/mantle-cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "description": "Developer CLI for ArcPay Mantle contracts, x402, invoices, privacy intents, and MCP setup.",
   "type": "module",

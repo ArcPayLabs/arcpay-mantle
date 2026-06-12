@@ -1,6 +1,6 @@
 {
   "name": "@arcpaylabs/mantle-x402-agent-starter",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "description": "Starter client for integrating with ArcPay Mantle x402 paid agent endpoints.",
   "license": "MIT",

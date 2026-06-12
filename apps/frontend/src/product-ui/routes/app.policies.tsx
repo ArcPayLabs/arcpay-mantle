@@ -17,7 +17,7 @@ export const Route = createFileRoute("/app/policies")({
   component: PoliciesPage,
 });
 
-const TOKENS = ["MNT", "USDY"] as const;
+const TOKENS = ["MNT", "CREDIT"] as const;
 const NETWORKS = ["Mantle"] as const;
 const ACTIONS = ["Send", "Swap", "Yield deposit", "Yield withdraw", "Shield", "Issue viewing key"] as const;
 function PoliciesPage() {

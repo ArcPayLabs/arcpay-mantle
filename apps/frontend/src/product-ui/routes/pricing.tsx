@@ -38,7 +38,7 @@ const TIERS = [
     highlight: true,
     features: [
       "MNT order escrow",
-      "USDY agent spend cards",
+      "ArcPay test-credit agent spend cards",
       "Mantle risk oracle requests",
       "MCP, CLI, skill.md, and llms.txt",
       "Operator controls and circuit breakers",

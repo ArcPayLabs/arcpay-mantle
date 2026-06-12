@@ -7,7 +7,7 @@ import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://arcpay.app";
 const description =
-  "ArcPay is a private, policy-controlled treasury OS for AI agents on Mantle: register agents, escrow work, enforce limits, issue USDY cards, create privacy intents, and export audits.";
+  "ArcPay is a private, policy-controlled treasury OS for AI agents on Mantle: register agents, escrow work, enforce limits, issue test-credit cards, create privacy intents, and export audits.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "Mantle dashboard",
     "policy controlled wallet",
     "Mantle",
-    "USDY",
+    "test-credit",
     "agentic L1",
     "QVAC",
   ],

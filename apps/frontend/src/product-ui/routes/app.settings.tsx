@@ -25,7 +25,7 @@ const INTEGRATIONS: { key: IntegrationKey; label: string; description: string }[
   { key: "agentRegistry", label: "Agent registry", description: "Capability discovery and agent onboarding" },
   { key: "orderBook", label: "Order book", description: "Agent order lifecycle and settlement" },
   { key: "policyEngine", label: "Policy engine", description: "Spend windows, approval thresholds, and pause" },
-  { key: "spendCards", label: "USDY cards", description: "Agent-limited virtual treasury cards" },
+  { key: "spendCards", label: "Credit cards", description: "Agent-limited virtual treasury cards" },
   { key: "privacyVault", label: "Privacy vault", description: "Commitments and selective disclosure records" },
   { key: "riskOracle", label: "Risk oracle", description: "Counterparty and order risk scoring" },
   { key: "mcp", label: "MCP server", description: "Agent control through Claude or any MCP host" },
